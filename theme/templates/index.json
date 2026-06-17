@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "pew1_landing": {
+      "type": "pew1-landing",
+      "settings": {
+        "storefront_token": "",
+        "storefront_api_version": "2024-10",
+        "collection_originales": "frontpage",
+        "personalizador_url": "https://pew1sark.github.io/PEW1-PERSONALIZADOR/"
+      }
+    }
+  },
+  "order": ["pew1_landing"]
+}

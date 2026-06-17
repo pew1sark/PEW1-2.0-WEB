@@ -1,0 +1,68 @@
+/* ============================================================
+   PEW1 2.0 — Site-wide unification layer
+   Aligns every store page (product, collection, pages, blog,
+   cart, search…) with the web 2.0 landing's graphic line:
+   Instrument Serif (italic display) + Barlow (body), and the
+   landing's spray-orange #FF7A00. Loaded AFTER pew1.css so it
+   wins, without touching the existing layout/components.
+   ============================================================ */
+:root{
+  --font-display:'Instrument Serif','Barlow',Georgia,serif;
+  --font-text:'Barlow',system-ui,-apple-system,sans-serif;
+  /* match the landing accent exactly */
+  --pewi-orange:#FF7A00;
+  --accent:#FF7A00;
+  --accent-hover:#E06A00;
+  --orange-700:#E06A00;
+}
+
+/* Display headings -> Instrument Serif italic, not uppercase,
+   mirroring the landing's elegant editorial voice. */
+.h-display,
+.section-title,
+.hero__title,
+.banner__title,
+.portfolio__title,
+.portfolio__item-title,
+.pcard__title,
+.testimonials-header h2,
+.product-zoom-modal__title,
+h1.h-display, h2.h-display{
+  font-family:var(--font-display) !important;
+  font-style:italic !important;
+  font-weight:400 !important;
+  text-transform:none !important;
+  letter-spacing:-0.01em !important;
+  line-height:1.02;
+}
+
+/* Eyebrows / labels keep a tight tracked Barlow for contrast. */
+.eyebrow,
+.pcard__kind,
+.collection-header__back,
+.portfolio__stat span,
+.form-label{
+  font-family:var(--font-text) !important;
+  font-weight:700 !important;
+}
+
+/* Body + UI -> Barlow */
+body,
+.btn,
+.tag,
+.badge,
+.prose p,
+.field input,.field textarea,
+.form-input{
+  font-family:var(--font-text) !important;
+}
+
+/* Buttons feel like the landing: rounded pill accent. */
+.btn{ text-transform:none !important; letter-spacing:0.01em !important; border-radius:9999px !important; }
+.tag{ border-radius:9999px !important; }
+
+/* Slightly warmer focus ring to match the landing. */
+.field input:focus,.field textarea:focus,.form-input:focus{
+  border-color:#FF7A00 !important;
+  box-shadow:0 0 0 3px rgba(255,122,0,0.18);
+}
