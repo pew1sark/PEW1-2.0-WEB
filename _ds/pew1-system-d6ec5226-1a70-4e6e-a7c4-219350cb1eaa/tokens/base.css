@@ -1,0 +1,45 @@
+/* ============================================================
+   PEWÏ — Base element styles & helpers
+   Lightweight; sets the brand defaults without being a reset.
+   ============================================================ */
+
+/* Eyebrow / section label — used all over the manual */
+.pewi-eyebrow {
+  font-family: var(--font-text);
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: var(--ls-eyebrow);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Display headline */
+.pewi-display {
+  font-family: var(--font-display);
+  font-weight: 400; /* Archivo Black is single-weight */
+  letter-spacing: var(--ls-display);
+  line-height: var(--lh-tight);
+  text-transform: uppercase;
+  color: var(--text-strong);
+}
+
+/* The hard accent rule the manual uses under "MANUAL DE MARCA" */
+.pewi-rule {
+  width: 56px;
+  height: 4px;
+  background: var(--accent);
+  border: 0;
+  display: block;
+}
+
+/* Body utility */
+.pewi-body {
+  font-family: var(--font-text);
+  font-weight: var(--fw-regular);
+  font-size: var(--fs-body);
+  line-height: var(--lh-normal);
+  color: var(--text-body);
+}
+
+/* Selection */
+::selection { background: var(--accent); color: var(--pewi-ink); }

@@ -1,0 +1,54 @@
+/* ============================================================
+   PEW1 — Spacing, radii, borders, shadows, motion
+   Soft & clean: rounded surfaces, diffuse low-contrast shadows,
+   hairline (or no) borders. Imagery leads; chrome recedes.
+   ============================================================ */
+:root {
+  /* ---- Spacing scale (4px base) ---- */
+  --sp-0:   0; /* @kind spacing */
+  --sp-1:   4px;
+  --sp-2:   8px;
+  --sp-3:   12px;
+  --sp-4:   16px;
+  --sp-5:   20px;
+  --sp-6:   24px;
+  --sp-8:   32px;
+  --sp-10:  40px;
+  --sp-12:  48px;
+  --sp-16:  64px;
+  --sp-20:  80px;
+  --sp-24:  96px;
+  --sp-32:  128px;
+
+  /* ---- Radii — soft & rounded ---- */
+  --radius-0:   0px;
+  --radius-sm:  8px;
+  --radius-md:  14px;
+  --radius-lg:  22px;
+  --radius-xl:  30px;
+  --radius-pill:999px;
+
+  /* ---- Borders — hairline only; no heavy keylines ---- */
+  --bw-hair:    1px;
+  --bw-key:     1px;        /* legacy alias — now a hairline */
+  --bw-heavy:   1px;
+
+  /* ---- Shadows — soft, diffuse, low-contrast ---- */
+  --shadow-sm:  0 2px 8px rgba(11,11,13,0.05);
+  --shadow-md:  0 10px 30px rgba(11,11,13,0.07);
+  --shadow-lg:  0 24px 60px rgba(11,11,13,0.10);
+  /* Legacy aliases kept so nothing breaks; remapped to soft. */
+  --shadow-hard:0 14px 40px rgba(11,11,13,0.08);
+  --shadow-hard-accent: 0 16px 44px rgba(255,152,0,0.18);
+
+  /* ---- Motion ---- */
+  --ease-out:   cubic-bezier(0.22, 1, 0.36, 1); /* @kind other */
+  --ease-in-out:cubic-bezier(0.65, 0, 0.35, 1); /* @kind other */
+  --dur-fast:   120ms; /* @kind other */
+  --dur-base:   200ms; /* @kind other */
+  --dur-slow:   360ms; /* @kind other */
+
+  /* ---- Layout ---- */
+  --container:  1200px;
+  --container-narrow: 880px;
+}

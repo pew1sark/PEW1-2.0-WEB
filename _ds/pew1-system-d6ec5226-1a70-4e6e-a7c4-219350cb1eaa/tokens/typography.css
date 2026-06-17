@@ -1,0 +1,45 @@
+/* ============================================================
+   PEWÏ — Typography tokens
+   ============================================================ */
+:root {
+  /* ---- Families ---- */
+  /* Display = stand-in for the custom PEWÏ logotype. Use UPPERCASE,
+     tight tracking, for big urban statements. */
+  --font-display: 'Archivo Black', 'Montserrat', system-ui, sans-serif;
+  /* Text = workhorse for everything else. */
+  --font-text:    'Montserrat', system-ui, -apple-system, sans-serif;
+  --font-mono:    'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* ---- Weights ---- */
+  --fw-regular: 400; /* @kind font */
+  --fw-medium:  500; /* @kind font */
+  --fw-semibold:600; /* @kind font */
+  --fw-bold:    700; /* @kind font */
+  --fw-extra:   800; /* @kind font */
+  --fw-black:   900; /* @kind font */
+
+  /* ---- Type scale (fluid-ish, rem) ---- */
+  --fs-display:   clamp(3rem, 7vw, 5.5rem); /* @kind font */
+  --fs-h1:        2.75rem;   /* @kind font */
+  --fs-h2:        2rem;      /* @kind font */
+  --fs-h3:        1.5rem;    /* @kind font */
+  --fs-h4:        1.25rem;   /* @kind font */
+  --fs-lg:        1.125rem;  /* @kind font */
+  --fs-body:      1rem;      /* @kind font */
+  --fs-sm:        0.875rem;  /* @kind font */
+  --fs-xs:        0.75rem;   /* @kind font */
+  --fs-eyebrow:   0.8125rem; /* @kind font */
+
+  /* ---- Line heights ---- */
+  --lh-tight:   1.02; /* @kind other */
+  --lh-snug:    1.18; /* @kind other */
+  --lh-normal:  1.55; /* @kind other */
+  --lh-relaxed: 1.7; /* @kind other */
+
+  /* ---- Letter spacing ---- */
+  --ls-display:  -0.01em; /* @kind other */
+  --ls-tight:    -0.02em; /* @kind other */
+  --ls-normal:    0em; /* @kind other */
+  --ls-eyebrow:   0.22em; /* @kind other */
+  --ls-wide:      0.06em; /* @kind other */
+}

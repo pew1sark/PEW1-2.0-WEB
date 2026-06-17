@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>PEW1 — Arte que transforma</title>
+  <meta name="description" content="PEW1 · Nicolas Sark Pew1. Arte urbano que integra el ser humano y el mundo animal en una sola imagen. Obras originales, fine art prints, street wear y murales a pedido. Hecho en Chile.">
+  <meta name="theme-color" content="#0A0F2E">
+  <meta property="og:title" content="PEW1 — Arte que transforma">
+  <meta property="og:image" content="assets/work/sombras.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;600;700&family=Pirata+One&family=Anton&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{margin:0;background:#05060A;color:#F5F4F0;font-family:'Barlow',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+    ::selection{background:rgba(255,122,0,0.32);color:#fff;}
+    img{display:block;max-width:100%;}
+    a{color:inherit;text-decoration:none;}
+    input,textarea,select,button{font-family:inherit;}
+    ::-webkit-scrollbar{width:10px;}
+    ::-webkit-scrollbar-track{background:#05060A;}
+    ::-webkit-scrollbar-thumb{background:#1a2140;border-radius:9999px;}
+    @keyframes pew1drift{0%{background-position:0% 0%;}50%{background-position:100% 60%;}100%{background-position:0% 0%;}}
+    @keyframes pew1float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+    a:hover{color:#FF7A00;}
+    nav a:hover,[data-spy-link]:hover{color:#F5F4F0 !important;}
+    [data-cot-servicio-opt]:hover,[data-cot-complejidad-opt]:hover{border-color:rgba(255,255,255,0.28) !important;}
+    input:focus,textarea:focus{outline:none;border-color:#FF7A00 !important;box-shadow:0 0 0 3px rgba(255,122,0,0.18);}
+    input::placeholder,textarea::placeholder{color:#6e6e69;}
+    @media (min-width:820px){
+      [data-split]{grid-template-columns:1fr 1fr !important;}
+      [data-footer-grid]{grid-template-columns:1.2fr 1fr !important;}
+    }
+    @media (min-width:560px){
+      [data-cot-grid]{grid-template-columns:1.05fr 1fr !important;align-items:start;}
+    }
+    @media (max-width:819px){
+      [data-split-rev] [data-split-text]{order:2 !important;}
+      [data-split-rev] [data-split-img]{order:1 !important;}
+    }
+    [data-hoodie]:active{cursor:grabbing;}
+  </style>
+  <script src="fluid-bg.js"></script>
+</helmet>
+
+<div style="position:relative;width:100%;min-height:100vh;background:#05060A;">
+
+  <!-- ============ LIQUID PAINT BACKGROUND ============ -->
+  <div data-fallback-bg style="position:fixed;inset:0;z-index:0;background:radial-gradient(120% 120% at 50% 0%, #0A0F2E 0%, #070A1C 45%, #05060A 100%);background-size:180% 180%;animation:pew1drift 50s ease-in-out infinite;"></div>
+  <canvas id="pew1-fluid" style="position:fixed;inset:0;z-index:1;width:100vw;height:100vh;display:block;opacity:0.92;pointer-events:none;"></canvas>
+  <div style="position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(110% 90% at 50% 42%, rgba(5,6,10,0) 36%, rgba(5,6,10,0.55) 100%);"></div>
+
+  <!-- ============ CONTENT ============ -->
+  <div style="position:relative;z-index:10;">
+
+    <!-- ============ NAV ============ -->
+    <nav style="position:fixed;top:16px;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1240px;margin:0 auto;padding:0 clamp(16px,4vw,28px);">
+      <a href="#inicio" aria-label="PEW1 inicio" style="flex:none;width:48px;height:48px;border-radius:9999px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.12);box-shadow:inset 0 1px 1px rgba(255,255,255,0.18), 0 8px 24px rgba(0,0,0,0.4);">
+        <img src="assets/pewi-icon-white.png" alt="PEW1" style="width:24px;height:24px;object-fit:contain;opacity:0.95;">
+      </a>
+
+      <div data-desktop-nav style="display:flex;align-items:center;gap:2px;padding:7px 10px;border-radius:9999px;background:rgba(255,255,255,0.04);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12), 0 8px 30px rgba(0,0,0,0.35);">
+        <a data-spy-link="inicio" href="#inicio" style="padding:8px 15px;border-radius:9999px;font-size:13.5px;font-weight:500;letter-spacing:0.01em;color:#9A9A95;transition:color .25s, background .25s;">Inicio</a>
+        <a data-spy-link="arte" href="#arte" style="padding:8px 15px;border-radius:9999px;font-size:13.5px;font-weight:500;color:#9A9A95;transition:color .25s, background .25s;">Arte</a>
+        <a data-spy-link="streetwear" href="#streetwear" style="padding:8px 15px;border-radius:9999px;font-size:13.5px;font-weight:500;color:#9A9A95;transition:color .25s, background .25s;">Street Wear</a>
+        <a data-spy-link="personalizar" href="#personalizar" style="padding:8px 15px;border-radius:9999px;font-size:13.5px;font-weight:500;color:#9A9A95;transition:color .25s, background .25s;">Personalizar</a>
+        <a data-spy-link="murales" href="#murales" style="padding:8px 15px;border-radius:9999px;font-size:13.5px;font-weight:500;color:#9A9A95;transition:color .25s, background .25s;">Murales</a>
+        <a data-spy-link="portfolio" href="#portfolio" style="padding:8px 15px;border-radius:9999px;font-size:13.5px;font-weight:500;color:#9A9A95;transition:color .25s, background .25s;">Portfolio</a>
+      </div>
+
+      <div style="flex:none;display:flex;align-items:center;gap:10px;">
+        <a href="https://sarkpew1.com/collections/all" target="_blank" rel="noopener" style="display:none;align-items:center;gap:8px;padding:11px 20px;border-radius:9999px;background:#F5F4F0;color:#0A0F2E;font-size:13.5px;font-weight:600;letter-spacing:0.01em;box-shadow:0 8px 24px rgba(0,0,0,0.35);" data-shop-btn>Tienda</a>
+        <a href="https://sarkpew1.com/cart" target="_blank" rel="noopener" aria-label="Carrito" style="position:relative;flex:none;width:48px;height:48px;border-radius:9999px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.12);box-shadow:inset 0 1px 1px rgba(255,255,255,0.16), 0 8px 24px rgba(0,0,0,0.4);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5F4F0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"></circle><circle cx="19" cy="21" r="1"></circle><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path></svg>
+        </a>
+        <button data-burger onClick="{{ toggleMenu }}" aria-label="Menú" style="flex:none;width:48px;height:48px;border-radius:9999px;display:none;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.12);cursor:pointer;color:#F5F4F0;box-shadow:inset 0 1px 1px rgba(255,255,255,0.16);">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><line x1="3" y1="7" x2="21" y2="7"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="17" x2="21" y2="17"></line></svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ============ MOBILE MENU ============ -->
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeMenu }}" style="position:fixed;inset:0;z-index:49;background:rgba(5,6,10,0.6);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:flex;align-items:flex-start;justify-content:center;padding-top:88px;">
+        <div style="width:min(92vw,420px);padding:14px;border-radius:28px;background:rgba(12,14,30,0.72);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.12);box-shadow:inset 0 1px 1px rgba(255,255,255,0.14), 0 30px 80px rgba(0,0,0,0.6);display:flex;flex-direction:column;gap:4px;">
+          <a href="#inicio" onClick="{{ closeMenu }}" style="padding:16px 18px;border-radius:18px;font-size:20px;font-family:'Instrument Serif',serif;font-style:italic;color:#F5F4F0;">Inicio</a>
+          <a href="#arte" onClick="{{ closeMenu }}" style="padding:16px 18px;border-radius:18px;font-size:20px;font-family:'Instrument Serif',serif;font-style:italic;color:#F5F4F0;">Arte</a>
+          <a href="#streetwear" onClick="{{ closeMenu }}" style="padding:16px 18px;border-radius:18px;font-size:20px;font-family:'Instrument Serif',serif;font-style:italic;color:#F5F4F0;">Street Wear</a>
+          <a href="#personalizar" onClick="{{ closeMenu }}" style="padding:16px 18px;border-radius:18px;font-size:20px;font-family:'Instrument Serif',serif;font-style:italic;color:#F5F4F0;">Personalizar</a>
+          <a href="#murales" onClick="{{ closeMenu }}" style="padding:16px 18px;border-radius:18px;font-size:20px;font-family:'Instrument Serif',serif;font-style:italic;color:#F5F4F0;">Murales</a>
+          <a href="#portfolio" onClick="{{ closeMenu }}" style="padding:16px 18px;border-radius:18px;font-size:20px;font-family:'Instrument Serif',serif;font-style:italic;color:#F5F4F0;">Portfolio</a>
+          <a href="https://sarkpew1.com/collections/all" target="_blank" rel="noopener" onClick="{{ closeMenu }}" style="margin-top:8px;text-align:center;padding:16px;border-radius:9999px;background:#FF7A00;color:#0A0F2E;font-weight:700;letter-spacing:0.02em;">Ir a la Tienda</a>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- ============ 1 · HERO PEW1 ============ -->
+    <header id="inicio" style="scroll-margin-top:90px;min-height:100vh;display:flex;flex-direction:column;justify-content:center;max-width:1180px;margin:0 auto;padding:140px clamp(20px,5vw,40px) 80px;">
+      <div data-hero-badge style="align-self:flex-start;display:flex;align-items:center;gap:10px;padding:7px 7px 7px 16px;border-radius:9999px;background:rgba(255,255,255,0.04);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.12);box-shadow:inset 0 1px 1px rgba(255,255,255,0.14);font-size:13px;color:#C7C7C2;letter-spacing:0.02em;">
+        <span style="padding:4px 11px;border-radius:9999px;background:#F5F4F0;color:#0A0F2E;font-weight:700;font-size:11px;letter-spacing:0.06em;">NUEVO</span>
+        Arte que transforma · Hecho a pedido
+      </div>
+
+      <h1 style="margin:32px 0 0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#F5F4F0;line-height:0.86;letter-spacing:-0.01em;font-size:clamp(2.9rem,8.6vw,7rem);max-width:14ch;">
+        <span data-word style="display:inline-block;">El</span> <span data-word style="display:inline-block;">ser</span> <span data-word style="display:inline-block;">humano</span> <span data-word style="display:inline-block;">y</span> <span data-word style="display:inline-block;color:#FF7A00;">lo&nbsp;salvaje,</span> <span data-word style="display:inline-block;">una</span> <span data-word style="display:inline-block;">sola</span> <span data-word style="display:inline-block;">imagen.</span>
+      </h1>
+
+      <p data-hero-sub style="margin:30px 0 0;max-width:54ch;font-size:clamp(16px,2vw,19px);line-height:1.65;font-weight:300;color:#C7C7C2;">
+        Mi obra explora la relación entre el ser humano y el mundo animal a través de composiciones que los integran en una sola imagen.
+        <span style="color:#9A9A95;font-style:italic;font-family:'Instrument Serif',serif;font-size:1.15em;">— Nicolas Sark Pew1</span>
+      </p>
+
+      <div data-hero-cta style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin-top:40px;">
+        <a href="#arte" style="display:inline-flex;align-items:center;gap:12px;padding:17px 26px;border-radius:9999px;background:rgba(255,255,255,0.07);-webkit-backdrop-filter:blur(28px);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,0.16);box-shadow:inset 0 1px 1px rgba(255,255,255,0.2), 0 14px 44px rgba(0,0,0,0.4);color:#F5F4F0;font-weight:600;font-size:16px;">
+          Obras originales
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF7A00" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
+        </a>
+        <a href="https://sarkpew1.com/collections/all" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;padding:17px 20px;color:#C7C7C2;font-weight:500;font-size:16px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="#FF7A00" stroke="none"><polygon points="6 4 20 12 6 20 6 4"></polygon></svg>
+          Ver shop
+        </a>
+      </div>
+
+      <div data-hero-stats style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:54px;max-width:620px;">
+        <div style="padding:22px 20px;border-radius:20px;background:rgba(255,255,255,0.035);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12);">
+          <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:34px;color:#F5F4F0;line-height:1;">4</div>
+          <div style="margin-top:8px;font-size:12.5px;letter-spacing:0.04em;color:#9A9A95;">Mundos · Cuervo, Casa, Felino, Nido</div>
+        </div>
+        <div style="padding:22px 20px;border-radius:20px;background:rgba(255,255,255,0.035);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12);">
+          <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:34px;color:#F5F4F0;line-height:1;">Edición</div>
+          <div style="margin-top:8px;font-size:12.5px;letter-spacing:0.04em;color:#9A9A95;">Limitada · Piezas únicas firmadas</div>
+        </div>
+        <div style="padding:22px 20px;border-radius:20px;background:rgba(255,255,255,0.035);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12);">
+          <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:34px;color:#F5F4F0;line-height:1;">Chile</div>
+          <div style="margin-top:8px;font-size:12.5px;letter-spacing:0.04em;color:#9A9A95;">Hecho a mano · Confección nacional</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ 2 · OBRAS ORIGINALES ============ -->
+    <section id="arte" style="scroll-margin-top:80px;max-width:1180px;margin:0 auto;padding:clamp(70px,11vh,140px) clamp(20px,5vw,40px);">
+      <div data-reveal style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:48px;">
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;color:#9A9A95;"><span style="color:#FF7A00;">//</span> Piezas únicas</div>
+          <h2 style="margin:16px 0 0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#F5F4F0;line-height:0.92;font-size:clamp(2.4rem,6vw,4.6rem);">Obras originales</h2>
+          <p style="margin:18px 0 0;max-width:48ch;font-size:16.5px;line-height:1.6;font-weight:300;color:#C7C7C2;">Óleo y aerosol sobre tela. Cada pieza integra el rostro humano con un animal — una sola imagen, una sola alma. Únicas, firmadas, irrepetibles.</p>
+        </div>
+        <a href="https://sarkpew1.com/collections/frontpage" target="_blank" rel="noopener" style="flex:none;display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:9999px;background:rgba(255,255,255,0.05);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.12);color:#F5F4F0;font-weight:500;font-size:14.5px;">Ver todo<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF7A00" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;">
+        <!-- card -->
+        <a data-reveal href="https://sarkpew1.com/collections/frontpage" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border-radius:24px;overflow:hidden;background:rgba(255,255,255,0.035);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12), 0 20px 50px rgba(0,0,0,0.35);">
+          <div style="position:relative;aspect-ratio:4/5;overflow:hidden;">
+            <img src="assets/work/sombras.jpg" alt="Sombras y Vuelo" style="width:100%;height:100%;object-fit:cover;">
+            <span style="position:absolute;top:14px;left:14px;padding:6px 12px;border-radius:9999px;background:rgba(5,6,10,0.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.16);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#F5F4F0;">Pintura original</span>
+          </div>
+          <div style="padding:22px 22px 24px;">
+            <h3 style="margin:0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:26px;color:#F5F4F0;line-height:1;">Sombras y Vuelo</h3>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;">
+              <span style="font-size:18px;font-weight:600;color:#F5F4F0;letter-spacing:0.01em;">$1.200.000</span>
+              <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:500;color:#FF7A00;">Ver obra<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span>
+            </div>
+          </div>
+        </a>
+        <!-- card -->
+        <a data-reveal href="https://sarkpew1.com/collections/frontpage" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border-radius:24px;overflow:hidden;background:rgba(255,255,255,0.035);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12), 0 20px 50px rgba(0,0,0,0.35);">
+          <div style="position:relative;aspect-ratio:4/5;overflow:hidden;">
+            <img src="assets/work/rugido.jpg" alt="Rugido" style="width:100%;height:100%;object-fit:cover;">
+            <span style="position:absolute;top:14px;left:14px;padding:6px 12px;border-radius:9999px;background:rgba(5,6,10,0.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.16);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#F5F4F0;">Pintura original</span>
+          </div>
+          <div style="padding:22px 22px 24px;">
+            <h3 style="margin:0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:26px;color:#F5F4F0;line-height:1;">Rugido</h3>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;">
+              <span style="font-size:18px;font-weight:600;color:#F5F4F0;letter-spacing:0.01em;">$1.200.000</span>
+              <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:500;color:#FF7A00;">Ver obra<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span>
+            </div>
+          </div>
+        </a>
+        <!-- card -->
+        <a data-reveal href="https://sarkpew1.com/collections/frontpage" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border-radius:24px;overflow:hidden;background:rgba(255,255,255,0.035);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12), 0 20px 50px rgba(0,0,0,0.35);">
+          <div style="position:relative;aspect-ratio:4/5;overflow:hidden;">
+            <img src="assets/work/sagrado.jpg" alt="Sagrado Prohibido" style="width:100%;height:100%;object-fit:cover;">
+            <span style="position:absolute;top:14px;left:14px;padding:6px 12px;border-radius:9999px;background:rgba(5,6,10,0.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.16);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#F5F4F0;">Pintura original</span>
+          </div>
+          <div style="padding:22px 22px 24px;">
+            <h3 style="margin:0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:26px;color:#F5F4F0;line-height:1;">Sagrado Prohibido</h3>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;">
+              <span style="font-size:18px;font-weight:600;color:#F5F4F0;letter-spacing:0.01em;">$1.200.000</span>
+              <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:500;color:#FF7A00;">Ver obra<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ 3 · FINE ART PRINT ============ -->
+    <section style="max-width:1180px;margin:0 auto;padding:clamp(40px,7vh,90px) clamp(20px,5vw,40px);">
+      <div data-reveal style="display:grid;grid-template-columns:1fr;gap:28px;align-items:center;border-radius:28px;overflow:hidden;background:rgba(255,255,255,0.035);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12), 0 24px 60px rgba(0,0,0,0.4);" data-split>
+        <div style="position:relative;min-height:340px;overflow:hidden;" data-split-img>
+          <img src="assets/work/life-prints.jpg" alt="Fine Art Prints PEW1" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+        </div>
+        <div style="padding:clamp(28px,4vw,52px);" data-split-text>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;color:#9A9A95;"><span style="color:#FF7A00;">//</span> Prints</div>
+          <h2 style="margin:14px 0 0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#F5F4F0;line-height:0.94;font-size:clamp(2.2rem,5vw,3.8rem);">Fine Art Print</h2>
+          <p style="margin:18px 0 0;max-width:46ch;font-size:16.5px;line-height:1.65;font-weight:300;color:#C7C7C2;">Réplicas impresas de las obras originales de Nicolas Sark, en edición limitada. Papel de algodón, color fiel, firmadas y numeradas. La obra, a tu alcance.</p>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-top:30px;">
+            <span style="font-size:24px;font-weight:600;color:#F5F4F0;">Desde $15.000</span>
+            <a href="https://sarkpew1.com/collections/serie-print-01-copia" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;padding:15px 24px;border-radius:9999px;background:#FF7A00;color:#0A0F2E;font-weight:700;font-size:15px;letter-spacing:0.01em;box-shadow:0 12px 36px rgba(255,122,0,0.28);">Ver prints<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0F2E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 4 · POSTERS / COLECCIONABLES + STICKERS & OBJETOS ============ -->
+    <section style="max-width:1180px;margin:0 auto;padding:clamp(70px,11vh,140px) clamp(20px,5vw,40px);">
+      <div data-reveal style="margin-bottom:46px;">
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;color:#9A9A95;"><span style="color:#FF7A00;">//</span> Coleccionables</div>
+        <h2 style="margin:16px 0 0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#F5F4F0;line-height:0.92;font-size:clamp(2.4rem,6vw,4.6rem);">Posters, stickers &amp; objetos</h2>
+        <p style="margin:18px 0 0;max-width:50ch;font-size:16.5px;line-height:1.6;font-weight:300;color:#C7C7C2;">Pedazos de la obra para llevar a todas partes. Tirajes accesibles, stickers de culto y objetos para el día a día.</p>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;">
+        <a data-reveal href="https://sarkpew1.com/collections/poster" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border-radius:24px;overflow:hidden;background:rgba(255,255,255,0.035);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12), 0 20px 50px rgba(0,0,0,0.35);">
+          <div style="position:relative;aspect-ratio:1/1;overflow:hidden;background:#0b0c12;">
+            <img src="assets/work/prohibido.jpg" alt="Poster PEW1" style="width:100%;height:100%;object-fit:cover;">
+            <span style="position:absolute;top:14px;left:14px;padding:6px 12px;border-radius:9999px;background:rgba(5,6,10,0.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.16);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#F5F4F0;">Posters</span>
+          </div>
+          <div style="padding:22px 22px 24px;">
+            <h3 style="margin:0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:24px;color:#F5F4F0;">Posters de obra</h3>
+            <p style="margin:8px 0 0;font-size:13.5px;color:#9A9A95;line-height:1.5;">Impresión de calidad galería, listos para enmarcar.</p>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;">
+              <span style="font-size:18px;font-weight:600;color:#F5F4F0;">Desde $10.000</span>
+              <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:500;color:#FF7A00;">Ver<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span>
+            </div>
+          </div>
+        </a>
+
+        <a data-reveal data-reveal-delay="90" href="https://sarkpew1.com/collections/accesorios" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border-radius:24px;overflow:hidden;background:rgba(255,255,255,0.035);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12), 0 20px 50px rgba(0,0,0,0.35);">
+          <div style="position:relative;aspect-ratio:1/1;overflow:hidden;background:#0b0c12;">
+            <img src="assets/work/stickers-graffiti.png" alt="Stickers PEW1" style="width:100%;height:100%;object-fit:cover;">
+            <span style="position:absolute;top:14px;left:14px;padding:6px 12px;border-radius:9999px;background:rgba(5,6,10,0.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.16);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#F5F4F0;">Stickers</span>
+          </div>
+          <div style="padding:22px 22px 24px;">
+            <h3 style="margin:0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:24px;color:#F5F4F0;">Set de stickers</h3>
+            <p style="margin:8px 0 0;font-size:13.5px;color:#9A9A95;line-height:1.5;">5 unidades coleccionables, troquel de culto.</p>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;">
+              <span style="font-size:18px;font-weight:600;color:#F5F4F0;">$1.500 — Rifa PEW1</span>
+              <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:500;color:#FF7A00;">Ver<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span>
+            </div>
+          </div>
+        </a>
+
+        <a data-reveal data-reveal-delay="180" href="https://sarkpew1.com/collections/accesorios" target="_blank" rel="noopener" style="display:flex;flex-direction:column;border-radius:24px;overflow:hidden;background:rgba(255,255,255,0.035);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12), 0 20px 50px rgba(0,0,0,0.35);">
+          <div style="position:relative;aspect-ratio:1/1;overflow:hidden;background:#f4f4f2;">
+            <img src="assets/work/tazones.jpg" alt="Objetos PEW1" style="width:100%;height:100%;object-fit:cover;">
+            <span style="position:absolute;top:14px;left:14px;padding:6px 12px;border-radius:9999px;background:rgba(5,6,10,0.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.16);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#F5F4F0;">Objetos</span>
+          </div>
+          <div style="padding:22px 22px 24px;">
+            <h3 style="margin:0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:24px;color:#F5F4F0;">Tazones &amp; objetos</h3>
+            <p style="margin:8px 0 0;font-size:13.5px;color:#9A9A95;line-height:1.5;">Mistery Box, set de postales y más.</p>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;">
+              <span style="font-size:18px;font-weight:600;color:#F5F4F0;">Mistery Box</span>
+              <span style="display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:500;color:#FF7A00;">Ver<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============ 5 · PEW1 STREET WEAR ============ -->
+    <section id="streetwear" style="scroll-margin-top:80px;max-width:1180px;margin:0 auto;padding:clamp(40px,7vh,90px) clamp(20px,5vw,40px);">
+      <div data-reveal style="text-align:center;margin-bottom:54px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;color:#9A9A95;"><span style="color:#FF7A00;">//</span> PEW1 Street Wear</div>
+        <h2 style="margin:16px 0 0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#F5F4F0;line-height:0.92;font-size:clamp(2.4rem,6vw,4.6rem);">Dos identidades, un origen</h2>
+        <p style="margin:18px auto 0;max-width:50ch;font-size:16.5px;line-height:1.6;font-weight:300;color:#C7C7C2;">Serigrafía a mano sobre algodón pesado 320g. Dos líneas con alma propia: el culto y la calle.</p>
+      </div>
+
+      <!-- SARK sub-hero -->
+      <div data-reveal style="position:relative;display:grid;grid-template-columns:1fr;border-radius:28px;overflow:hidden;background:linear-gradient(160deg, #08080a 0%, #121214 100%);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.10), 0 24px 60px rgba(0,0,0,0.5);" data-split>
+        <div style="position:relative;min-height:360px;overflow:hidden;background:#0a0a0c;" data-split-img>
+          <img src="assets/mockup-hoodie.png" alt="Hoodie SARK" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;filter:grayscale(0.15) contrast(1.05);">
+          <div style="position:absolute;inset:0;background:radial-gradient(80% 80% at 70% 30%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.5) 100%);"></div>
+        </div>
+        <div style="padding:clamp(30px,4vw,56px);">
+          <div style="font-size:11.5px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:#9A9A95;">// Colección de artista</div>
+          <div style="font-family:'Pirata One',serif;font-size:clamp(3.4rem,9vw,6rem);line-height:0.82;color:#F5F4F0;letter-spacing:0.02em;margin:14px 0 0;text-shadow:0 4px 30px rgba(0,0,0,0.6);">SARK</div>
+          <p style="margin:18px 0 0;max-width:42ch;font-size:16px;line-height:1.6;font-weight:300;color:#C7C7C2;">Serigrafía de culto. Cuervo, Casa, Felino y Nido — cuatro tintas, una identidad. Diseños originales de Nicolas Sark sobre algodón pesado 320g.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;margin-top:24px;">
+            <span style="padding:8px 15px;border-radius:9999px;border:1px solid rgba(255,255,255,0.16);font-size:12.5px;color:#C7C7C2;letter-spacing:0.02em;">Cuervo</span>
+            <span style="padding:8px 15px;border-radius:9999px;border:1px solid rgba(255,255,255,0.16);font-size:12.5px;color:#C7C7C2;letter-spacing:0.02em;">Casa</span>
+            <span style="padding:8px 15px;border-radius:9999px;border:1px solid rgba(255,255,255,0.16);font-size:12.5px;color:#C7C7C2;letter-spacing:0.02em;">Felino</span>
+            <span style="padding:8px 15px;border-radius:9999px;border:1px solid rgba(255,255,255,0.16);font-size:12.5px;color:#C7C7C2;letter-spacing:0.02em;">Nido</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:28px;">
+            <a href="https://sarkpew1.com/collections/all" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;padding:15px 24px;border-radius:9999px;background:#F5F4F0;color:#0A0F2E;font-weight:600;font-size:15px;">Ver SARK<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0F2E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
+            <a href="#personalizar" style="display:inline-flex;align-items:center;gap:8px;padding:15px 22px;border-radius:9999px;border:1px solid rgba(255,255,255,0.18);color:#F5F4F0;font-weight:500;font-size:15px;">Personalizar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SIZ sub-hero -->
+      <div data-reveal style="position:relative;display:grid;grid-template-columns:1fr;border-radius:28px;overflow:hidden;margin-top:24px;background:linear-gradient(160deg, #1a0e06 0%, #0d0a08 100%);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.10), 0 24px 60px rgba(0,0,0,0.5);" data-split data-split-rev>
+        <div style="padding:clamp(30px,4vw,56px);order:2;" data-split-text>
+          <div style="font-size:11.5px;font-weight:600;letter-spacing:0.24em;text-transform:uppercase;color:#9A9A95;">// Línea graffiti</div>
+          <div style="font-family:'Anton',sans-serif;font-size:clamp(3.6rem,9.5vw,6.4rem);line-height:0.78;color:#F5F4F0;letter-spacing:0.01em;margin:14px 0 0;text-transform:uppercase;">SIZ</div>
+          <p style="margin:18px 0 0;max-width:42ch;font-size:16px;line-height:1.6;font-weight:300;color:#C7C7C2;">Calle, tinta y graffiti. Hoodies, tees y shorts de edición — Mano Graffiti · To Legal. Street wear urbano de PEW1.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;margin-top:24px;">
+            <span style="padding:8px 15px;border-radius:9999px;background:rgba(255,122,0,0.12);border:1px solid rgba(255,122,0,0.4);font-size:12.5px;color:#FFB672;">Hoodie Mano Graffiti · $34.990</span>
+            <span style="padding:8px 15px;border-radius:9999px;border:1px solid rgba(255,255,255,0.16);font-size:12.5px;color:#C7C7C2;">T-Shirt · $16.990</span>
+            <span style="padding:8px 15px;border-radius:9999px;border:1px solid rgba(255,255,255,0.16);font-size:12.5px;color:#C7C7C2;">Short SIZ · $25.000</span>
+          </div>
+          <div style="margin-top:28px;">
+            <a href="https://sarkpew1.com/collections/siz-street-wear" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;padding:15px 24px;border-radius:9999px;background:#FF7A00;color:#0A0F2E;font-weight:700;font-size:15px;box-shadow:0 12px 36px rgba(255,122,0,0.28);">Ver SIZ<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0F2E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
+          </div>
+        </div>
+        <div style="position:relative;min-height:360px;overflow:hidden;order:1;" data-split-img>
+          <img src="assets/work/siz-streetwear.jpg" alt="SIZ street wear" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 6 · PERSONALIZADOR ============ -->
+    <section id="personalizar" style="scroll-margin-top:80px;max-width:1180px;margin:0 auto;padding:clamp(70px,11vh,140px) clamp(20px,5vw,40px);">
+      <div data-reveal style="display:grid;grid-template-columns:1fr;gap:40px;align-items:center;" data-split>
+        <div data-split-text>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;color:#9A9A95;"><span style="color:#FF7A00;">//</span> Personalizador</div>
+          <h2 style="margin:16px 0 0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#F5F4F0;line-height:0.88;font-size:clamp(2.8rem,7vw,5.4rem);">Confecciona la tuya.</h2>
+          <p style="margin:22px 0 0;max-width:46ch;font-size:17px;line-height:1.65;font-weight:300;color:#C7C7C2;">Tú eliges corte, diseño, color y talla. Serigrafía a mano sobre algodón pesado 320g. Confección nacional a pedido · entrega 10–15 días.</p>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:32px;max-width:420px;">
+            <div style="text-align:center;padding:16px 8px;border-radius:16px;background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.10);"><div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:26px;color:#F5F4F0;line-height:1;">4</div><div style="font-size:11px;color:#9A9A95;margin-top:5px;">diseños</div></div>
+            <div style="text-align:center;padding:16px 8px;border-radius:16px;background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.10);"><div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:26px;color:#F5F4F0;line-height:1;">3</div><div style="font-size:11px;color:#9A9A95;margin-top:5px;">cortes</div></div>
+            <div style="text-align:center;padding:16px 8px;border-radius:16px;background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.10);"><div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:26px;color:#F5F4F0;line-height:1;">6</div><div style="font-size:11px;color:#9A9A95;margin-top:5px;">tallas</div></div>
+            <div style="text-align:center;padding:16px 8px;border-radius:16px;background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.10);"><div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:26px;color:#F5F4F0;line-height:1;">320</div><div style="font-size:11px;color:#9A9A95;margin-top:5px;">g/m²</div></div>
+          </div>
+          <a href="#personalizador-app" style="display:inline-flex;align-items:center;gap:12px;margin-top:34px;padding:18px 28px;border-radius:9999px;background:#FF7A00;color:#0A0F2E;font-weight:700;font-size:16.5px;letter-spacing:0.01em;box-shadow:0 16px 44px rgba(255,122,0,0.3);">Personalizar mi prenda<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0A0F2E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
+        </div>
+
+        <div data-split-img style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <div data-hoodie style="cursor:grab;width:min(82%,400px);will-change:transform;filter:drop-shadow(0 40px 60px rgba(0,0,0,0.55));">
+            <img src="assets/mockup-hoodie.png" alt="Hoodie personalizable — arrastra para rotar" draggable="false" style="width:100%;pointer-events:none;user-select:none;border-radius:18px;">
+          </div>
+          <div style="margin-top:18px;display:inline-flex;align-items:center;gap:8px;font-size:12.5px;color:#9A9A95;letter-spacing:0.02em;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FF7A00" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11V6a2 2 0 0 1 4 0v5"></path><path d="M13 7a2 2 0 0 1 4 0v6"></path><path d="M17 9a2 2 0 0 1 4 0v6a6 6 0 0 1-6 6h-2a8 8 0 0 1-8-8 2 2 0 0 1 4 0"></path></svg>
+            Arrastra la prenda para girarla
+          </div>
+        </div>
+      </div>
+
+      <!-- iframe embed -->
+      <div id="personalizador-app" data-reveal style="scroll-margin-top:80px;margin-top:56px;border-radius:28px;overflow:hidden;background:rgba(255,255,255,0.035);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.12);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12), 0 30px 80px rgba(0,0,0,0.5);">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 22px;border-bottom:1px solid rgba(255,255,255,0.08);">
+          <div style="display:flex;align-items:center;gap:11px;">
+            <span style="display:inline-flex;gap:5px;"><span style="width:9px;height:9px;border-radius:9999px;background:#FF7A00;"></span><span style="width:9px;height:9px;border-radius:9999px;background:rgba(255,255,255,0.2);"></span><span style="width:9px;height:9px;border-radius:9999px;background:rgba(255,255,255,0.2);"></span></span>
+            <span style="font-size:13px;font-weight:600;letter-spacing:0.04em;color:#C7C7C2;">Personalizador PEW1 · en vivo</span>
+          </div>
+          <a href="https://pew1sark.github.io/PEW1-PERSONALIZADOR/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:#FF7A00;">Abrir en pantalla completa<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
+        </div>
+        <div style="position:relative;background:#0a0a0c;">
+          <iframe src="https://pew1sark.github.io/PEW1-PERSONALIZADOR/" loading="lazy" title="Personalizador PEW1" style="width:100%;height:min(92vh,900px);border:0;display:block;"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 7 · MURALES & OBRAS A PEDIDO (COTIZADOR) ============ -->
+    <section id="murales" data-cotizador style="scroll-margin-top:80px;max-width:1180px;margin:0 auto;padding:clamp(40px,7vh,90px) clamp(20px,5vw,40px);">
+      <div data-reveal style="margin-bottom:46px;">
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;color:#9A9A95;"><span style="color:#FF7A00;">//</span> A pedido</div>
+        <h2 style="margin:16px 0 0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#F5F4F0;line-height:0.92;font-size:clamp(2.4rem,6vw,4.6rem);">Murales &amp; obras a pedido</h2>
+        <p style="margin:18px 0 0;max-width:52ch;font-size:16.5px;line-height:1.6;font-weight:300;color:#C7C7C2;">Transforma tu espacio. Calcula un valor referencial y envíame tu idea — el presupuesto final lo confirmamos juntos.</p>
+      </div>
+
+      <div data-reveal style="display:grid;grid-template-columns:1fr;gap:22px;" data-cot-grid>
+        <!-- calculator -->
+        <div style="padding:clamp(24px,3.5vw,38px);border-radius:26px;background:rgba(255,255,255,0.04);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12), 0 20px 50px rgba(0,0,0,0.35);">
+          <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#9A9A95;">Calculadora referencial · CLP</div>
+
+          <div style="margin-top:22px;font-size:13px;color:#9A9A95;margin-bottom:9px;">Servicio</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <button data-cot-servicio-opt="mural" style="padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#C7C7C2;font-weight:500;font-size:14px;cursor:pointer;transition:.2s;">Mural artístico</button>
+            <button data-cot-servicio-opt="tela" style="padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#C7C7C2;font-weight:500;font-size:14px;cursor:pointer;transition:.2s;">Pintura en tela</button>
+          </div>
+
+          <div style="margin-top:22px;font-size:13px;color:#9A9A95;margin-bottom:9px;">Complejidad</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+            <button data-cot-complejidad-opt="basico" style="padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#C7C7C2;font-weight:500;font-size:14px;cursor:pointer;transition:.2s;text-align:left;">Básico / colores planos<br><span style="font-size:11.5px;color:#9A9A95;">$30.000 – $50.000 / m²</span></button>
+            <button data-cot-complejidad-opt="complejo" style="padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:#C7C7C2;font-weight:500;font-size:14px;cursor:pointer;transition:.2s;text-align:left;">Complejo / realismo<br><span style="font-size:11.5px;color:#9A9A95;">$50.000 – $150.000 / m²</span></button>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr;gap:20px;margin-top:26px;">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;color:#C7C7C2;margin-bottom:10px;"><span>Ancho</span><span data-cot-ancho-val style="color:#FF7A00;font-weight:600;">200 cm</span></div>
+              <input type="range" data-cot-ancho min="20" max="800" step="10" value="200" style="width:100%;accent-color:#FF7A00;cursor:pointer;">
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;color:#C7C7C2;margin-bottom:10px;"><span>Alto</span><span data-cot-alto-val style="color:#FF7A00;font-weight:600;">150 cm</span></div>
+              <input type="range" data-cot-alto min="20" max="600" step="10" value="150" style="width:100%;accent-color:#FF7A00;cursor:pointer;">
+            </div>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.10);">
+            <div>
+              <div style="font-size:12px;color:#9A9A95;letter-spacing:0.04em;">Superficie · <span data-cot-area style="color:#C7C7C2;">3.00 m²</span></div>
+              <div style="font-size:12px;color:#9A9A95;letter-spacing:0.04em;margin-top:2px;">Estimado referencial</div>
+            </div>
+            <div data-cot-price style="font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(1.6rem,3.4vw,2.4rem);color:#F5F4F0;text-align:right;">$90.000 – $150.000</div>
+          </div>
+        </div>
+
+        <!-- form -->
+        <div style="padding:clamp(24px,3.5vw,38px);border-radius:26px;background:rgba(255,255,255,0.04);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12), 0 20px 50px rgba(0,0,0,0.35);">
+          <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#9A9A95;margin-bottom:18px;">Cuéntame tu idea</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:13px;">
+            <input name="nombre" placeholder="Nombre" style="grid-column:span 2;padding:14px 16px;border-radius:14px;background:rgba(5,6,10,0.4);border:1px solid rgba(255,255,255,0.12);color:#F5F4F0;font-size:14.5px;">
+            <input name="email" type="email" placeholder="Email" style="padding:14px 16px;border-radius:14px;background:rgba(5,6,10,0.4);border:1px solid rgba(255,255,255,0.12);color:#F5F4F0;font-size:14.5px;">
+            <input name="ciudad" placeholder="Ciudad / País" style="padding:14px 16px;border-radius:14px;background:rgba(5,6,10,0.4);border:1px solid rgba(255,255,255,0.12);color:#F5F4F0;font-size:14.5px;">
+            <input name="superficie" placeholder="Superficie (cemento / madera / metal)" style="padding:14px 16px;border-radius:14px;background:rgba(5,6,10,0.4);border:1px solid rgba(255,255,255,0.12);color:#F5F4F0;font-size:14.5px;">
+            <input name="fecha" placeholder="Fecha estimada" style="padding:14px 16px;border-radius:14px;background:rgba(5,6,10,0.4);border:1px solid rgba(255,255,255,0.12);color:#F5F4F0;font-size:14.5px;">
+            <input name="presupuesto" placeholder="Presupuesto aprox." style="grid-column:span 2;padding:14px 16px;border-radius:14px;background:rgba(5,6,10,0.4);border:1px solid rgba(255,255,255,0.12);color:#F5F4F0;font-size:14.5px;">
+            <textarea name="descripcion" rows="3" placeholder="Describe la idea, referencias, colores…" style="grid-column:span 2;padding:14px 16px;border-radius:14px;background:rgba(5,6,10,0.4);border:1px solid rgba(255,255,255,0.12);color:#F5F4F0;font-size:14.5px;resize:vertical;font-family:'Barlow',sans-serif;"></textarea>
+          </div>
+          <button onClick="{{ submitCotizacion }}" style="display:flex;align-items:center;justify-content:center;gap:11px;width:100%;margin-top:16px;padding:17px;border-radius:9999px;background:#FF7A00;color:#0A0F2E;font-weight:700;font-size:15.5px;border:none;cursor:pointer;box-shadow:0 14px 40px rgba(255,122,0,0.28);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#0A0F2E" stroke="none"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 0 1 8.413 3.488 11.824 11.824 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 0 0 1.518 5.26l-.999 3.648 3.748-.983z"></path></svg>
+            Enviar cotización por WhatsApp
+          </button>
+          <p style="margin:16px 0 0;font-size:12.5px;line-height:1.5;color:#9A9A95;">Valores referenciales en CLP · factor altura ×1.0. El presupuesto final lo confirma el equipo PEW1.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 8 · PORTFOLIO / EL ARTISTA ============ -->
+    <section id="portfolio" style="scroll-margin-top:80px;max-width:1180px;margin:0 auto;padding:clamp(70px,11vh,140px) clamp(20px,5vw,40px);">
+      <div data-reveal style="display:grid;grid-template-columns:1fr;gap:36px;align-items:center;border-radius:30px;overflow:hidden;background:rgba(255,255,255,0.035);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12), 0 30px 80px rgba(0,0,0,0.45);" data-split>
+        <div style="position:relative;min-height:420px;overflow:hidden;" data-split-img>
+          <img src="assets/work/life-studio.jpg" alt="Nicolas Sark Pew1 en el taller" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
+        </div>
+        <div style="padding:clamp(30px,4vw,60px);" data-split-text>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;color:#9A9A95;"><span style="color:#FF7A00;">//</span> El artista</div>
+          <h2 style="margin:16px 0 0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#F5F4F0;line-height:0.9;font-size:clamp(2.2rem,5.2vw,4rem);">Nicolas Sark Pew1</h2>
+          <p style="margin:22px 0 0;max-width:48ch;font-size:17px;line-height:1.7;font-weight:300;color:#C7C7C2;">Artista urbano. Mi trabajo integra el rostro humano y el mundo animal en una misma composición — dos naturalezas que se reconocen. Pinto a mano, con óleo y aerosol, buscando esa frontera donde lo salvaje y lo humano dejan de ser opuestos.</p>
+          <p style="margin:16px 0 0;max-width:48ch;font-size:15px;line-height:1.7;font-weight:300;color:#9A9A95;font-style:italic;font-family:'Instrument Serif',serif;">Arte que transforma. Identidad que perdura.</p>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:32px;">
+            <a href="https://sarkpew1.com/pages/portafolio" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;padding:16px 26px;border-radius:9999px;background:#F5F4F0;color:#0A0F2E;font-weight:600;font-size:15.5px;">Conoce mi trabajo<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0F2E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
+            <a href="#murales" style="display:inline-flex;align-items:center;gap:8px;padding:16px 24px;border-radius:9999px;border:1px solid rgba(255,255,255,0.18);color:#F5F4F0;font-weight:500;font-size:15.5px;">Cotizar proyecto</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 9 · RESEÑAS ============ -->
+    <section style="max-width:1180px;margin:0 auto;padding:clamp(40px,7vh,90px) clamp(20px,5vw,40px);">
+      <div data-reveal style="text-align:center;margin-bottom:46px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:0.28em;text-transform:uppercase;color:#9A9A95;"><span style="color:#FF7A00;">//</span> Reseñas</div>
+        <h2 style="margin:16px 0 0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#F5F4F0;line-height:0.92;font-size:clamp(2.2rem,5.4vw,4rem);">Lo que dicen del trabajo</h2>
+      </div>
+
+      <div data-reveal style="display:grid;grid-template-columns:1fr;gap:22px;align-items:stretch;" data-split>
+        <!-- testimonial carousel -->
+        <div style="display:flex;flex-direction:column;justify-content:space-between;min-height:280px;padding:clamp(28px,3.5vw,44px);border-radius:26px;background:rgba(255,255,255,0.04);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12), 0 20px 50px rgba(0,0,0,0.35);">
+          <div>
+            <div style="display:flex;gap:3px;color:#FF7A00;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            </div>
+            <p style="margin:22px 0 0;font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;font-size:clamp(1.4rem,2.8vw,2rem);line-height:1.35;color:#F5F4F0;">{{ rev.quote }}</p>
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:30px;">
+            <div>
+              <div style="font-size:15px;font-weight:600;color:#F5F4F0;">{{ rev.name }}</div>
+              <div style="font-size:13px;color:#9A9A95;margin-top:2px;">{{ rev.role }}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span style="font-size:13px;color:#9A9A95;letter-spacing:0.04em;">{{ reviewCounter }}</span>
+              <button onClick="{{ prevReview }}" aria-label="Anterior" style="width:42px;height:42px;border-radius:9999px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.14);color:#F5F4F0;cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+              <button onClick="{{ nextReview }}" aria-label="Siguiente" style="width:42px;height:42px;border-radius:9999px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.14);color:#F5F4F0;cursor:pointer;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- review form -->
+        <div style="padding:clamp(28px,3.5vw,44px);border-radius:26px;background:rgba(255,255,255,0.04);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.10);box-shadow:inset 0 1px 1px rgba(255,255,255,0.12), 0 20px 50px rgba(0,0,0,0.35);">
+          <form data-review-form onSubmit="{{ submitReview }}" style="display:flex;flex-direction:column;gap:13px;">
+            <div style="font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#9A9A95;margin-bottom:4px;">Comparte tu reseña</div>
+            <input required name="r-nombre" placeholder="Tu nombre" style="padding:14px 16px;border-radius:14px;background:rgba(5,6,10,0.4);border:1px solid rgba(255,255,255,0.12);color:#F5F4F0;font-size:14.5px;">
+            <input name="r-trabajo" placeholder="¿Qué trabajo adquiriste?" style="padding:14px 16px;border-radius:14px;background:rgba(5,6,10,0.4);border:1px solid rgba(255,255,255,0.12);color:#F5F4F0;font-size:14.5px;">
+            <textarea required name="r-opinion" rows="3" placeholder="Tu opinión…" style="padding:14px 16px;border-radius:14px;background:rgba(5,6,10,0.4);border:1px solid rgba(255,255,255,0.12);color:#F5F4F0;font-size:14.5px;resize:vertical;font-family:'Barlow',sans-serif;"></textarea>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;">
+              <div style="display:flex;gap:4px;color:#FF7A00;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              </div>
+              <input name="r-email" type="email" placeholder="Email (privado)" style="flex:1;min-width:160px;padding:14px 16px;border-radius:14px;background:rgba(5,6,10,0.4);border:1px solid rgba(255,255,255,0.12);color:#F5F4F0;font-size:14.5px;">
+            </div>
+            <button type="submit" style="margin-top:4px;padding:16px;border-radius:9999px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);color:#F5F4F0;font-weight:600;font-size:15px;cursor:pointer;">Enviar reseña</button>
+          </form>
+          <div data-review-ok style="display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:240px;gap:14px;">
+            <div style="width:56px;height:56px;border-radius:9999px;display:flex;align-items:center;justify-content:center;background:rgba(255,122,0,0.14);border:1px solid rgba(255,122,0,0.4);"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FF7A00" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <div style="font-family:'Instrument Serif',serif;font-style:italic;font-size:26px;color:#F5F4F0;">¡Gracias por tu reseña!</div>
+            <p style="font-size:14px;color:#9A9A95;max-width:32ch;">La revisamos y la publicamos pronto. Tu palabra mueve el trabajo.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 10 · FOOTER ============ -->
+    <footer style="margin-top:40px;border-top:1px solid rgba(255,255,255,0.08);background:rgba(5,6,10,0.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);">
+      <div style="max-width:1180px;margin:0 auto;padding:clamp(50px,8vh,90px) clamp(20px,5vw,40px) 40px;">
+        <div style="display:grid;grid-template-columns:1fr;gap:40px;" data-footer-grid>
+          <div>
+            <div style="display:flex;align-items:center;gap:14px;">
+              <img src="assets/pewi-icon-white.png" alt="PEW1" style="width:40px;height:40px;object-fit:contain;">
+              <img src="assets/pewi-wordmark-white.png" alt="PEW1" style="height:24px;object-fit:contain;opacity:0.92;">
+            </div>
+            <p style="margin:22px 0 0;max-width:36ch;font-family:'Instrument Serif',serif;font-style:italic;font-size:22px;line-height:1.35;color:#C7C7C2;">Arte que transforma.<br>Identidad que perdura.</p>
+            <p style="margin:18px 0 0;font-size:13px;color:#9A9A95;">© 2026 PEW1 — Nicolas Sark Pew1. Hecho en Chile.</p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:28px;" data-footer-links>
+            <div>
+              <div style="font-size:11.5px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#9A9A95;margin-bottom:16px;">Explora</div>
+              <div style="display:flex;flex-direction:column;gap:11px;font-size:14.5px;color:#C7C7C2;">
+                <a href="#arte" style="transition:color .2s;">Obras originales</a>
+                <a href="#streetwear" style="transition:color .2s;">Street Wear</a>
+                <a href="#personalizar" style="transition:color .2s;">Personalizar</a>
+                <a href="#murales" style="transition:color .2s;">Murales a pedido</a>
+                <a href="https://sarkpew1.com/collections/all" target="_blank" rel="noopener" style="transition:color .2s;">Tienda completa</a>
+              </div>
+            </div>
+            <div>
+              <div style="font-size:11.5px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:#9A9A95;margin-bottom:16px;">Contacto</div>
+              <div style="display:flex;flex-direction:column;gap:11px;font-size:14.5px;color:#C7C7C2;">
+                <a href="https://instagram.com/sarkpew1" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:9px;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line></svg>@sarkpew1</a>
+                <a href="https://youtube.com/@sarkpew1" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:9px;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="currentColor"></polygon></svg>@sarkpew1</a>
+                <a href="https://wa.me/56935733021" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:9px;"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 0 1-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 0 1 8.413 3.488 11.824 11.824 0 0 1 3.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 0 1-5.688-1.448L.057 24z"></path></svg>+56 9 3573 3021</a>
+                <a href="mailto:hola@sarkpew1.com" style="display:inline-flex;align-items:center;gap:9px;"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><polyline points="22 6 12 13 2 6"></polyline></svg>hola@sarkpew1.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.06);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;font-size:12.5px;color:#6e6e69;">
+          <span>PEW1 · Front visual — los productos, el carrito y el checkout viven en Shopify.</span>
+          <a href="https://sarkpew1.com" target="_blank" rel="noopener" style="color:#9A9A95;">sarkpew1.com ↗</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;}}">
+class Component extends DCLogic {
+  state = { menuOpen: false, reviewIdx: 0 };
+
+  /* =========================================================
+     SHOPIFY INTEGRATION
+     ACTIVE = Option 3 (zero-risk direct links). Shopify backend
+     stays intact, so no product or data is ever lost. Every CTA
+     routes to the real store / collection / product / cart URL.
+
+     To upgrade to Option 1 (Storefront API, live stock + cart):
+       1. Shopify Admin → Apps → Develop apps → Storefront API.
+       2. Paste the public token below and set mode = 'storefront'.
+       3. Implement fetchProducts()/addToCart() with GraphQL and
+          redirect to checkout.webUrl. Buttons already carry handles.
+     Option 2 (Buy Button SDK) is also possible per product.
+     ========================================================= */
+  SHOPIFY = { domain: 'sarkpew1.com', mode: 'links', token: '<<PEGAR_TOKEN>>' };
+
+  reviews = [
+    { quote: 'Encargué un retrato y lo que llegó superó todo. La textura, la mirada del animal y la mía fundidas — es la pieza más mirada de mi casa.', name: 'Camila R.', role: 'Coleccionista · Santiago' },
+    { quote: 'El mural transformó la entrada del local por completo. Nicolas entendió la idea al instante y la llevó más lejos de lo que imaginé.', name: 'Andrés M.', role: 'Café Raíz · Valparaíso' },
+    { quote: 'El hoodie SARK es brutal. Serigrafía impecable, algodón pesado de verdad. Se siente una pieza de arte, no una polera más.', name: 'Fran T.', role: 'Cliente street wear' },
+    { quote: 'Compré un fine art print y la fidelidad de color es increíble. Llegó protegido, firmado y numerado. Volveré por el original.', name: 'Daniela P.', role: 'Diseñadora · Concepción' },
+  ];
+
+  componentDidMount() {
+    this.reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    this._observers = [];
+    this.initFluid();
+    this.initResponsiveNav();
+    this.heroIntro();
+    this.initReveals();
+    this.initScrollSpy();
+    this.initCotizador();
+    this.initHoodieDrag();
+    this._reviewTimer = setInterval(() => {
+      if (document.hidden) return;
+      this.setState(s => ({ reviewIdx: (s.reviewIdx + 1) % this.reviews.length }));
+    }, 6500);
+    this._onResize = () => this.initResponsiveNav();
+    window.addEventListener('resize', this._onResize);
+  }
+
+  componentWillUnmount() {
+    if (this.fluid) this.fluid.destroy();
+    if (this._reviewTimer) clearInterval(this._reviewTimer);
+    if (this._observers) this._observers.forEach(o => o.disconnect());
+    if (this._onResize) window.removeEventListener('resize', this._onResize);
+  }
+
+  /* ---- liquid paint background ---- */
+  initFluid() {
+    const canvas = document.getElementById('pew1-fluid');
+    const fb = document.querySelector('[data-fallback-bg]');
+    if (!canvas) return;
+    if (this.reduced) { canvas.style.display = 'none'; return; }
+    let tries = 0;
+    const start = () => {
+      if (window.PEW1Fluid) {
+        try {
+          this.fluid = window.PEW1Fluid.init(canvas, {
+            simRes: 128, dyeRes: 512,
+            densityDissipation: 0.984, velocityDissipation: 0.991,
+            curl: 20, splatRadius: 0.0026, splatForce: 4600,
+            intensity: 0.92, maxDPR: 1.5,
+          });
+          if (this.fluid && fb) fb.style.opacity = '0';
+        } catch (e) { canvas.style.display = 'none'; }
+      } else if (tries++ < 80) {
+        setTimeout(start, 70);
+      } else {
+        canvas.style.display = 'none';
+      }
+    };
+    start();
+  }
+
+  /* ---- show/hide desktop pill vs burger by width ---- */
+  initResponsiveNav() {
+    const desktop = document.querySelector('[data-desktop-nav]');
+    const burger = document.querySelector('[data-burger]');
+    const shop = document.querySelector('[data-shop-btn]');
+    const wide = window.innerWidth >= 860;
+    if (desktop) desktop.style.display = wide ? 'flex' : 'none';
+    if (shop) shop.style.display = wide ? 'inline-flex' : 'none';
+    if (burger) burger.style.display = wide ? 'none' : 'flex';
+    if (wide && this.state.menuOpen) this.setState({ menuOpen: false });
+  }
+
+  /* ---- hero word-by-word blur-in ---- */
+  heroIntro() {
+    const targets = [
+      ['[data-hero-badge]', 0],
+      ['[data-hero-sub]', 700],
+      ['[data-hero-cta]', 820],
+      ['[data-hero-stats]', 940],
+    ];
+    const words = Array.from(document.querySelectorAll('[data-word]'));
+    const prep = (el) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(40px)';
+      el.style.filter = 'blur(10px)';
+      el.style.transition = 'opacity .9s cubic-bezier(.22,1,.36,1), transform .9s cubic-bezier(.22,1,.36,1), filter .9s ease';
+    };
+    if (this.reduced) return;
+    words.forEach(prep);
+    targets.forEach(([sel]) => { const el = document.querySelector(sel); if (el) prep(el); });
+    requestAnimationFrame(() => {
+      words.forEach((w, i) => setTimeout(() => {
+        w.style.opacity = '1'; w.style.transform = 'translateY(0)'; w.style.filter = 'blur(0)';
+      }, 120 + i * 95));
+      targets.forEach(([sel, delay]) => setTimeout(() => {
+        const el = document.querySelector(sel);
+        if (el) { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; el.style.filter = 'blur(0)'; }
+      }, delay));
+    });
+  }
+
+  /* ---- scroll reveal (set hidden in JS so no-JS = visible) ---- */
+  initReveals() {
+    const els = Array.from(document.querySelectorAll('[data-reveal]'));
+    if (!els.length) return;
+    if (this.reduced) return;
+    els.forEach((el) => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(26px)';
+      el.style.filter = 'blur(8px)';
+      el.style.transition = 'opacity .85s cubic-bezier(.22,1,.36,1), transform .85s cubic-bezier(.22,1,.36,1), filter .85s ease';
+    });
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          const el = e.target;
+          const delay = parseFloat(el.getAttribute('data-reveal-delay') || '0');
+          setTimeout(() => { el.style.opacity = '1'; el.style.transform = 'translateY(0)'; el.style.filter = 'blur(0)'; }, delay);
+          io.unobserve(el);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    els.forEach((el) => io.observe(el));
+    this._observers.push(io);
+  }
+
+  /* ---- scroll-spy nav highlight ---- */
+  initScrollSpy() {
+    const ids = ['inicio', 'arte', 'streetwear', 'personalizar', 'murales', 'portfolio'];
+    const links = {};
+    document.querySelectorAll('[data-spy-link]').forEach((a) => { links[a.getAttribute('data-spy-link')] = a; });
+    const setActive = (id) => {
+      Object.keys(links).forEach((k) => {
+        const a = links[k];
+        if (!a) return;
+        const on = k === id;
+        a.style.color = on ? '#F5F4F0' : '#9A9A95';
+        a.style.background = on ? 'rgba(255,255,255,0.08)' : 'transparent';
+      });
+    };
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+    ids.forEach((id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+    this._observers.push(io);
+  }
+
+  /* ---- murales cotizador (DOM-driven, live) ---- */
+  fmtCLP(n) {
+    return '$' + Math.round(n).toLocaleString('es-CL');
+  }
+  initCotizador() {
+    const root = document.querySelector('[data-cotizador]');
+    if (!root) return;
+    const get = (sel) => root.querySelector(sel);
+    this._cot = { servicio: 'mural', complejidad: 'basico' };
+    const recalc = () => {
+      const w = parseFloat((get('[data-cot-ancho]') || {}).value || 0);
+      const h = parseFloat((get('[data-cot-alto]') || {}).value || 0);
+      const wLbl = get('[data-cot-ancho-val]'); if (wLbl) wLbl.textContent = w + ' cm';
+      const hLbl = get('[data-cot-alto-val]'); if (hLbl) hLbl.textContent = h + ' cm';
+      const area = (w / 100) * (h / 100);
+      const areaLbl = get('[data-cot-area]'); if (areaLbl) areaLbl.textContent = area.toFixed(2) + ' m²';
+      const rates = this._cot.complejidad === 'complejo' ? [50000, 150000] : [30000, 50000];
+      const min = Math.max(area, 0) * rates[0];
+      const max = Math.max(area, 0) * rates[1];
+      const out = get('[data-cot-price]');
+      if (out) out.textContent = area > 0 ? (this.fmtCLP(min) + ' – ' + this.fmtCLP(max)) : '—';
+    };
+    root.querySelectorAll('[data-cot-ancho],[data-cot-alto]').forEach((el) => el.addEventListener('input', recalc));
+    const styleToggle = (group, val) => {
+      root.querySelectorAll('[data-cot-' + group + '-opt]').forEach((b) => {
+        const on = b.getAttribute('data-cot-' + group + '-opt') === val;
+        b.style.background = on ? '#FF7A00' : 'rgba(255,255,255,0.04)';
+        b.style.color = on ? '#0A0F2E' : '#C7C7C2';
+        b.style.borderColor = on ? '#FF7A00' : 'rgba(255,255,255,0.12)';
+        b.style.fontWeight = on ? '700' : '500';
+      });
+    };
+    root.querySelectorAll('[data-cot-servicio-opt]').forEach((b) => b.addEventListener('click', () => {
+      this._cot.servicio = b.getAttribute('data-cot-servicio-opt'); styleToggle('servicio', this._cot.servicio);
+    }));
+    root.querySelectorAll('[data-cot-complejidad-opt]').forEach((b) => b.addEventListener('click', () => {
+      this._cot.complejidad = b.getAttribute('data-cot-complejidad-opt'); styleToggle('complejidad', this._cot.complejidad); recalc();
+    }));
+    styleToggle('servicio', 'mural');
+    styleToggle('complejidad', 'basico');
+    recalc();
+  }
+  submitCotizacion = () => {
+    const root = document.querySelector('[data-cotizador]');
+    if (!root) return;
+    const v = (n) => { const el = root.querySelector('[name="' + n + '"]'); return el ? el.value.trim() : ''; };
+    const w = root.querySelector('[data-cot-ancho]'); const h = root.querySelector('[data-cot-alto]');
+    const area = ((parseFloat(w ? w.value : 0) / 100) * (parseFloat(h ? h.value : 0) / 100)).toFixed(2);
+    const price = (root.querySelector('[data-cot-price]') || {}).textContent || '';
+    const servicio = this._cot ? (this._cot.servicio === 'tela' ? 'Pintura original en tela' : 'Mural artístico') : 'Mural';
+    const complejidad = this._cot ? this._cot.complejidad : 'basico';
+    const msg =
+      '*Cotización PEW1*%0A' +
+      'Servicio: ' + servicio + '%0A' +
+      'Complejidad: ' + complejidad + '%0A' +
+      'Medidas: ' + (w ? w.value : '?') + ' x ' + (h ? h.value : '?') + ' cm (' + area + ' m²)%0A' +
+      'Estimado referencial: ' + encodeURIComponent(price) + '%0A%0A' +
+      'Nombre: ' + encodeURIComponent(v('nombre')) + '%0A' +
+      'Email: ' + encodeURIComponent(v('email')) + '%0A' +
+      'Ciudad/País: ' + encodeURIComponent(v('ciudad')) + '%0A' +
+      'Superficie: ' + encodeURIComponent(v('superficie')) + '%0A' +
+      'Fecha estimada: ' + encodeURIComponent(v('fecha')) + '%0A' +
+      'Presupuesto: ' + encodeURIComponent(v('presupuesto')) + '%0A' +
+      'Descripción: ' + encodeURIComponent(v('descripcion'));
+    window.open('https://wa.me/56935733021?text=' + msg, '_blank', 'noopener');
+  };
+
+  /* ---- reviews: simulate submit ---- */
+  submitReview = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const form = document.querySelector('[data-review-form]');
+    const ok = document.querySelector('[data-review-ok]');
+    if (form) form.style.display = 'none';
+    if (ok) ok.style.display = 'flex';
+  };
+  prevReview = () => this.setState(s => ({ reviewIdx: (s.reviewIdx - 1 + this.reviews.length) % this.reviews.length }));
+  nextReview = () => this.setState(s => ({ reviewIdx: (s.reviewIdx + 1) % this.reviews.length }));
+
+  /* ---- personalizador hoodie drag-to-rotate ---- */
+  initHoodieDrag() {
+    const el = document.querySelector('[data-hoodie]');
+    if (!el) return;
+    let dragging = false, lastX = 0, rot = -12, vel = 0, raf = null;
+    const apply = () => { el.style.transform = 'perspective(900px) rotateY(' + rot + 'deg)'; };
+    const idle = () => {
+      if (dragging) return;
+      vel *= 0.92;
+      rot += vel;
+      // ease back toward rest
+      rot += (-12 - rot) * 0.02;
+      apply();
+      raf = requestAnimationFrame(idle);
+    };
+    const down = (x) => { dragging = true; lastX = x; el.style.transition = 'none'; if (raf) cancelAnimationFrame(raf); };
+    const move = (x) => { if (!dragging) return; const dx = x - lastX; lastX = x; vel = dx * 0.4; rot += dx * 0.4; apply(); };
+    const up = () => { if (!dragging) return; dragging = false; raf = requestAnimationFrame(idle); };
+    el.addEventListener('mousedown', (e) => { e.preventDefault(); down(e.clientX); });
+    window.addEventListener('mousemove', (e) => move(e.clientX));
+    window.addEventListener('mouseup', up);
+    el.addEventListener('touchstart', (e) => { if (e.touches[0]) down(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener('touchmove', (e) => { if (e.touches[0]) move(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener('touchend', up);
+    apply();
+    raf = requestAnimationFrame(idle);
+  }
+
+  toggleMenu = () => this.setState(s => ({ menuOpen: !s.menuOpen }));
+  closeMenu = () => this.setState({ menuOpen: false });
+
+  renderVals() {
+    const rev = this.reviews[this.state.reviewIdx] || this.reviews[0];
+    return {
+      menuOpen: this.state.menuOpen,
+      toggleMenu: this.toggleMenu,
+      closeMenu: this.closeMenu,
+      rev,
+      reviewCounter: (this.state.reviewIdx + 1) + ' / ' + this.reviews.length,
+      prevReview: this.prevReview,
+      nextReview: this.nextReview,
+      submitCotizacion: this.submitCotizacion,
+      submitReview: this.submitReview,
+    };
+  }
+}
+</script>
+</body>
+</html>

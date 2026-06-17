@@ -1,0 +1,65 @@
+/* ============================================================
+   PEWÏ — Color tokens
+   Urban-art brand. High-contrast monochrome base, ignited by
+   a warm spray-paint orange/amber accent.
+   ============================================================ */
+:root {
+  /* ---- Brand core (from manual) ---- */
+  --pewi-navy:        #0A0F2E;   /* deep near-black navy — primary dark */
+  --pewi-orange:      #FF9800;   /* spray orange — primary accent */
+  --pewi-amber:       #FFD34D;   /* amber/yellow — secondary accent */
+  --pewi-gray-400:    #8C8C8C;   /* light gray */
+  --pewi-gray-500:    #666666;   /* mid gray */
+  --pewi-gray-600:    #454545;   /* dark gray */
+
+  /* ---- Extended neutrals (derived for UI surfaces) ---- */
+  --pewi-ink:         #0B0B0D;   /* true ink black (logo / text) */
+  --pewi-black:       #000000;
+  --pewi-paper:       #F4F4F2;   /* warm off-white — the manual's light bg */
+  --pewi-paper-2:     #EAEAE7;   /* slightly deeper paper */
+  --pewi-white:       #FFFFFF;
+  --pewi-gray-200:    #C9C9C9;   /* hairline / disabled */
+  --pewi-gray-300:    #ABABAB;
+  --pewi-gray-700:    #2A2A2D;   /* elevated dark surface */
+  --pewi-gray-800:    #18181B;   /* dark surface */
+
+  /* ---- Accent shades (hover / press / tint) ---- */
+  --pewi-orange-700:  #E07E00;   /* orange pressed */
+  --pewi-orange-100:  #FFE7C2;   /* orange wash */
+  --pewi-amber-700:   #E6B52E;
+  --pewi-navy-700:    #060A1F;   /* navy pressed / deepest */
+
+  /* ============================================================
+     Semantic aliases — reference these in components & kits
+     ============================================================ */
+  /* Surfaces */
+  --surface-page:     var(--pewi-paper);
+  --surface-card:     var(--pewi-white);
+  --surface-sunken:   var(--pewi-paper-2);
+  --surface-inverse:  var(--pewi-navy);     /* dark sections */
+  --surface-inverse-2:var(--pewi-gray-800);
+  --surface-ink:      var(--pewi-ink);
+
+  /* Text */
+  --text-strong:      var(--pewi-ink);      /* headings on light */
+  --text-body:        var(--pewi-gray-600); /* body copy on light */
+  --text-muted:       var(--pewi-gray-500);
+  --text-faint:       var(--pewi-gray-400);
+  --text-on-dark:     var(--pewi-white);
+  --text-on-dark-mut: var(--pewi-gray-300);
+  --text-accent:      var(--pewi-orange);
+
+  /* Lines & borders */
+  --border-hair:      rgba(11,11,13,0.07);
+  --border-strong:    var(--pewi-ink);      /* the brand loves a hard 2px keyline */
+  --border-on-dark:   rgba(255,255,255,0.16);
+
+  /* Accents (interactive) */
+  --accent:           var(--pewi-orange);
+  --accent-hover:     var(--pewi-orange-700);
+  --accent-soft:      var(--pewi-orange-100);
+  --accent-2:         var(--pewi-amber);
+
+  /* Focus ring */
+  --focus-ring:       var(--pewi-orange);
+}
