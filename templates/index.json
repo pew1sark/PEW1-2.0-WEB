@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "pew1_landing": {
+      "type": "pew1-landing",
+      "settings": {}
+    }
+  },
+  "order": [
+    "pew1_landing"
+  ]
+}

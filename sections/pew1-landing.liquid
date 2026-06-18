@@ -1,0 +1,88 @@
+<section class="pew1-landing-shell" data-pew1-landing-shell>
+  <iframe
+    class="pew1-landing-frame"
+    data-pew1-landing-frame
+    data-src="{{ 'pew1-landing.html' | asset_url }}"
+    title="PEW1 landing"
+    loading="eager"
+    allow="fullscreen"
+  ></iframe>
+</section>
+
+<style>
+  html,
+  body {
+    margin: 0;
+    background: #05060a;
+  }
+
+  body.template-index {
+    overflow: hidden;
+  }
+
+  body.template-index .shopify-section-group-header-group,
+  body.template-index .shopify-section-group-footer-group,
+  body.template-index .pew-whatsapp-float,
+  body.template-index #pew-quote-modal {
+    display: none !important;
+  }
+
+  body.template-index #MainContent {
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+  }
+
+  .pew1-landing-shell {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483000;
+    width: 100vw;
+    height: 100svh;
+    min-height: 100vh;
+    background: #05060a;
+    overflow: hidden;
+  }
+
+  .pew1-landing-frame {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #05060a;
+  }
+</style>
+
+<script>
+  (() => {
+    const script = document.currentScript;
+    const shell = script.closest('[data-pew1-landing-shell]') || document.querySelector('[data-pew1-landing-shell]');
+    const frame = shell && shell.querySelector('[data-pew1-landing-frame]');
+
+    if (!frame) return;
+
+    const base = frame.dataset.src;
+    const syncFrameUrl = () => {
+      const target = base + (window.location.hash || '');
+
+      if (frame.getAttribute('src') !== target) {
+        frame.setAttribute('src', target);
+      }
+    };
+
+    syncFrameUrl();
+    window.addEventListener('hashchange', syncFrameUrl);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "PEW1 landing",
+  "settings": [],
+  "presets": [
+    {
+      "name": "PEW1 landing"
+    }
+  ]
+}
+{% endschema %}
