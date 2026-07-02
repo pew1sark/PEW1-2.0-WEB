@@ -1,0 +1,113 @@
+<section class="pew-brands {% if section.settings.dark %}pew-brands--dark{% endif %}" id="{{ section.settings.anchor | default: 'marcas' }}">
+  <div class="wrap">
+    {%- if section.settings.kicker != blank -%}
+      <div class="eyebrow">{{ section.settings.kicker }}</div>
+      <hr class="rule">
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="section-title">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    <div class="pew-brands__grid pew-brands__grid--{{ section.blocks.size }}">
+      {%- for block in section.blocks -%}
+        <a
+          class="pew-brands__tile"
+          href="{{ block.settings.link }}"
+          style="--tile-bg: {{ block.settings.bg_color | default: '#0A0F2E' }};"
+          aria-label="{{ block.settings.label | escape }}"
+          {{ block.shopify_attributes }}
+        >
+          <span class="pew-brands__logo-holder">
+            {%- if block.settings.logo != blank -%}
+              <img
+                class="pew-brands__logo"
+                src="{{ block.settings.logo | image_url: width: 900 }}"
+                alt="{{ block.settings.label | escape }}"
+                width="900"
+                height="{{ 900 | divided_by: block.settings.logo.aspect_ratio | round }}"
+                loading="lazy"
+              >
+            {%- elsif block.settings.lockup == 'pew1' -%}
+              <span class="pew-brands__lockup">
+                <img class="pew-brands__lockup-icon" src="{{ 'pewi-icon-white.png' | asset_url }}" alt="" width="120" height="120" loading="lazy">
+                <span class="pew-brands__lockup-text">
+                  <img class="pew-brands__lockup-wordmark" src="{{ 'pewi-wordmark-white.png' | asset_url }}" alt="{{ block.settings.label | escape }}" width="260" height="40" loading="lazy">
+                  <span class="pew-brands__lockup-sub">Streetwear</span>
+                </span>
+              </span>
+            {%- else -%}
+              <span class="pew-brands__logo-fallback">{{ block.settings.label }}</span>
+            {%- endif -%}
+          </span>
+          <span class="pew-brands__cta">
+            {{ block.settings.cta | default: 'Entrar' }}
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .pew-brands{padding:clamp(56px,8vw,96px) 0;background:var(--surface-page);color:var(--text-body)}
+  .pew-brands--dark{background:var(--pewi-navy);color:#fff}
+  .pew-brands__grid{display:grid;gap:22px;margin-top:34px;grid-template-columns:repeat(2,1fr)}
+  .pew-brands__grid--1{grid-template-columns:minmax(0,720px);justify-content:center}
+  .pew-brands__grid--3{grid-template-columns:repeat(3,1fr)}
+  .pew-brands__tile{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;min-height:300px;padding:44px 32px 56px;border-radius:22px;background:var(--tile-bg);border:1px solid rgba(255,255,255,.12);text-decoration:none;overflow:hidden;transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+  .pew-brands__tile::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 0%,rgba(255,255,255,.07),transparent 60%);pointer-events:none}
+  .pew-brands__tile:hover{transform:translateY(-5px);border-color:#FF7A00;box-shadow:0 26px 60px rgba(0,0,0,.4)}
+  .pew-brands__logo-holder{display:flex;align-items:center;justify-content:center;width:100%;flex:1}
+  .pew-brands__logo{max-width:min(78%,460px);max-height:170px;width:auto;height:auto;object-fit:contain;transition:transform .25s ease}
+  .pew-brands__tile:hover .pew-brands__logo{transform:scale(1.045)}
+  .pew-brands__lockup{display:flex;align-items:center;gap:26px}
+  .pew-brands__lockup-icon{width:clamp(64px,9vw,104px);height:auto}
+  .pew-brands__lockup-text{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+  .pew-brands__lockup-wordmark{width:clamp(170px,24vw,280px);height:auto}
+  .pew-brands__lockup-sub{font-family:'Montserrat',sans-serif;font-weight:800;font-size:clamp(15px,2vw,22px);letter-spacing:.42em;text-transform:uppercase;color:#E8A821;line-height:1}
+  .pew-brands__logo-fallback{font-family:'Archivo Black',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);color:#fff;letter-spacing:.02em;text-transform:uppercase;text-align:center}
+  .pew-brands__cta{position:absolute;bottom:22px;display:inline-flex;align-items:center;gap:8px;font-family:'Montserrat',sans-serif;font-weight:700;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:#fff;opacity:.85;transition:opacity .2s ease,color .2s ease}
+  .pew-brands__tile:hover .pew-brands__cta{opacity:1;color:#FF7A00}
+  @media (max-width:760px){
+    .pew-brands__grid,.pew-brands__grid--3{grid-template-columns:1fr}
+    .pew-brands__tile{min-height:220px;padding:34px 24px 50px}
+    .pew-brands__logo{max-height:120px}
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Logos de marca PEW1",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Ancla", "default": "marcas" },
+    { "type": "checkbox", "id": "dark", "label": "Modo oscuro", "default": true },
+    { "type": "text", "id": "kicker", "label": "Etiqueta", "default": "Marcas" },
+    { "type": "text", "id": "heading", "label": "Título", "default": "Elige una línea" }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Marca (logo clickeable)",
+      "settings": [
+        { "type": "image_picker", "id": "logo", "label": "Logo (PNG, idealmente fondo transparente)" },
+        { "type": "select", "id": "lockup", "label": "Lockup de marca (si no eliges logo)", "options": [ { "value": "none", "label": "Texto simple" }, { "value": "pew1", "label": "PEW1 Streetwear (assets del tema)" } ], "default": "none" },
+        { "type": "text", "id": "label", "label": "Nombre de la marca", "default": "Marca" },
+        { "type": "url", "id": "link", "label": "Link de la marca" },
+        { "type": "text", "id": "cta", "label": "Texto CTA", "default": "Entrar" },
+        { "type": "color", "id": "bg_color", "label": "Color de fondo del tile", "default": "#0A0F2E" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Logos de marca PEW1",
+      "blocks": [
+        { "type": "brand" },
+        { "type": "brand" }
+      ]
+    }
+  ]
+}
+{% endschema %}
