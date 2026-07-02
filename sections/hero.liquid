@@ -1,0 +1,33 @@
+<section class="hero">
+  {%- if section.settings.image != blank -%}
+    <img class="hero__img" src="{{ section.settings.image | image_url: width: 2000 }}" alt="{{ section.settings.image.alt | escape }}" width="2000" height="1200" loading="eager" fetchpriority="high">
+  {%- else -%}
+    <img class="hero__img" src="{{ 'hero.png' | asset_url }}" alt="" width="2000" height="1200" loading="eager" fetchpriority="high">
+  {%- endif -%}
+  <div class="hero__scrim"></div>
+  <div class="wrap hero__inner">
+    <div class="hero__marks"><span></span><span></span><span></span></div>
+    <h1 class="h-display hero__title">{{ section.settings.title }}</h1>
+    {%- if section.settings.text != blank -%}<p class="hero__lede">{{ section.settings.text }}</p>{%- endif -%}
+    <div class="hero__cta">
+      {%- if section.settings.btn1_label != blank -%}<a href="{{ section.settings.btn1_link }}" class="btn btn--accent btn--lg">{{ section.settings.btn1_label }}</a>{%- endif -%}
+      {%- if section.settings.btn2_label != blank -%}<a href="{{ section.settings.btn2_link }}" class="btn btn--secondary btn--on-dark btn--lg">{{ section.settings.btn2_label }}</a>{%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Imagen de fondo" },
+    { "type": "richtext", "id": "title", "label": "Título", "default": "<p>El ser humano y lo salvaje, una sola imagen</p>" },
+    { "type": "richtext", "id": "text", "label": "Texto", "default": "<p>Mi obra explora la relación entre el ser humano y el mundo animal a través de composiciones que los integran en una misma imagen.</p>" },
+    { "type": "text", "id": "btn1_label", "label": "Botón 1", "default": "Ver obras originales" },
+    { "type": "url", "id": "btn1_link", "label": "Botón 1 link" },
+    { "type": "text", "id": "btn2_label", "label": "Botón 2", "default": "Cotizar proyecto" },
+    { "type": "url", "id": "btn2_link", "label": "Botón 2 link" }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

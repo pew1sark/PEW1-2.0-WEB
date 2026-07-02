@@ -1,0 +1,82 @@
+/* ============================================================
+   PEW1 · SARKPEW1 — capa de identidad (Archivo Black / Montserrat
+   · navy #0A0F2E · naranja #FF7A00). Aditiva: solo refina.
+   ============================================================ */
+:root{
+  --pew-accent:#FF7A00;
+  --pew-navy:#0A0F2E;
+  --pew-ink-soft:#D7D7D2;
+}
+
+/* ---- Tipografía base de marca ---- */
+h1,h2,h3,.section-title,.pcard__title,.eyebrow{font-family:'Archivo Black',sans-serif}
+body,p,a,button,input,textarea,select,li,.pcard__kind,.btn{font-family:'Montserrat',sans-serif}
+.eyebrow{letter-spacing:.18em;text-transform:uppercase}
+
+/* ---- Botones (coherencia con el header) ---- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:9999px;font-weight:600;letter-spacing:.04em;transition:transform .15s ease,filter .15s ease,background .15s ease,color .15s ease;text-decoration:none}
+.btn:hover{transform:translateY(-1px)}
+.btn--accent{background:var(--pew-accent);color:var(--pew-navy);border:0}
+.btn--accent:hover{filter:brightness(1.06)}
+.btn--secondary,.btn--ghost{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.22)}
+.btn--secondary:hover{border-color:var(--pew-accent);color:var(--pew-accent)}
+.btn--full{width:100%}
+.btn--lg{padding:15px 26px;font-size:15px}
+.btn--sm{padding:9px 16px;font-size:13px}
+
+/* ---- Product cards ---- */
+.pcard{display:flex;flex-direction:column;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.pcard:hover{transform:translateY(-4px);border-color:rgba(255,122,0,.5);box-shadow:0 22px 50px rgba(0,0,0,.45)}
+.pcard__media{position:relative;display:block;aspect-ratio:4/5;overflow:hidden;background:#11162e}
+.pcard__media img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.pcard:hover .pcard__media img{transform:scale(1.05)}
+.pcard__sold{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:flex-end;padding:10px}
+.pcard__sold .badge{background:rgba(10,15,46,.85);color:#fff;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;border-radius:9999px;border:1px solid rgba(255,255,255,.2)}
+.pcard__body{display:flex;flex-direction:column;gap:8px;padding:14px 14px 16px}
+.pcard__kind{font-family:'Montserrat',sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--pew-accent)}
+.pcard__title{font-size:15px;line-height:1.25;margin:0}
+.pcard__title a{color:#fff;text-decoration:none}
+.pcard__title a:hover{color:var(--pew-accent)}
+.pcard__foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:auto;padding-top:6px}
+.pcard__price{font-family:'Archivo Black',sans-serif;font-size:15px;color:#fff}
+
+/* ---- Grilla de productos / colección responsive ---- */
+.product-grid,.collection-grid,.pcard-grid{display:grid;gap:18px;grid-template-columns:repeat(4,1fr)}
+@media (max-width:1100px){.product-grid,.collection-grid,.pcard-grid{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:760px){.product-grid,.collection-grid,.pcard-grid{grid-template-columns:repeat(2,1fr);gap:12px}}
+@media (max-width:760px){.pcard__body{padding:11px}.pcard__title{font-size:13.5px}.pcard__price{font-size:13.5px}}
+
+/* ---- Página de producto ---- */
+.product__title,.product-single__title{font-family:'Archivo Black',sans-serif;line-height:1.05}
+.product__price,.price__regular{font-family:'Archivo Black',sans-serif;color:var(--pew-accent)}
+.product-form__buttons .btn,.product-form__submit{border-radius:9999px}
+
+/* ---- Inputs / formularios coherentes ---- */
+input[type=text],input[type=email],input[type=tel],input[type=number],input[type=search],textarea,select{
+  background:rgba(255,255,255,.03);border:1.5px solid rgba(255,255,255,.18);border-radius:10px;color:#fff
+}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--pew-accent)}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,.4)}
+
+/* ---- Badge del carrito en el header ---- */
+.cart-count{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 5px;margin-left:-6px;margin-top:-10px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;background:var(--pew-accent);color:var(--pew-navy);border-radius:9999px}
+
+/* ---- Footer ---- */
+.site-footer{border-top:1px solid rgba(255,255,255,.10)}
+.site-footer__row{align-items:center}
+.site-footer .social{display:flex;align-items:center;gap:14px}
+.site-footer .social a{transition:color .15s ease,transform .15s ease}
+.site-footer .social a:hover{color:var(--pew-accent) !important;transform:translateY(-1px)}
+
+/* ---- Detalles finos ---- */
+.rule{border:0;border-top:2px solid var(--pew-accent);width:42px;margin:10px 0 18px;opacity:.9}
+::selection{background:var(--pew-accent);color:var(--pew-navy)}
+
+/* ---- Hero: overlay sutil (auditoría lanzamiento) ----
+   Antes: scrim oscuro pesado apagaba la imagen.
+   Ahora: degradado navy 10–18% máx. solo para legibilidad. */
+.hero__scrim{
+  background:linear-gradient(180deg, rgba(10,15,46,.10) 0%, rgba(10,15,46,.04) 45%, rgba(10,15,46,.18) 100%) !important;
+  opacity:1 !important;
+}
+.hero__img{filter:none !important;opacity:1 !important}

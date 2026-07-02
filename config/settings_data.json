@@ -1,0 +1,60 @@
+{
+  "current": {
+    "favicon": "shopify://shop_images/IMG_8505_c8b96032-5e72-4c7c-82fb-3b005bca8337.jpg",
+    "social_whatsapp": "+56935733021",
+    "whatsapp_message": "Hola Nicolás, quiero cotizar un mural con PEW1.",
+    "social_instagram": "https://instagram.com/sarkpew1",
+    "social_youtube": "https://youtube.com/@sarkpew1",
+    "social_email": "hola@sarkpew1.com",
+    "artist_name": "Nicolás Sark Pew1",
+    "artist_bio": "Artista urbano. Mi trabajo integra el rostro humano y el mundo animal en una misma composición.",
+    "content_for_index": [],
+    "blocks": {
+      "13768625480086291342": {
+        "type": "shopify://apps/forms/blocks/forms/8744a304-fcb1-4347-b211-bb6b4759a76a",
+        "disabled": false,
+        "settings": {}
+      },
+      "18131037017812181619": {
+        "type": "shopify://apps/mailchimp-email-sms/blocks/mailchimp_for_shopify_script/e3b67dce-fd41-4b61-b3cf-961c12344cde",
+        "disabled": false,
+        "settings": {}
+      },
+      "6159598353363395418": {
+        "type": "shopify://apps/google-youtube/blocks/store_widget/14ec7bd0-ac77-49a9-9417-90752398bdff",
+        "disabled": false,
+        "settings": {
+          "widget_position": "LEFT_BOTTOM",
+          "side_margin": 36,
+          "bottom_margin": 36,
+          "mobile_side_margin": 16,
+          "mobile_bottom_margin": 46
+        }
+      },
+      "18128612654622612671": {
+        "type": "shopify://apps/selecty/blocks/app-embed/a005a4a7-4aa2-4155-9c2b-0ab41acbf99c",
+        "disabled": false,
+        "settings": {}
+      },
+      "12711036393401670242": {
+        "type": "shopify://apps/whatsup-whatsapp-button/blocks/float-button/7e68b675-2a94-4586-a750-8b8ca8c9d069",
+        "disabled": true,
+        "settings": {
+          "alignment": "right",
+          "horizon_dis": 24,
+          "bottom_dis": 16,
+          "z_index": 100,
+          "scale": 100,
+          "drop_shadow": true,
+          "mobile_overrides": false,
+          "horizon_dis_mobile": 24,
+          "bottom_dis_mobile": 16,
+          "z_index_mobile": 100,
+          "scale_mobile": 100,
+          "drop_shadow_mobile": true,
+          "visibility_mobile": true
+        }
+      }
+    }
+  }
+}
