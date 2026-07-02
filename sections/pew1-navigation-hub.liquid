@@ -1,0 +1,179 @@
+{%- liquid
+  assign featured_collection = collections[section.settings.featured_collection]
+-%}
+
+<section class="pew-hub {% if section.settings.dark %}pew-hub--dark{% endif %}" id="{{ section.settings.anchor | default: 'explorar' }}">
+  <div class="pew-hub__hero">
+    {%- if section.settings.image != blank -%}
+      <img class="pew-hub__image" src="{{ section.settings.image | image_url: width: 2200 }}" alt="" width="2200" height="1320" loading="lazy">
+    {%- elsif featured_collection != blank and featured_collection.products.first.featured_image != blank -%}
+      <img class="pew-hub__image" src="{{ featured_collection.products.first.featured_image | image_url: width: 2200 }}" alt="" width="2200" height="1320" loading="lazy">
+    {%- else -%}
+      <div class="pew-hub__image pew-hub__image--fallback"></div>
+    {%- endif -%}
+    <div class="pew-hub__scrim"></div>
+    <div class="wrap pew-hub__inner">
+      <div class="pew-hub__copy">
+        {%- if section.settings.kicker != blank -%}
+          <span class="badge badge--accent">{{ section.settings.kicker }}</span>
+        {%- endif -%}
+        <h1 class="h-display pew-hub__title">{{ section.settings.heading }}</h1>
+        {%- if section.settings.text != blank -%}
+          <div class="pew-hub__text">{{ section.settings.text }}</div>
+        {%- endif -%}
+        <div class="pew-hub__actions">
+          {%- if section.settings.primary_label != blank -%}
+            <a class="btn btn--accent btn--lg" href="{{ section.settings.primary_link }}">{{ section.settings.primary_label }}</a>
+          {%- endif -%}
+          {%- if section.settings.secondary_label != blank -%}
+            <a class="btn btn--secondary btn--on-dark btn--lg" href="{{ section.settings.secondary_link }}">{{ section.settings.secondary_label }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="section pew-hub__nav">
+      <div class="wrap">
+        {%- if section.settings.nav_title != blank -%}
+          <div class="eyebrow">{{ section.settings.nav_kicker }}</div>
+          <hr class="rule">
+          <h2 class="section-title">{{ section.settings.nav_title }}</h2>
+        {%- endif -%}
+        <div class="pew-hub__grid">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign card_collection = collections[block.settings.collection]
+              assign card_image = block.settings.image
+            -%}
+            <a class="pew-hub-card card card--poster" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+              <div class="pew-hub-card__media">
+                {%- if card_image != blank -%}
+                  <img src="{{ card_image | image_url: width: 900 }}" alt="" width="900" height="700" loading="lazy">
+                {%- elsif card_collection != blank and card_collection.products.first.featured_image != blank -%}
+                  <img src="{{ card_collection.products.first.featured_image | image_url: width: 900 }}" alt="" width="900" height="700" loading="lazy">
+                {%- else -%}
+                  <div class="pew-hub-card__fallback"></div>
+                {%- endif -%}
+              </div>
+              <div class="pew-hub-card__body">
+                {%- if block.settings.kicker != blank -%}
+                  <span class="pew-hub-card__kicker">{{ block.settings.kicker }}</span>
+                {%- endif -%}
+                <h3>{{ block.settings.title }}</h3>
+                {%- if block.settings.text != blank -%}
+                  <p>{{ block.settings.text }}</p>
+                {%- endif -%}
+                <span class="pew-hub-card__cta">{{ block.settings.cta }}</span>
+              </div>
+            </a>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if section.settings.show_featured and featured_collection != blank -%}
+    <div class="section {% if section.settings.dark %}section--dark{% endif %} pew-hub__featured">
+      <div class="wrap">
+        <div class="eyebrow">{{ section.settings.featured_kicker }}</div>
+        <hr class="rule">
+        <h2 class="section-title">{{ section.settings.featured_title }}</h2>
+        <div class="grid-3">
+          {%- for product in featured_collection.products limit: section.settings.product_limit -%}
+            {%- render 'product-card', product: product -%}
+          {%- else -%}
+            <p>No hay productos en esta colección todavía.</p>
+          {%- endfor -%}
+        </div>
+        <div class="pew-hub__view-all">
+          <a class="btn {% if section.settings.dark %}btn--secondary btn--on-dark{% else %}btn--secondary{% endif %}" href="{{ featured_collection.url }}">Ver colección</a>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% stylesheet %}
+  .pew-hub{background:var(--surface-page);color:var(--text-body)}
+  .pew-hub--dark{background:var(--pewi-navy);color:#fff}
+  .pew-hub__hero{position:relative;min-height:520px;display:flex;align-items:flex-end;overflow:hidden;background:var(--pewi-ink)}
+  .pew-hub__image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1}
+  .pew-hub__image--fallback{background:linear-gradient(135deg,var(--pewi-navy),var(--pewi-ink));opacity:1}
+  .pew-hub__scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(11,11,13,.30),rgba(11,11,13,.10) 52%,rgba(11,11,13,0))}
+  .pew-hub__inner{position:relative;width:100%;padding-top:110px;padding-bottom:72px}
+  .pew-hub__copy{max-width:760px}
+  .pew-hub__title{margin:18px 0 18px;color:#fff;font-size:clamp(2.2rem,5.4vw,4.3rem);text-shadow:0 2px 18px rgba(0,0,0,.45)}
+  .pew-hub__text{max-width:610px;color:rgba(255,255,255,.92);font-size:17px;line-height:1.65;text-shadow:0 1px 12px rgba(0,0,0,.5)}
+  .pew-hub__text p{margin:0 0 16px;color:inherit}
+  .pew-hub__actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px}
+  .pew-hub__nav{background:inherit}
+  .pew-hub__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .pew-hub-card{display:flex;flex-direction:column;overflow:hidden;color:var(--text-body);text-decoration:none;background:#fff}
+  .pew-hub--dark .pew-hub-card{color:var(--text-body)}
+  .pew-hub-card__media{aspect-ratio:4/3;overflow:hidden;background:var(--surface-sunken);border-bottom:2px solid var(--pewi-ink)}
+  .pew-hub-card__media img{width:100%;height:100%;object-fit:cover;transition:transform .35s var(--ease-out)}
+  .pew-hub-card:hover .pew-hub-card__media img{transform:scale(1.04)}
+  .pew-hub-card__fallback{width:100%;height:100%;background:linear-gradient(135deg,var(--pewi-ink),var(--pewi-navy))}
+  .pew-hub-card__body{display:flex;flex-direction:column;gap:10px;min-height:190px;padding:20px;background:#fff;color:var(--text-body)}
+  .pew-hub-card__kicker{font-weight:800;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+  .pew-hub-card h3{margin:0;font-family:var(--font-display);font-size:1.25rem;line-height:1.05;text-transform:uppercase;color:var(--text-strong)}
+  .pew-hub-card p{margin:0;color:#454545;font-size:14px;line-height:1.55}
+  .pew-hub-card__cta{margin-top:auto;font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-strong)}
+  .pew-hub__view-all{margin-top:32px}
+  .pew-hub__featured{padding-top:0}
+  @media(max-width:940px){.pew-hub__grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:620px){.pew-hub__hero{min-height:440px}.pew-hub__inner{padding-top:80px;padding-bottom:52px}.pew-hub__grid{grid-template-columns:1fr}.pew-hub-card__body{min-height:0}}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Hub navegable PEW1",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Ancla", "default": "explorar" },
+    { "type": "checkbox", "id": "dark", "label": "Modo oscuro", "default": false },
+    { "type": "image_picker", "id": "image", "label": "Imagen hero" },
+    { "type": "text", "id": "kicker", "label": "Etiqueta hero", "default": "PEW1 Store" },
+    { "type": "text", "id": "heading", "label": "Título hero", "default": "Explora la tienda" },
+    { "type": "richtext", "id": "text", "label": "Texto hero", "default": "<p>Ropa, arte impreso, obra y coleccionables conectados por el universo visual de Nicolás Sark PEW1.</p>" },
+    { "type": "text", "id": "primary_label", "label": "Botón principal", "default": "Ver productos" },
+    { "type": "url", "id": "primary_link", "label": "Link principal" },
+    { "type": "text", "id": "secondary_label", "label": "Botón secundario", "default": "Contacto" },
+    { "type": "url", "id": "secondary_link", "label": "Link secundario" },
+    { "type": "text", "id": "nav_kicker", "label": "Etiqueta navegación", "default": "Navegación" },
+    { "type": "text", "id": "nav_title", "label": "Título navegación", "default": "Elige una sección" },
+    { "type": "checkbox", "id": "show_featured", "label": "Mostrar colección destacada", "default": true },
+    { "type": "text", "id": "featured_kicker", "label": "Etiqueta colección", "default": "Destacado" },
+    { "type": "text", "id": "featured_title", "label": "Título colección", "default": "Productos destacados" },
+    { "type": "collection", "id": "featured_collection", "label": "Colección destacada" },
+    { "type": "range", "id": "product_limit", "min": 3, "max": 12, "step": 1, "label": "Cantidad de productos", "default": 6 }
+  ],
+  "blocks": [
+    {
+      "type": "link_card",
+      "name": "Tarjeta de navegación",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Imagen" },
+        { "type": "collection", "id": "collection", "label": "Colección para imagen" },
+        { "type": "text", "id": "kicker", "label": "Etiqueta", "default": "Colección" },
+        { "type": "text", "id": "title", "label": "Título", "default": "Nombre de sección" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Describe esta sección para orientar al cliente." },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "text", "id": "cta", "label": "Texto CTA", "default": "Entrar" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hub navegable PEW1",
+      "blocks": [
+        { "type": "link_card" },
+        { "type": "link_card" },
+        { "type": "link_card" }
+      ]
+    }
+  ]
+}
+{% endschema %}
