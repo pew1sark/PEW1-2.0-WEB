@@ -1,0 +1,58 @@
+{
+  "sections": {
+    "ropa_hub": {
+      "type": "pew1-navigation-hub",
+      "settings": {
+        "anchor": "ropa",
+        "dark": true,
+        "kicker": "Ropa",
+        "heading": "Dos marcas, una tienda",
+        "text": "<p>PEW1 y SIZ Street Wear quedan separadas para que el cliente compre por marca, explore tallas y vuelva al catálogo sin perderse.</p>",
+        "primary_label": "Ver todo ropa",
+        "primary_link": "shopify://collections/all",
+        "secondary_label": "Personaliza",
+        "secondary_link": "shopify://pages/personalizador",
+        "nav_kicker": "",
+        "nav_title": "",
+        "show_featured": true,
+        "featured_kicker": "Ropa destacada",
+        "featured_title": "Últimas prendas",
+        "featured_collection": "siz-street-wear",
+        "product_limit": 6
+      }
+    },
+    "marcas_logos": {
+      "type": "pew1-brand-logos",
+      "blocks": {
+        "pew1": {
+          "type": "brand",
+          "settings": {
+            "lockup": "pew1",
+            "label": "PEW1 Streetwear",
+            "link": "shopify://pages/pew1-street-wear",
+            "cta": "Ver PEW1",
+            "bg_color": "#282D2C"
+          }
+        },
+        "siz": {
+          "type": "brand",
+          "settings": {
+            "lockup": "none",
+            "label": "SIZ Street Wear",
+            "link": "shopify://collections/siz-street-wear",
+            "cta": "Ver SIZ",
+            "bg_color": "#0A0F2E"
+          }
+        }
+      },
+      "block_order": ["pew1", "siz"],
+      "settings": {
+        "anchor": "marcas",
+        "dark": true,
+        "kicker": "Marcas",
+        "heading": "Elige una línea"
+      }
+    }
+  },
+  "order": ["ropa_hub", "marcas_logos"]
+}

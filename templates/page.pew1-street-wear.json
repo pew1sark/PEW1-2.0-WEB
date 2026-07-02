@@ -1,0 +1,62 @@
+{
+  "sections": {
+    "pew1_hub": {
+      "type": "pew1-navigation-hub",
+      "blocks": {
+        "coleccion": {
+          "type": "link_card",
+          "settings": {
+            "collection": "pew1-street-wear-1",
+            "kicker": "Colección",
+            "title": "PEW1 Street Wear",
+            "text": "Prendas PEW1 disponibles en la tienda.",
+            "link": "shopify://collections/pew1-street-wear-1",
+            "cta": "Ver colección"
+          }
+        },
+        "personaliza": {
+          "type": "link_card",
+          "settings": {
+            "collection": "prendas-personalizadas",
+            "kicker": "Custom",
+            "title": "Personaliza tu prenda",
+            "text": "Diseña tu hoodie, polo o camiseta con obra PEW1 en el personalizador.",
+            "link": "shopify://pages/personalizador",
+            "cta": "Personalizar"
+          }
+        },
+        "siz": {
+          "type": "link_card",
+          "settings": {
+            "collection": "siz-street-wear",
+            "kicker": "Marca",
+            "title": "SIZ Street Wear",
+            "text": "Explora la segunda marca de ropa dentro de la tienda.",
+            "link": "shopify://collections/siz-street-wear",
+            "cta": "Ver SIZ"
+          }
+        }
+      },
+      "block_order": ["coleccion", "personaliza", "siz"],
+      "settings": {
+        "anchor": "pew1",
+        "dark": true,
+        "kicker": "PEW1",
+        "heading": "PEW1 Street Wear",
+        "text": "<p>Ropa PEW1 con acceso directo al personalizador y a SIZ Street Wear.</p>",
+        "primary_label": "Ver colección PEW1",
+        "primary_link": "shopify://collections/pew1-street-wear-1",
+        "secondary_label": "Personalizar (Custom)",
+        "secondary_link": "shopify://pages/personalizador",
+        "nav_kicker": "Navegación",
+        "nav_title": "Sigue explorando ropa",
+        "show_featured": true,
+        "featured_kicker": "PEW1",
+        "featured_title": "Prendas destacadas",
+        "featured_collection": "pew1-street-wear-1",
+        "product_limit": 6
+      }
+    }
+  },
+  "order": ["pew1_hub"]
+}
