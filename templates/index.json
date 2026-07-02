@@ -1,11 +1,40 @@
 {
   "sections": {
-    "pew1_landing": {
+    "pew1_landing_xQ9AGX": {
       "type": "pew1-landing",
+      "name": "PEW1 landing",
       "settings": {}
+    },
+    "pew1_native_landing": {
+      "type": "pew1-native-landing",
+      "disabled": true,
+      "settings": {
+        "background_color": "#05060a",
+        "text_color": "#f5f4f0",
+        "accent_color": "#ff7a00",
+        "whatsapp_number": "+56935733021",
+        "hero_badge": "Arte que transforma · Hecho a pedido",
+        "hero_title": "El ser humano y lo salvaje, una sola imagen.",
+        "hero_text": "Mi obra explora la relación entre el ser humano y el mundo animal a través de composiciones que los integran en una sola imagen. — Nicolás Sark Pew1",
+        "hero_primary_label": "Ver obras originales",
+        "hero_secondary_label": "Ver shop",
+        "originals_collection": "originals",
+        "originals_title": "Obras originales",
+        "originals_text": "Óleo y aerosol sobre tela. Cada pieza integra el rostro humano con un animal: una sola imagen, una sola alma. Únicas, firmadas, irrepetibles.",
+        "product_limit": 3,
+        "prints_collection": "fine-art-print",
+        "prints_title": "Fine Art Print",
+        "prints_text": "Réplicas impresas de las obras originales de Nicolás Sark, en edición limitada. Papel de algodón, color fiel, firmadas y numeradas.",
+        "streetwear_collection": "siz-street-wear",
+        "streetwear_title": "SIZ Street Wear",
+        "streetwear_text": "Prendas y objetos con obra PEW1 aplicada. Piezas de uso diario con lenguaje de mural, tinta y calle.",
+        "custom_title": "Murales y obras a pedido",
+        "custom_text": "Cotiza un mural, una pintura original o una pieza personalizada. Tu espacio, tu historia, una imagen PEW1."
+      }
     }
   },
   "order": [
-    "pew1_landing"
+    "pew1_landing_xQ9AGX",
+    "pew1_native_landing"
   ]
 }
