@@ -72,11 +72,26 @@ input::placeholder,textarea::placeholder{color:rgba(255,255,255,.4)}
 .rule{border:0;border-top:2px solid var(--pew-accent);width:42px;margin:10px 0 18px;opacity:.9}
 ::selection{background:var(--pew-accent);color:var(--pew-navy)}
 
-/* ---- Hero: overlay sutil (auditoría lanzamiento) ----
-   Antes: scrim oscuro pesado apagaba la imagen.
-   Ahora: degradado navy 10–18% máx. solo para legibilidad. */
+/* ---- Heros: overlays sutiles (auditoría lanzamiento) ----
+   Antes: scrims oscuros pesados (hasta 88%) apagaban las fotos.
+   Ahora: imagen a plena opacidad y degradado leve (0-30% máx.)
+   solo donde hay texto; la legibilidad la apoya un text-shadow. */
+.hero__img,
+.banner__img,
+.pew-hub__image{opacity:1 !important;filter:none !important}
+
 .hero__scrim{
   background:linear-gradient(180deg, rgba(10,15,46,.10) 0%, rgba(10,15,46,.04) 45%, rgba(10,15,46,.18) 100%) !important;
   opacity:1 !important;
 }
-.hero__img{filter:none !important;opacity:1 !important}
+.banner__scrim{
+  background:linear-gradient(90deg, rgba(10,15,46,.28) 0%, rgba(10,15,46,.08) 55%, rgba(10,15,46,0) 100%) !important;
+  opacity:1 !important;
+}
+.pew-hub__scrim{
+  background:linear-gradient(90deg, rgba(11,11,13,.30) 0%, rgba(11,11,13,.10) 52%, rgba(11,11,13,0) 100%) !important;
+  opacity:1 !important;
+}
+
+.hero__title,.banner__title,.pew-hub__title{text-shadow:0 2px 18px rgba(0,0,0,.45)}
+.hero__lede,.banner__lede,.pew-hub__text{text-shadow:0 1px 12px rgba(0,0,0,.5)}
