@@ -1,0 +1,44 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "custom_css": [
+        ".product__media-wrapper,.product-media-container {aspect-ratio: 4 / 5; overflow: hidden;}",
+        ".product__media img,.product-media-container img {width: 100%; height: 100%; object-fit: contain;}",
+        ".thumbnail-list,.product__media-list,.media-gallery__thumbnail-list {display: flex !important; opacity: 1 !important;}"
+      ],
+      "settings": {}
+    },
+    "featured_collection_Njn3HV": {
+      "type": "featured-collection",
+      "name": "Colección destacada",
+      "settings": {
+        "anchor": "shop",
+        "eyebrow": "Obras originales",
+        "title": "Piezas únicas",
+        "collection": "originals",
+        "limit": 3,
+        "dark": false,
+        "view_all": true
+      }
+    },
+    "featured_collection_EwYdGq": {
+      "type": "featured-collection",
+      "name": "Colección destacada",
+      "settings": {
+        "anchor": "shop",
+        "eyebrow": "IMPRESIONES FINE ART",
+        "title": "FINE ART PRINT",
+        "collection": "fine-art-print",
+        "limit": 5,
+        "dark": false,
+        "view_all": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "featured_collection_Njn3HV",
+    "featured_collection_EwYdGq"
+  ]
+}
