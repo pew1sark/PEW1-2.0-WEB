@@ -95,3 +95,12 @@ input::placeholder,textarea::placeholder{color:rgba(255,255,255,.4)}
 
 .hero__title,.banner__title,.pew-hub__title{text-shadow:0 2px 18px rgba(0,0,0,.45)}
 .hero__lede,.banner__lede,.pew-hub__text{text-shadow:0 1px 12px rgba(0,0,0,.5)}
+
+/* ---- Galería de producto: obra completa + miniaturas ---- */
+[data-product-image-gallery]{aspect-ratio:4/5}
+[data-product-main-image]{width:100% !important;height:100% !important;object-fit:contain !important;display:block}
+.product-gallery__thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:10px;margin-top:14px}
+.product-gallery__thumb{padding:0;border:2px solid var(--border-hair);border-radius:6px;overflow:hidden;background:transparent;cursor:pointer;aspect-ratio:4/5;transition:border-color .15s ease,transform .15s ease}
+.product-gallery__thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.product-gallery__thumb:hover{transform:translateY(-2px)}
+.product-gallery__thumb.is-active,.product-gallery__thumb:hover{border-color:#FF7A00}

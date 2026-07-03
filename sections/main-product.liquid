@@ -1,0 +1,194 @@
+{%- assign p = product -%}
+<section class="section" style="background:var(--surface-card)">
+  <div class="wrap" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start" data-product-grid>
+    <div>
+      <div style="border:2px solid var(--pewi-ink);box-shadow:var(--shadow-hard);overflow:hidden;background:var(--surface-sunken);cursor:zoom-in;aspect-ratio:4/5" data-product-image-gallery>
+        {%- if p.featured_image != blank -%}
+          <img src="{{ p.featured_image | image_url: width: 1400 }}" alt="{{ p.featured_image.alt | escape }}" width="1100" height="1375" data-product-main-image>
+        {%- endif -%}
+      </div>
+      {%- if p.images.size > 1 -%}
+        <div class="product-gallery__thumbs" data-product-thumbs>
+          {%- for image in p.images -%}
+            <button
+              type="button"
+              class="product-gallery__thumb{% if image.id == p.featured_image.id %} is-active{% endif %}"
+              data-product-thumb
+              data-full="{{ image | image_url: width: 1400 }}"
+              data-zoom="{{ image | image_url: width: 2000 }}"
+              aria-label="Ver foto {{ forloop.index }} de {{ p.title | escape }}"
+            >
+              <img src="{{ image | image_url: width: 240 }}" alt="{{ image.alt | escape }}" width="240" height="300" loading="lazy">
+            </button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+    <div>
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px">
+        {%- if p.type != blank -%}<span class="badge badge--outline">{{ p.type }}</span>{%- endif -%}
+        {%- unless p.available -%}<span class="badge">Agotado</span>{%- endunless -%}
+      </div>
+      <h1 class="h-display" style="font-size:clamp(2rem,4vw,3rem);margin:0 0 12px">{{ p.title }}</h1>
+      <div id="product-price" class="pcard__price" style="font-size:22px;margin-bottom:10px">{{ p.selected_or_first_available_variant.price | money }}</div>
+      <div id="product-stock-info" style="margin-bottom:12px;color:var(--text-faint);font-size:15px">
+        {% assign current_variant = p.selected_or_first_available_variant %}
+        {% if current_variant.inventory_management != blank and current_variant.inventory_quantity != blank %}
+          {{ current_variant.inventory_quantity }} disponibles
+        {% elsif p.available %}
+          Stock disponible
+        {% else %}
+          Sin stock
+        {% endif %}
+      </div>
+      <div class="prose" style="margin-bottom:26px">{{ p.description }}</div>
+
+      {%- form 'product', p -%}
+        <div class="field" style="margin-bottom:18px">
+          <label for="quantity">Cantidad</label>
+          <input id="quantity" name="quantity" type="number" min="1" value="1" style="width:100%;padding:12px 14px;border:2px solid var(--pewi-ink);border-radius:3px;font-family:var(--font-text);font-size:16px">
+        </div>
+        {%- unless p.has_only_default_variant -%}
+          <div class="field" style="margin-bottom:18px">
+            <label for="variant">Opción</label>
+            <select id="variant" name="id" style="width:100%;padding:12px 14px;border:2px solid var(--pewi-ink);border-radius:3px;font-family:var(--font-text);font-size:16px">
+              {%- for v in p.variants -%}
+                <option value="{{ v.id }}" data-price="{{ v.price | money }}" data-available="{{ v.available }}" data-quantity="{{ v.inventory_quantity | default: 0 }}" {% unless v.available %}disabled{% endunless %}>{{ v.title }} — {{ v.price | money }}</option>
+              {%- endfor -%}
+            </select>
+          </div>
+          {%- if p.variants.size > 1 -%}
+            <div style="margin-bottom:20px;color:var(--text-faint);font-size:14px">
+              Elige entre:<br>
+              {%- for v in p.variants -%}
+                <span style="display:inline-block;margin-right:10px;padding:4px 8px;border-radius:999px;border:1px solid rgba(11,11,13,.12);background:rgba(11,11,13,.04);">{{ v.title }} {{ v.price | money }}</span>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ p.selected_or_first_available_variant.id }}">
+        {%- endunless -%}
+        {%- if p.available -%}
+          <button type="submit" id="add-to-cart-button" class="btn btn--accent btn--lg btn--full">Añadir al carrito</button>
+        {%- else -%}
+          <button id="add-to-cart-button" class="btn btn--secondary btn--full" disabled>Agotado</button>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{%- comment -%} Product Zoom Modal {%- endcomment -%}
+<div class="product-zoom-modal" id="productZoomModal" data-product-zoom>
+  <div class="product-zoom-modal__backdrop" data-product-zoom-close></div>
+  <div class="product-zoom-modal__dialog">
+    <button class="product-zoom-modal__close" data-product-zoom-close aria-label="Cerrar">×</button>
+    <div class="product-zoom-modal__gallery">
+      <div class="product-zoom-modal__main" data-zoom-main>
+        {%- if p.featured_image -%}
+          <img class="product-zoom-modal__image" src="{{ p.featured_image | image_url: width: 2000 }}" alt="{{ p.featured_image.alt | escape }}" width="1200" height="1200" data-zoom-image>
+        {%- endif -%}
+      </div>
+      <div class="product-zoom-modal__thumbnails" data-zoom-thumbs>
+        {%- for image in p.images -%}
+          <button class="product-zoom-modal__thumb{% if image.id == p.featured_image.id %} is-active{% endif %}" data-zoom-thumb data-zoom-src="{{ image | image_url: width: 2000 }}" aria-label="Imagen {{ forloop.index }}">
+            <img src="{{ image | image_url: width: 200 }}" alt="" width="200" height="200" loading="lazy">
+          </button>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const mainImg = document.querySelector('[data-product-main-image]');
+    const modal = document.querySelector('[data-product-zoom]');
+    const zoomImage = document.querySelector('[data-zoom-image]');
+    const galleryThumbs = document.querySelectorAll('[data-product-thumb]');
+    const zoomThumbs = document.querySelectorAll('[data-zoom-thumb]');
+
+    function setActive(list, active) {
+      list.forEach(el => el.classList.remove('is-active'));
+      if (active) active.classList.add('is-active');
+    }
+
+    galleryThumbs.forEach(function(thumb) {
+      thumb.addEventListener('click', function() {
+        if (mainImg) mainImg.src = this.dataset.full;
+        if (zoomImage) zoomImage.src = this.dataset.zoom;
+        setActive(galleryThumbs, this);
+        const match = Array.prototype.find.call(zoomThumbs, t => t.dataset.zoomSrc === this.dataset.zoom);
+        setActive(zoomThumbs, match);
+      });
+    });
+
+    zoomThumbs.forEach(function(thumb) {
+      thumb.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (zoomImage) zoomImage.src = this.dataset.zoomSrc;
+        setActive(zoomThumbs, this);
+      });
+    });
+
+    if (mainImg && modal) {
+      mainImg.parentElement.addEventListener('click', function() {
+        modal.classList.add('is-open');
+      });
+    }
+
+    document.querySelectorAll('[data-product-zoom-close]').forEach(el => {
+      el.addEventListener('click', function() {
+        modal.classList.remove('is-open');
+      });
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal) modal.classList.remove('is-open');
+    });
+
+    const variantSelect = document.getElementById('variant');
+    const priceDisplay = document.getElementById('product-price');
+    const stockDisplay = document.getElementById('product-stock-info');
+    const addToCartButton = document.getElementById('add-to-cart-button');
+
+    function updateSelectedVariant() {
+      if (!variantSelect || !priceDisplay || !stockDisplay || !addToCartButton) return;
+      const selectedOption = variantSelect.selectedOptions[0];
+      if (!selectedOption) return;
+
+      const variantPrice = selectedOption.dataset.price;
+      const variantAvailable = selectedOption.dataset.available === 'true';
+      const variantQuantity = parseInt(selectedOption.dataset.quantity, 10);
+
+      priceDisplay.textContent = variantPrice || priceDisplay.textContent;
+
+      if (!variantAvailable) {
+        stockDisplay.textContent = 'Agotado';
+        addToCartButton.textContent = 'Agotado';
+        addToCartButton.disabled = true;
+        addToCartButton.classList.remove('btn--accent');
+        addToCartButton.classList.add('btn--secondary');
+      } else {
+        if (!isNaN(variantQuantity)) {
+          stockDisplay.textContent = variantQuantity > 0 ? variantQuantity + ' disponibles' : 'Stock disponible';
+        } else {
+          stockDisplay.textContent = 'Stock disponible';
+        }
+        addToCartButton.textContent = 'Añadir al carrito';
+        addToCartButton.disabled = false;
+        addToCartButton.classList.remove('btn--secondary');
+        addToCartButton.classList.add('btn--accent');
+      }
+    }
+
+    if (variantSelect) {
+      variantSelect.addEventListener('change', updateSelectedVariant);
+      updateSelectedVariant();
+    }
+  });
+</script>
+
+{% schema %}
+{ "name": "Producto", "settings": [] }
+{% endschema %}
