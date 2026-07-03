@@ -1,11 +1,24 @@
+{%- assign landing_asset_url = 'pew1-landing.html' | asset_url | append: '&pew1_sync=20260703nav' -%}
+
 <section class="pew1-landing-shell" data-pew1-landing-shell>
+  <div class="pew1-loader-overlay" data-pew1-loader-overlay>
+    <div class="pew1-loader-mark">
+      <img src="{{ 'pew1-loader-logo.png' | asset_url }}" alt="PEW1" width="168" height="160">
+    </div>
+    <div class="pew1-loader-meta" aria-hidden="true">
+      <div class="pew1-loader-track"><div class="pew1-loader-bar"></div></div>
+      <div class="pew1-loader-label">CARGANDO</div>
+    </div>
+  </div>
   <iframe
     class="pew1-landing-frame"
     data-pew1-landing-frame
-    data-src="{{ 'pew1-landing.html' | asset_url }}"
+    data-src="{{ landing_asset_url }}"
+    src="{{ landing_asset_url }}"
     title="PEW1 landing"
     loading="eager"
-    allow="fullscreen"
+    allow="clipboard-write; fullscreen"
+    referrerpolicy="strict-origin-when-cross-origin"
   ></iframe>
 </section>
 
@@ -18,6 +31,7 @@
 
   body.template-index {
     overflow: hidden;
+    overscroll-behavior: none;
   }
 
   body.template-index .shopify-section-group-header-group,
@@ -40,16 +54,107 @@
     width: 100vw;
     height: 100svh;
     min-height: 100vh;
-    background: #05060a;
+    background: #12369e;
     overflow: hidden;
+    overscroll-behavior: none;
   }
 
   .pew1-landing-frame {
     display: block;
     width: 100%;
     height: 100%;
+    min-height: 100svh;
     border: 0;
     background: #05060a;
+  }
+
+  .pew1-loader-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 56px;
+    background: #12369e;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 360ms ease, visibility 360ms ease;
+  }
+
+  .pew1-landing-shell.is-loaded .pew1-loader-overlay {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .pew1-loader-mark {
+    animation: pewi-rise 700ms cubic-bezier(.22, 1, .36, 1) both;
+  }
+
+  .pew1-loader-mark img {
+    display: block;
+    width: 168px;
+    height: auto;
+    filter: drop-shadow(0 14px 30px rgba(0, 0, 0, 0.28));
+    animation: pewi-float 3200ms ease-in-out infinite;
+  }
+
+  .pew1-loader-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    animation: pewi-fade 900ms 350ms cubic-bezier(.22, 1, .36, 1) both;
+  }
+
+  .pew1-loader-track {
+    position: relative;
+    width: 180px;
+    height: 2px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.22);
+    border-radius: 2px;
+  }
+
+  .pew1-loader-bar {
+    position: absolute;
+    top: 0;
+    width: 35%;
+    height: 100%;
+    background: #fff;
+    border-radius: 2px;
+    animation: pewi-sweep 1400ms cubic-bezier(.65, .05, .36, 1) infinite;
+  }
+
+  .pew1-loader-label {
+    color: rgba(255, 255, 255, 0.6);
+    font-family: Montserrat, system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+  }
+
+  @keyframes pewi-float {
+    0% { transform: translateY(6px) scale(0.985); }
+    50% { transform: translateY(-6px) scale(1.015); }
+    100% { transform: translateY(6px) scale(0.985); }
+  }
+
+  @keyframes pewi-rise {
+    0% { opacity: 0; transform: translateY(24px) scale(0.94); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes pewi-sweep {
+    0% { left: -35%; }
+    100% { left: 100%; }
+  }
+
+  @keyframes pewi-fade {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
   }
 </style>
 
@@ -62,6 +167,9 @@
     if (!frame) return;
 
     const base = frame.dataset.src;
+    const showLoaded = () => {
+      shell.classList.add('is-loaded');
+    };
     const syncFrameUrl = () => {
       const target = base + (window.location.hash || '');
 
@@ -71,7 +179,31 @@
     };
 
     syncFrameUrl();
+    frame.addEventListener('load', () => window.setTimeout(showLoaded, 450), { once: true });
     window.addEventListener('hashchange', syncFrameUrl);
+
+    // Navegación pedida por el landing (postMessage): navegar esta página
+    // conservando los parámetros del preview/editor de Shopify para que
+    // los clics de producto funcionen también dentro del editor.
+    window.addEventListener('message', (event) => {
+      const url = event.data && event.data.pewNavigate;
+      if (typeof url !== 'string') return;
+
+      let target;
+      try { target = new URL(url, window.location.href); } catch (err) { return; }
+
+      const host = target.hostname.toLowerCase();
+      const allowed = host === 'sarkpew1.com' || host.endsWith('.sarkpew1.com') || host.endsWith('.myshopify.com');
+      if (!allowed) return;
+
+      const current = new URLSearchParams(window.location.search);
+      const search = new URLSearchParams(target.search);
+      ['preview_theme_id', '_fd', 'pb', 'key', '_ab'].forEach((k) => {
+        if (current.has(k) && !search.has(k)) search.set(k, current.get(k));
+      });
+      const qs = search.toString();
+      window.location.href = target.pathname + (qs ? '?' + qs : '') + target.hash;
+    });
   })();
 </script>
 
