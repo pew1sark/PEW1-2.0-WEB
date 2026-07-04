@@ -4,16 +4,400 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SARKPEW1 — Arte original, murales y streetwear</title>
-  <meta name="robots" content="noindex">
-  <link rel="canonical" href="https://www.sarkpew1.com/">
-  <meta http-equiv="refresh" content="0; url=https://www.sarkpew1.com/">
-  <script>window.location.replace("https://www.sarkpew1.com/" + (window.location.hash || ""));</script>
+  <meta name="description" content="Obras originales, murales, prints y piezas visuales de Nicolás Sark PEW1. Arte urbano, pintura y proyectos personalizados desde Chile.">
+  <link rel="canonical" href="https://home.sarkpew1.com/">
+  <meta property="og:site_name" content="SARKPEW1">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="SARKPEW1 — Arte original, murales y streetwear">
+  <meta property="og:description" content="Obras originales, murales, prints y piezas visuales de Nicolás Sark PEW1. Arte urbano, pintura y proyectos personalizados desde Chile.">
+  <meta property="og:url" content="https://home.sarkpew1.com/">
+  <meta property="og:image" content="https://home.sarkpew1.com/assets/sombras.jpg">
+  <meta name="theme-color" content="#0A0F2E">
+  <link rel="icon" type="image/png" href="assets/pewi-icon-white.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body { margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #0A0F2E; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-    a { color: #FF7A00; font-size: 17px; text-decoration: none; }
+    :root{
+      --navy:#0A0F2E; --ink:#05060a; --paper:#F5F4F0; --muted:#C7C7C2; --faint:#9A9A95;
+      --orange:#FF7A00; --line:rgba(255,255,255,.12); --card:rgba(255,255,255,.04);
+      --display:'Archivo Black',sans-serif; --text:'Montserrat',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--ink);color:var(--muted);font-family:var(--text);-webkit-font-smoothing:antialiased;line-height:1.6}
+    img{max-width:100%;display:block}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,40px)}
+    section{padding:clamp(64px,10vh,120px) 0}
+    .kicker{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.28em;text-transform:uppercase;color:var(--faint)}
+    .kicker::before{content:"//";color:var(--orange)}
+    h1,h2,h3{font-family:var(--display);font-weight:400;color:var(--paper);line-height:.95}
+    h2{font-size:clamp(2rem,5.4vw,3.8rem);margin:14px 0 0}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:16px 26px;border-radius:9999px;font-weight:700;font-size:15px;transition:transform .18s ease,filter .18s ease}
+    .btn:hover{transform:translateY(-2px);filter:brightness(1.05)}
+    .btn--accent{background:var(--orange);color:var(--navy);box-shadow:0 14px 40px rgba(255,122,0,.28)}
+    .btn--ghost{border:1px solid rgba(255,255,255,.2);color:var(--paper);background:rgba(255,255,255,.05)}
+    .arrow{width:16px;height:16px;flex:none}
+
+    /* Header */
+    .top{position:sticky;top:0;z-index:50;background:rgba(5,6,10,.8);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+    .top .wrap{display:flex;align-items:center;justify-content:space-between;min-height:64px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand img{height:30px;width:auto}
+    .top nav{display:flex;align-items:center;gap:4px}
+    .top nav a{padding:9px 13px;border-radius:10px;font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--paper)}
+    .top nav a:hover{background:rgba(255,255,255,.07);color:var(--orange)}
+    .top nav .cta{background:var(--orange);color:var(--navy);border-radius:9999px;padding:10px 18px}
+    .top nav .cta:hover{background:var(--orange);color:var(--navy);filter:brightness(1.08)}
+    @media(max-width:760px){.top nav a:not(.cta){display:none}}
+
+    /* Hero */
+    .hero{position:relative;overflow:hidden;padding:clamp(70px,12vh,130px) 0}
+    .hero::before{content:"";position:absolute;inset:0;background:
+      radial-gradient(circle at 78% 18%, rgba(255,122,0,.16), transparent 30rem),
+      radial-gradient(circle at 12% 85%, rgba(60,82,140,.22), transparent 26rem)}
+    .hero .wrap{position:relative;display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,64px);align-items:center}
+    .hero h1{font-size:clamp(2.7rem,7.2vw,5.6rem);letter-spacing:-.01em;max-width:15ch}
+    .hero h1 em{font-style:normal;color:var(--orange)}
+    .hero p{margin:24px 0 0;max-width:52ch;font-size:clamp(15px,1.9vw,18px);font-weight:400}
+    .hero p b{color:var(--faint);font-weight:700}
+    .hero-cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
+    .hero-art{position:relative;border-radius:26px;overflow:hidden;border:1px solid var(--line);box-shadow:0 34px 90px rgba(0,0,0,.5);aspect-ratio:4/5;background:var(--navy)}
+    .hero-art img{width:100%;height:100%;object-fit:cover}
+    .hero-art::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 70%,rgba(5,6,10,.35));pointer-events:none}
+    .hero-art figcaption{position:absolute;left:16px;bottom:14px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--paper);opacity:.9}
+    @media(max-width:860px){.hero .wrap{grid-template-columns:1fr}.hero-art{max-width:420px}}
+
+    /* Obras */
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:44px}
+    @media(max-width:860px){.grid3{grid-template-columns:1fr}}
+    .obra{display:flex;flex-direction:column;border-radius:24px;overflow:hidden;background:var(--card);border:1px solid var(--line);transition:transform .2s ease,border-color .2s ease}
+    .obra:hover{transform:translateY(-5px);border-color:rgba(255,122,0,.6)}
+    .obra .media{position:relative;aspect-ratio:4/5;overflow:hidden}
+    .obra .media img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
+    .obra:hover .media img{transform:scale(1.04)}
+    .obra .tag{position:absolute;top:14px;left:14px;padding:6px 12px;border-radius:9999px;background:rgba(5,6,10,.55);border:1px solid rgba(255,255,255,.18);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--paper)}
+    .obra .body{display:flex;flex-direction:column;gap:14px;padding:20px 22px 24px}
+    .obra h3{font-size:24px}
+    .obra .foot{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .obra .price{font-size:17px;font-weight:700;color:var(--paper)}
+    .obra .go{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--orange)}
+    .sec-head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px}
+    .sec-head .more{display:inline-flex;align-items:center;gap:8px;font-weight:700;font-size:14px;color:var(--paper);border-bottom:2px solid var(--orange);padding-bottom:3px}
+    .cats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+    @media(max-width:760px){.cats{grid-template-columns:1fr}}
+    .cat{display:flex;align-items:center;gap:16px;padding:16px;border-radius:18px;background:var(--card);border:1px solid var(--line);transition:border-color .2s ease,transform .2s ease}
+    .cat:hover{border-color:rgba(255,122,0,.6);transform:translateY(-3px)}
+    .cat img{width:74px;height:74px;object-fit:cover;border-radius:12px;flex:none}
+    .cat b{display:block;color:var(--paper);font-size:15px}
+    .cat span{font-size:13px;color:var(--faint)}
+
+    /* Presentación */
+    .about{background:var(--navy)}
+    .about .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(28px,5vw,64px);align-items:center}
+    @media(max-width:860px){.about .wrap{grid-template-columns:1fr}}
+    .about-art{border-radius:24px;overflow:hidden;border:1px solid var(--line);aspect-ratio:4/3;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+    .about-art img{width:100%;height:100%;object-fit:cover}
+    .about p{margin:22px 0 0;font-size:clamp(15.5px,2vw,18px);max-width:56ch}
+    .about .stats{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+    .about .stat{padding:14px 18px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid var(--line)}
+    .about .stat b{display:block;font-family:var(--display);font-weight:400;font-size:24px;color:var(--paper);line-height:1}
+    .about .stat span{font-size:12px;letter-spacing:.05em;color:var(--faint)}
+    .about .cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
+
+    /* Marcas */
+    .brands{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:44px}
+    @media(max-width:760px){.brands{grid-template-columns:1fr}}
+    .brand-tile{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;min-height:290px;padding:42px 30px 58px;border-radius:22px;border:1px solid var(--line);overflow:hidden;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+    .brand-tile:hover{transform:translateY(-5px);border-color:var(--orange);box-shadow:0 26px 60px rgba(0,0,0,.4)}
+    .brand-tile .cta-mini{position:absolute;bottom:20px;display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--paper);opacity:.85}
+    .brand-tile:hover .cta-mini{color:var(--orange);opacity:1}
+    .tile-pew1{background:#282D2C}
+    .lockup{display:flex;align-items:center;gap:24px}
+    .lockup img.icon{width:clamp(60px,8vw,96px);height:auto}
+    .lockup .txt{display:flex;flex-direction:column;align-items:flex-start;gap:9px}
+    .lockup .txt img{width:clamp(160px,22vw,260px);height:auto}
+    .lockup .sub{font-weight:800;font-size:clamp(14px,1.9vw,20px);letter-spacing:.42em;text-transform:uppercase;color:#E8A821;line-height:1}
+    .tile-siz{background:var(--navy);padding:0}
+    .tile-siz img.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85;transition:transform .3s ease}
+    .tile-siz:hover img.photo{transform:scale(1.03)}
+    .tile-siz .siz-label{position:relative;z-index:1;font-family:var(--display);font-size:clamp(1.9rem,4.5vw,3rem);color:var(--paper);text-shadow:0 2px 20px rgba(0,0,0,.6)}
+    .tile-siz::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,6,10,.05),rgba(5,6,10,.5));z-index:1}
+    .tile-siz .siz-label,.tile-siz .cta-mini{z-index:2}
+
+    /* Personalizador */
+    .custom{background:linear-gradient(135deg,rgba(255,122,0,.14),rgba(255,255,255,.03));border-block:1px solid rgba(255,122,0,.25)}
+    .custom .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(28px,5vw,60px);align-items:center}
+    @media(max-width:860px){.custom .wrap{grid-template-columns:1fr}}
+    .custom p{margin:20px 0 0;max-width:52ch;font-size:clamp(15px,1.9vw,17.5px)}
+    .custom .cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:32px}
+    .custom-art{display:flex;justify-content:center}
+    .custom-art img{max-width:min(100%,380px);filter:drop-shadow(0 26px 60px rgba(0,0,0,.5))}
+
+    /* Reseñas */
+    .reviews-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:44px}
+    @media(max-width:760px){.reviews-grid{grid-template-columns:1fr}}
+    .review{display:flex;flex-direction:column;gap:16px;padding:26px;border-radius:22px;background:var(--card);border:1px solid var(--line)}
+    .stars{display:flex;gap:4px;color:var(--orange)}
+    .review blockquote{font-size:16.5px;line-height:1.55;color:var(--paper);font-weight:400}
+    .review .who{margin-top:auto}
+    .review .who b{display:block;color:var(--paper);font-size:14.5px}
+    .review .who span{font-size:12.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--faint)}
+
+    /* Footer */
+    footer{border-top:1px solid var(--line);padding:56px 0 40px;background:var(--navy)}
+    footer .wrap{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:28px}
+    footer .col{display:flex;flex-direction:column;gap:10px;font-size:14px}
+    footer .col a:hover{color:var(--orange)}
+    footer .legal{width:100%;margin-top:26px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;font-size:12.5px;color:var(--faint)}
+
+    .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+    .reveal.in{opacity:1;transform:none}
+    @media (prefers-reduced-motion: reduce){.reveal{opacity:1;transform:none;transition:none}}
   </style>
 </head>
 <body>
-  <p><a href="https://www.sarkpew1.com/">Te estamos llevando a www.sarkpew1.com&hellip;</a></p>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="SARKPEW1 inicio">
+      <img src="assets/pewi-icon-white.png" alt="" width="30" height="30">
+      <img src="assets/pewi-wordmark-white.png" alt="PEW1" width="98" height="15" style="height:15px">
+    </a>
+    <nav aria-label="Principal">
+      <a href="#obras">Obras</a>
+      <a href="#sarkpew1">El artista</a>
+      <a href="#streetwear">Street Wear</a>
+      <a href="#resenas">Reseñas</a>
+      <a class="cta" href="https://www.sarkpew1.com/collections/all">Ir a la tienda</a>
+    </nav>
+  </div>
+</header>
+
+<!-- 1 · HERO -->
+<section class="hero" id="inicio">
+  <div class="wrap">
+    <div>
+      <span class="kicker">Sarkpew1 · Arte que transforma</span>
+      <h1>El ser humano y <em>lo salvaje</em>, una sola imagen.</h1>
+      <p>Obras originales, murales hiperrealistas, fine art prints y street wear con obra aplicada. <b>Hecho en Chile, enviado al mundo.</b></p>
+      <div class="hero-cta">
+        <a class="btn btn--accent" href="https://www.sarkpew1.com/collections/originals">Ver obras originales
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </a>
+        <a class="btn btn--ghost" href="https://wa.me/56935733021?text=Hola%20Nicol%C3%A1s%2C%20quiero%20cotizar%20un%20proyecto%20con%20PEW1" target="_blank" rel="noopener">Cotizar proyecto</a>
+      </div>
+    </div>
+    <figure class="hero-art">
+      <img src="assets/sombras.jpg" alt="&quot;Sombras y Vuelo&quot; — pintura original de Nicolás Sark PEW1" width="800" height="1000" fetchpriority="high">
+      <figcaption>"Sombras y Vuelo" · Óleo y aerosol sobre tela</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 2 · COLECCIÓN DE PRODUCTOS -->
+<section id="obras">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="kicker">Piezas únicas</span>
+        <h2>Obras originales</h2>
+      </div>
+      <a class="more" href="https://www.sarkpew1.com/collections/originals">Ver toda la colección</a>
+    </div>
+    <div class="grid3">
+      <a class="obra reveal" href="https://www.sarkpew1.com/products/sombras-y-vuelo-original-paint">
+        <span class="media"><img src="assets/sombras.jpg" alt="Sombras y Vuelo" width="600" height="750" loading="lazy"><span class="tag">Pintura original</span></span>
+        <span class="body"><h3>Sombras y Vuelo</h3>
+          <span class="foot"><span class="price">$2.200.000</span><span class="go">Ver obra
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span></span>
+        </span>
+      </a>
+      <a class="obra reveal" href="https://www.sarkpew1.com/products/rugido-original-paint">
+        <span class="media"><img src="assets/rugido.jpg" alt="Rugido" width="600" height="750" loading="lazy"><span class="tag">Pintura original</span></span>
+        <span class="body"><h3>Rugido</h3>
+          <span class="foot"><span class="price">$2.200.000</span><span class="go">Ver obra
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span></span>
+        </span>
+      </a>
+      <a class="obra reveal" href="https://www.sarkpew1.com/products/sagrado-prohibido-original-paint">
+        <span class="media"><img src="assets/sagrado.jpg" alt="Sagrado Prohibido" width="600" height="750" loading="lazy"><span class="tag">Pintura original</span></span>
+        <span class="body"><h3>Sagrado Prohibido</h3>
+          <span class="foot"><span class="price">$2.200.000</span><span class="go">Ver obra
+            <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></span></span>
+        </span>
+      </a>
+    </div>
+    <div class="cats">
+      <a class="cat reveal" href="https://www.sarkpew1.com/collections/fine-art-print">
+        <img src="assets/life-prints.jpg" alt="Fine Art Prints PEW1" width="74" height="74" loading="lazy">
+        <span><b>Fine Art Print</b><span>Réplicas firmadas y numeradas · desde $15.000</span></span>
+      </a>
+      <a class="cat reveal" href="https://www.sarkpew1.com/collections/poster">
+        <img src="assets/prohibido.jpg" alt="Posters PEW1" width="74" height="74" loading="lazy">
+        <span><b>Posters</b><span>Obra en formato accesible · $10.000</span></span>
+      </a>
+      <a class="cat reveal" href="https://www.sarkpew1.com/collections/accesorios">
+        <img src="assets/tazones.jpg" alt="Coleccionables PEW1" width="74" height="74" loading="lazy">
+        <span><b>Coleccionables</b><span>Tazones, stickers, postales y más</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 3 · PRESENTACIÓN -->
+<section class="about" id="sarkpew1">
+  <div class="wrap">
+    <div class="about-art reveal">
+      <img src="assets/life-studio.jpg" alt="Nicolás Sark PEW1 trabajando en el taller" width="900" height="675" loading="lazy">
+    </div>
+    <div class="reveal">
+      <span class="kicker">El artista</span>
+      <h2>SARKPEW1</h2>
+      <p>Artista visual chileno con más de 8 años de trayectoria internacional en Chile, Argentina, Brasil, Perú y Colombia. Especialista en murales hiperrealistas, arte urbano y dirección creativa para espacios comerciales y culturales.</p>
+      <div class="stats">
+        <div class="stat"><b>8+</b><span>Años de trayectoria</span></div>
+        <div class="stat"><b>5</b><span>Países · CL AR BR PE CO</span></div>
+        <div class="stat"><b>1/1</b><span>Obras únicas firmadas</span></div>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn--accent" href="https://www.sarkpew1.com/pages/portafolio">Ver portafolio</a>
+        <a class="btn btn--ghost" href="https://wa.me/56935733021?text=Hola%20Nicol%C3%A1s%2C%20quiero%20cotizar%20un%20mural%20con%20PEW1" target="_blank" rel="noopener">Cotizar mural</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4 · MARCAS STREET WEAR -->
+<section id="streetwear">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="kicker">Street Wear</span>
+        <h2>Dos marcas, un origen</h2>
+      </div>
+      <a class="more" href="https://www.sarkpew1.com/pages/ropa">Ver todo ropa</a>
+    </div>
+    <div class="brands">
+      <a class="brand-tile tile-pew1 reveal" href="https://www.sarkpew1.com/pages/pew1-street-wear" aria-label="PEW1 Streetwear">
+        <span class="lockup">
+          <img class="icon" src="assets/pewi-icon-white.png" alt="" width="96" height="96" loading="lazy">
+          <span class="txt">
+            <img src="assets/pewi-wordmark-white.png" alt="PEWÏ" width="260" height="40" loading="lazy">
+            <span class="sub">Streetwear</span>
+          </span>
+        </span>
+        <span class="cta-mini">Ver PEW1
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
+      <a class="brand-tile tile-siz reveal" href="https://www.sarkpew1.com/collections/siz-street-wear" aria-label="SIZ Street Wear">
+        <img class="photo" src="assets/siz-streetwear.jpg" alt="" width="900" height="650" loading="lazy">
+        <span class="siz-label">SIZ STREET WEAR</span>
+        <span class="cta-mini">Ver SIZ
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 5 · PERSONALIZADOR -->
+<section class="custom" id="personalizar">
+  <div class="wrap">
+    <div class="reveal">
+      <span class="kicker">Custom</span>
+      <h2>Personalizador de prendas</h2>
+      <p>Diseña tu hoodie, polo o camiseta con obra PEW1 aplicada: elige la prenda, el color y la gráfica, y recíbela hecha a pedido. Confección nacional, algodón pesado.</p>
+      <div class="cta-row">
+        <a class="btn btn--accent" href="https://www.sarkpew1.com/pages/personalizador">Personalizar mi prenda
+          <svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </a>
+        <a class="btn btn--ghost" href="https://www.sarkpew1.com/collections/prendas-personalizadas">Ver prendas base</a>
+      </div>
+    </div>
+    <div class="custom-art reveal">
+      <img src="assets/mockup-hoodie.png" alt="Hoodie PEW1 personalizable" width="380" height="380" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- 6 · RESEÑAS (al final) -->
+<section id="resenas">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div>
+        <span class="kicker">Reseñas</span>
+        <h2>Lo que dicen del trabajo</h2>
+      </div>
+    </div>
+    <div class="reviews-grid">
+      <div class="review reveal">
+        <div class="stars" aria-label="5 de 5 estrellas">★★★★★</div>
+        <blockquote>"Encargué un retrato y lo que llegó superó todo. La textura, la mirada del animal y la mía fundidas — es la pieza más mirada de mi casa."</blockquote>
+        <div class="who"><b>Camila R.</b><span>Coleccionista · Santiago</span></div>
+      </div>
+      <div class="review reveal">
+        <div class="stars" aria-label="5 de 5 estrellas">★★★★★</div>
+        <blockquote>"El mural transformó la entrada del local por completo. Nicolás entendió la idea al instante y la llevó más lejos de lo que imaginé."</blockquote>
+        <div class="who"><b>Andrés M.</b><span>Café Raíz · Valparaíso</span></div>
+      </div>
+      <div class="review reveal">
+        <div class="stars" aria-label="5 de 5 estrellas">★★★★★</div>
+        <blockquote>"El hoodie SARK es brutal. Serigrafía impecable, algodón pesado de verdad. Se siente una pieza de arte, no una polera más."</blockquote>
+        <div class="who"><b>Fran T.</b><span>Cliente street wear</span></div>
+      </div>
+      <div class="review reveal">
+        <div class="stars" aria-label="5 de 5 estrellas">★★★★★</div>
+        <blockquote>"Compré un fine art print y la fidelidad de color es increíble. Llegó protegido, firmado y numerado. Volveré por el original."</blockquote>
+        <div class="who"><b>Daniela P.</b><span>Diseñadora · Concepción</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#inicio" aria-label="SARKPEW1">
+      <img src="assets/pewi-icon-white.png" alt="" width="34" height="34">
+      <img src="assets/pewi-wordmark-white.png" alt="PEW1" width="104" height="16" style="height:16px">
+    </a>
+    <div class="col">
+      <b style="color:var(--paper);font-size:12px;letter-spacing:.16em;text-transform:uppercase">Tienda</b>
+      <a href="https://www.sarkpew1.com/collections/originals">Obras originales</a>
+      <a href="https://www.sarkpew1.com/collections/fine-art-print">Fine Art Print</a>
+      <a href="https://www.sarkpew1.com/pages/ropa">Street Wear</a>
+      <a href="https://www.sarkpew1.com/collections/all">Todos los productos</a>
+    </div>
+    <div class="col">
+      <b style="color:var(--paper);font-size:12px;letter-spacing:.16em;text-transform:uppercase">Contacto</b>
+      <a href="https://instagram.com/sarkpew1" target="_blank" rel="noopener">Instagram @sarkpew1</a>
+      <a href="https://youtube.com/@sarkpew1" target="_blank" rel="noopener">YouTube @sarkpew1</a>
+      <a href="https://wa.me/56935733021" target="_blank" rel="noopener">WhatsApp +56 9 3573 3021</a>
+      <a href="mailto:contactosark@icloud.com">contactosark@icloud.com</a>
+    </div>
+    <div class="legal">
+      <span>© 2026 PEW1 — Nicolás Sark Pew1. Hecho en Chile.</span>
+      <a href="https://www.sarkpew1.com">www.sarkpew1.com ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { entry.target.classList.add('in'); io.unobserve(entry.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  })();
+</script>
+
 </body>
 </html>
