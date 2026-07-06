@@ -580,5 +580,289 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 </script>
 
+<!-- ============================================================
+     PEW1 · Publicar en vivo (GitHub) — commit real de pew1-content.json
+     Reutiliza el borrador del admin (localStorage 'pew1_admin_draft')
+     y publica con las MISMAS claves que la pagina aplica para todos.
+     Requiere un token fine-grained con Contents: Read and write.
+     El token vive solo en el localStorage del navegador del admin.
+     ============================================================ -->
+<script>
+(function () {
+  "use strict";
+
+  var CFG_KEY = "pew1_gh_cfg";
+  var DRAFT_KEY = "pew1_admin_draft";
+  var DEFAULT_REPO = "pew1sark/PEW1-2.0-WEB";
+  var DEFAULT_BRANCH = "main";
+  var CONTENT_PATH = "pew1-content.json";
+  var API = "https://api.github.com";
+
+  function getCfg() {
+    try {
+      var c = JSON.parse(localStorage.getItem(CFG_KEY) || "null") || {};
+      return {
+        token: c.token || "",
+        repo: c.repo || DEFAULT_REPO,
+        branch: c.branch || DEFAULT_BRANCH
+      };
+    } catch (e) {
+      return { token: "", repo: DEFAULT_REPO, branch: DEFAULT_BRANCH };
+    }
+  }
+  function setCfg(c) {
+    try { localStorage.setItem(CFG_KEY, JSON.stringify(c)); } catch (e) {}
+  }
+  function isAdmin() {
+    try {
+      if (sessionStorage.getItem("pew1_admin") === "1") return true;
+    } catch (e) {}
+    var h = (location.hash || "").toLowerCase();
+    return h === "#admin" || h === "#editar";
+  }
+  function b64utf8(str) {
+    return btoa(unescape(encodeURIComponent(str)));
+  }
+  function extFromMime(mime) {
+    var map = {
+      "image/png": "png", "image/jpeg": "jpg", "image/jpg": "jpg",
+      "image/webp": "webp", "image/gif": "gif", "image/svg+xml": "svg",
+      "image/avif": "avif", "image/bmp": "bmp"
+    };
+    return map[(mime || "").toLowerCase()] || "png";
+  }
+
+  /* ---------- GitHub Contents API ---------- */
+  function ghHeaders(token) {
+    return {
+      "Authorization": "Bearer " + token,
+      "Accept": "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28"
+    };
+  }
+  function ghGetSha(cfg, path) {
+    var url = API + "/repos/" + cfg.repo + "/contents/" + path + "?ref=" + encodeURIComponent(cfg.branch);
+    return fetch(url, { headers: ghHeaders(cfg.token), cache: "no-store" })
+      .then(function (r) {
+        if (r.status === 404) return null;
+        if (!r.ok) return r.text().then(function (t) { throw new Error("GET " + path + " -> " + r.status + " " + t); });
+        return r.json().then(function (j) { return j.sha || null; });
+      });
+  }
+  function ghPut(cfg, path, base64content, message, sha) {
+    var url = API + "/repos/" + cfg.repo + "/contents/" + path;
+    var body = { message: message, content: base64content, branch: cfg.branch };
+    if (sha) body.sha = sha;
+    return fetch(url, {
+      method: "PUT",
+      headers: ghHeaders(cfg.token),
+      body: JSON.stringify(body)
+    }).then(function (r) {
+      if (!r.ok) return r.text().then(function (t) {
+        var msg = "PUT " + path + " -> " + r.status;
+        if (r.status === 401) msg = "Token invalido o sin permiso (401). Revisa Config.";
+        else if (r.status === 403) msg = "Sin permiso (403). El token necesita 'Contents: Read and write' sobre " + cfg.repo + ".";
+        else if (r.status === 404) msg = "Repo o rama no encontrada (404): " + cfg.repo + "@" + cfg.branch + ".";
+        else if (r.status === 409) msg = "Conflicto (409). Vuelve a intentar Publicar.";
+        else msg += " " + t;
+        throw new Error(msg);
+      });
+      return r.json();
+    });
+  }
+
+  /* ---------- merge published baseline + local draft ---------- */
+  function readDraft() {
+    try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || "null"); } catch (e) { return null; }
+  }
+  function loadPublished() {
+    return fetch(CONTENT_PATH, { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; });
+  }
+  function mergeContent(pub, draft) {
+    pub = pub || {}; draft = draft || {};
+    var out = {
+      text: Object.assign({}, pub.text || {}, draft.text || {}),
+      img: Object.assign({}, pub.img || {}, draft.img || {}),
+      hidden: Object.assign({}, pub.hidden || {}, draft.hidden || {})
+    };
+    // preserve any extra fields the content file may carry (links, added, ...)
+    ["links", "added"].forEach(function (k) {
+      if (draft[k] !== undefined) out[k] = draft[k];
+      else if (pub[k] !== undefined) out[k] = pub[k];
+    });
+    return out;
+  }
+
+  /* ---------- publish ---------- */
+  function setStatus(msg, kind) {
+    var el = document.getElementById("pew1pub-status");
+    if (!el) return;
+    el.textContent = msg || "";
+    el.style.color = kind === "err" ? "#ff8a80" : (kind === "ok" ? "#7CFFB2" : "#B9B9B4");
+  }
+
+  function publishLive() {
+    var cfg = getCfg();
+    if (!cfg.token) {
+      openConfig();
+      setStatus("Configura tu token de GitHub primero.", "err");
+      return;
+    }
+    var btn = document.getElementById("pew1pub-go");
+    if (btn) { btn.disabled = true; btn.textContent = "Publicando..."; }
+    setStatus("Preparando cambios...", "info");
+
+    loadPublished().then(function (pub) {
+      var content = mergeContent(pub, readDraft());
+      var imgKeys = Object.keys(content.img || {}).filter(function (k) {
+        return typeof content.img[k] === "string" && content.img[k].indexOf("data:") === 0;
+      });
+
+      // 1) subir imagenes nuevas (base64) como archivos a /uploads
+      var i = 0;
+      function nextImg() {
+        if (i >= imgKeys.length) return Promise.resolve();
+        var key = imgKeys[i]; i += 1;
+        var dataUrl = content.img[key];
+        var m = /^data:([^;]+);base64,(.*)$/.exec(dataUrl);
+        if (!m) { return nextImg(); } // no base64 -> deja como esta
+        var ext = extFromMime(m[1]);
+        var b64 = m[2];
+        var name = "uploads/pew1-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 7) + "." + ext;
+        setStatus("Subiendo imagen " + i + "/" + imgKeys.length + "...", "info");
+        return ghPut(cfg, name, b64, "Admin: subir imagen " + name).then(function () {
+          content.img[key] = name; // referencia por ruta (sin base64)
+          return nextImg();
+        });
+      }
+
+      return nextImg().then(function () {
+        // 2) commit del pew1-content.json (necesita sha si ya existe)
+        setStatus("Publicando contenido...", "info");
+        return ghGetSha(cfg, CONTENT_PATH).then(function (sha) {
+          var json = JSON.stringify(content, null, 2);
+          return ghPut(cfg, CONTENT_PATH, b64utf8(json), "Publicar landing desde admin", sha).then(function () {
+            // guarda el draft ya con rutas (evita re-subir las mismas imagenes)
+            try { localStorage.setItem(DRAFT_KEY, JSON.stringify(content)); } catch (e) {}
+            return true;
+          });
+        });
+      });
+    }).then(function () {
+      setStatus("Publicado. GitHub Pages actualiza el sitio en ~1 min.", "ok");
+    }).catch(function (err) {
+      console.error("[PEW1 publicar]", err);
+      setStatus((err && err.message) || "Error al publicar.", "err");
+    }).then(function () {
+      var b = document.getElementById("pew1pub-go");
+      if (b) { b.disabled = false; b.textContent = "Publicar en vivo"; }
+    });
+  }
+
+  /* ---------- UI ---------- */
+  function css() {
+    if (document.getElementById("pew1pub-css")) return;
+    var s = document.createElement("style");
+    s.id = "pew1pub-css";
+    s.textContent = [
+      "#pew1pub-bar{position:fixed;left:18px;bottom:18px;z-index:1000000;display:none;flex-direction:column;gap:8px;align-items:flex-start;font-family:Montserrat,system-ui,sans-serif}",
+      "#pew1pub-bar.on{display:flex}",
+      ".pew1pub-row{display:flex;gap:8px;align-items:center;padding:8px;border-radius:999px;background:rgba(5,6,10,.82);border:1px solid rgba(255,255,255,.16);box-shadow:0 20px 70px rgba(0,0,0,.5);backdrop-filter:blur(16px)}",
+      ".pew1pub-btn{min-height:40px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#F5F4F0;padding:0 16px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;font-size:11px;cursor:pointer}",
+      ".pew1pub-btn.primary{background:#FF7A00;border-color:#FF7A00;color:#0A0F2E}",
+      ".pew1pub-btn:disabled{opacity:.6;cursor:default}",
+      "#pew1pub-status{max-width:340px;font-size:12px;line-height:1.4;color:#B9B9B4;padding:0 6px}",
+      "#pew1pub-cfg{position:fixed;left:18px;bottom:78px;z-index:1000001;width:min(380px,calc(100vw - 36px));padding:18px;border-radius:20px;background:rgba(5,6,10,.92);border:1px solid rgba(255,255,255,.18);box-shadow:0 24px 80px rgba(0,0,0,.6);backdrop-filter:blur(16px);color:#F5F4F0;display:none}",
+      "#pew1pub-cfg.on{display:block}",
+      "#pew1pub-cfg h3{margin:0 0 4px;font:900 18px/1.1 Montserrat,system-ui,sans-serif}",
+      "#pew1pub-cfg p{margin:0 0 12px;color:#9A9A95;font-size:12px;line-height:1.45}",
+      "#pew1pub-cfg label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#9A9A95;margin:10px 0 4px}",
+      "#pew1pub-cfg input{width:100%;height:40px;border-radius:12px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.07);color:#fff;padding:0 12px;box-sizing:border-box}",
+      "#pew1pub-cfg .pew1pub-actions{display:flex;gap:8px;margin-top:14px}"
+    ].join("\n");
+    document.head.appendChild(s);
+  }
+
+  function buildUI() {
+    if (document.getElementById("pew1pub-bar")) return;
+    css();
+
+    var bar = document.createElement("div");
+    bar.id = "pew1pub-bar";
+    bar.innerHTML =
+      '<div class="pew1pub-row">' +
+        '<button class="pew1pub-btn" id="pew1pub-cfg-btn">Config</button>' +
+        '<button class="pew1pub-btn primary" id="pew1pub-go">Publicar en vivo</button>' +
+      '</div>' +
+      '<div id="pew1pub-status"></div>';
+    document.body.appendChild(bar);
+
+    var cfgPanel = document.createElement("div");
+    cfgPanel.id = "pew1pub-cfg";
+    cfgPanel.innerHTML =
+      '<h3>Config de publicacion</h3>' +
+      '<p>Token fine-grained de GitHub con permiso <b>Contents: Read and write</b> sobre el repo. Se guarda solo en este navegador.</p>' +
+      '<label>GitHub token</label><input type="password" id="pew1pub-token" placeholder="github_pat_...">' +
+      '<label>Repositorio (owner/repo)</label><input type="text" id="pew1pub-repo">' +
+      '<label>Rama</label><input type="text" id="pew1pub-branch">' +
+      '<div class="pew1pub-actions">' +
+        '<button class="pew1pub-btn primary" id="pew1pub-save">Guardar</button>' +
+        '<button class="pew1pub-btn" id="pew1pub-close">Cerrar</button>' +
+      '</div>';
+    document.body.appendChild(cfgPanel);
+
+    document.getElementById("pew1pub-go").addEventListener("click", publishLive);
+    document.getElementById("pew1pub-cfg-btn").addEventListener("click", openConfig);
+    document.getElementById("pew1pub-close").addEventListener("click", closeConfig);
+    document.getElementById("pew1pub-save").addEventListener("click", function () {
+      var c = {
+        token: document.getElementById("pew1pub-token").value.trim(),
+        repo: (document.getElementById("pew1pub-repo").value.trim() || DEFAULT_REPO),
+        branch: (document.getElementById("pew1pub-branch").value.trim() || DEFAULT_BRANCH)
+      };
+      setCfg(c);
+      closeConfig();
+      setStatus(c.token ? "Config guardada." : "Falta el token.", c.token ? "ok" : "err");
+    });
+  }
+
+  function openConfig() {
+    buildUI();
+    var cfg = getCfg();
+    document.getElementById("pew1pub-token").value = cfg.token;
+    document.getElementById("pew1pub-repo").value = cfg.repo;
+    document.getElementById("pew1pub-branch").value = cfg.branch;
+    document.getElementById("pew1pub-cfg").classList.add("on");
+  }
+  function closeConfig() {
+    var p = document.getElementById("pew1pub-cfg");
+    if (p) p.classList.remove("on");
+  }
+
+  function syncVisibility() {
+    buildUI();
+    var bar = document.getElementById("pew1pub-bar");
+    if (!bar) return;
+    if (isAdmin()) bar.classList.add("on");
+    else { bar.classList.remove("on"); closeConfig(); }
+  }
+
+  function init() {
+    buildUI();
+    syncVisibility();
+    window.addEventListener("hashchange", syncVisibility);
+    setInterval(syncVisibility, 800); // sigue el estado de sesion del admin
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+
 </body>
 </html>
