@@ -992,6 +992,52 @@ document.addEventListener('DOMContentLoaded', async function() {
     var marquee = false;
     try { marquee = !reduced && window.matchMedia("(hover: hover) and (pointer: fine)").matches; } catch (e) {}
 
+    // Banner infinito (desktop): cinta duplicada animada por CSS puro — el
+    // navegador la mueve solo, sin depender de rAF ni de logica de estado.
+    // Se pausa al posar el mouse sobre una obra o al enfocarla con teclado.
+    if (marquee) {
+      var strip = document.createElement("div");
+      strip.setAttribute("data-obras-strip", "");
+      while (track.firstChild) strip.appendChild(track.firstChild);
+      Array.prototype.slice.call(strip.children).forEach(function (c) {
+        strip.appendChild(c.cloneNode(true));
+      });
+      strip.style.display = "flex";
+      strip.style.gap = "22px";
+      strip.style.width = "max-content";
+      strip.style.willChange = "transform";
+      track.style.scrollSnapType = "none";
+      track.style.overflowX = "hidden";
+      track.appendChild(strip);
+      var mCss = document.createElement("style");
+      mCss.textContent = "@keyframes pew1obras{from{transform:translateX(0)}to{transform:translateX(var(--pew1-dist,-1910px))}}";
+      document.head.appendChild(mCss);
+      var applyMarquee = function () {
+        var dist = strip.children.length > count
+          ? strip.children[count].offsetLeft - strip.children[0].offsetLeft
+          : 0;
+        if (dist < 300) { setTimeout(applyMarquee, 600); return; }
+        strip.style.setProperty("--pew1-dist", (-dist) + "px");
+        strip.style.animation = "pew1obras " + Math.max(20, Math.round(dist / 40)) + "s linear infinite";
+      };
+      applyMarquee();
+      window.addEventListener("resize", applyMarquee);
+      var pauseStrip = function () { strip.style.animationPlayState = "paused"; };
+      var runStrip = function () { strip.style.animationPlayState = "running"; };
+      strip.addEventListener("pointerover", function (e) {
+        if (e.pointerType !== "mouse") return;
+        if (e.target && e.target.closest && e.target.closest(".pew-obra-card")) pauseStrip();
+      });
+      strip.addEventListener("pointerout", function (e) {
+        if (e.pointerType !== "mouse") return;
+        var to = e.relatedTarget;
+        if (!to || !to.closest || !to.closest(".pew-obra-card")) runStrip();
+      });
+      strip.addEventListener("focusin", pauseStrip);
+      strip.addEventListener("focusout", runStrip);
+      return;
+    }
+
     function mkArrow(dir) {
       var b = document.createElement("button");
       b.type = "button";
@@ -1019,17 +1065,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
     gallery.appendChild(dots);
 
-    // Banner infinito en desktop: se duplican las tarjetas para dar la
-    // vuelta sin costuras; el movimiento continuo vive en el tick de abajo.
     var wrap = 0;
-    if (marquee) {
-      dots.style.display = "none";
-      Array.prototype.slice.call(track.children).forEach(function (c) {
-        track.appendChild(c.cloneNode(true));
-      });
-      track.style.scrollSnapType = "none";
-      wrap = track.children[count].getBoundingClientRect().left - track.children[0].getBoundingClientRect().left;
-    }
 
     function step() {
       var c = track.children[0];
@@ -1132,28 +1168,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       }, { threshold: 0.25 }).observe(gallery);
     }
 
-    if (marquee) {
-      var SPEED = 40; // px por segundo
-      var pos = -1;
-      var lastTs = -1;
-      var tick = function (ts) {
-        if (lastTs < 0) lastTs = ts;
-        var dt = Math.min(ts - lastTs, 80);
-        lastTs = ts;
-        // re-medir el loop cada frame: el layout puede no estar listo al
-        // iniciar (pestana en segundo plano, imagenes/vw sin calcular)
-        if (track.children.length > count) {
-          wrap = track.children[count].getBoundingClientRect().left - track.children[0].getBoundingClientRect().left;
-        }
-        if (pos < 0 || Math.abs(track.scrollLeft - pos) > 1.5) pos = track.scrollLeft;
-        var moving = !document.hidden && inView && !hovered && !dragging && (Date.now() - lastInteract > 1200) && wrap > 300;
-        if (moving) pos += SPEED * dt / 1000;
-        if (wrap > 300 && pos >= wrap) pos -= wrap;
-        if (moving || (wrap > 300 && track.scrollLeft >= wrap)) track.scrollLeft = pos;
-        requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    } else if (!reduced) {
+    if (!reduced) {
       setInterval(function () {
         if (document.hidden || hovered || !inView) return;
         if (Date.now() - lastInteract < IDLE_MS) return;
