@@ -1043,11 +1043,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
     paint();
 
-    var raf = null;
-    track.addEventListener("scroll", function () {
-      if (raf) return;
-      raf = requestAnimationFrame(function () { raf = null; paint(); });
-    }, { passive: true });
+    track.addEventListener("scroll", paint, { passive: true });
 
     var lastInteract = 0;
     function interact() { lastInteract = Date.now(); }
@@ -1056,6 +1052,42 @@ document.addEventListener('DOMContentLoaded', async function() {
     ["pointerdown", "touchstart", "wheel", "keydown"].forEach(function (ev) {
       track.addEventListener(ev, interact, { passive: true });
     });
+
+    // Arrastre con mouse: el touch ya desliza nativo, el mouse necesita drag manual.
+    var dragCss = document.createElement("style");
+    dragCss.textContent = "[data-obras-track]{cursor:grab;user-select:none;-webkit-user-select:none}[data-obras-track]:active{cursor:grabbing}[data-obras-track] img{-webkit-user-drag:none}";
+    document.head.appendChild(dragCss);
+    var dragging = false, dragMoved = false, dragX = 0, dragScroll = 0;
+    var snapOriginal = track.style.scrollSnapType;
+    track.addEventListener("pointerdown", function (e) {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      dragging = true; dragMoved = false;
+      dragX = e.clientX; dragScroll = track.scrollLeft;
+    });
+    track.addEventListener("dragstart", function (e) { e.preventDefault(); });
+    window.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      var dx = e.clientX - dragX;
+      if (!dragMoved && Math.abs(dx) > 6) {
+        dragMoved = true;
+        track.style.scrollSnapType = "none";
+      }
+      if (dragMoved) track.scrollLeft = dragScroll - dx;
+    });
+    function endDrag() {
+      if (!dragging) return;
+      dragging = false;
+      interact();
+      if (dragMoved) {
+        go(index());
+        setTimeout(function () { track.style.scrollSnapType = snapOriginal; }, 500);
+      }
+    }
+    window.addEventListener("pointerup", endDrag);
+    window.addEventListener("pointercancel", endDrag);
+    track.addEventListener("click", function (e) {
+      if (dragMoved) { e.preventDefault(); e.stopPropagation(); dragMoved = false; }
+    }, true);
 
     var hovered = false;
     gallery.addEventListener("pointerenter", function () { hovered = true; });
