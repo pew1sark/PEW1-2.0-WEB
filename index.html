@@ -1110,9 +1110,19 @@ document.addEventListener('DOMContentLoaded', async function() {
       if (dragMoved) { e.preventDefault(); e.stopPropagation(); dragMoved = false; }
     }, true);
 
+    // Pausa solo al posar el mouse sobre una obra concreta (no sobre toda
+    // la franja): si cubriera todo el ancho, el banner pareceria detenido.
     var hovered = false;
-    gallery.addEventListener("pointerenter", function () { hovered = true; });
-    gallery.addEventListener("pointerleave", function () { hovered = false; interact(); });
+    track.addEventListener("pointerover", function (e) {
+      if (e.pointerType !== "mouse") return;
+      if (e.target && e.target.closest && e.target.closest(".pew-obra-card")) hovered = true;
+    });
+    track.addEventListener("pointerout", function (e) {
+      if (e.pointerType !== "mouse") return;
+      var to = e.relatedTarget;
+      if (!to || !to.closest || !to.closest(".pew-obra-card")) hovered = false;
+    });
+    gallery.addEventListener("pointerleave", function () { hovered = false; });
 
     var inView = true;
     if ("IntersectionObserver" in window) {
