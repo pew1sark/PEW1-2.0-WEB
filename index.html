@@ -864,6 +864,46 @@ document.addEventListener('DOMContentLoaded', async function() {
 })();
 </script>
 
+<script data-embed-nav-fix="">
+(function () {
+  "use strict";
+  // Cuando el landing corre embebido en la tienda (iframe), la app de
+  // divisa del storefront flota fija arriba a la derecha (z-index maximo)
+  // y tapa el menu movil. Bajamos la barra de navegacion bajo esa zona.
+  var embedded = window.parent !== window;
+  var debug = location.search.indexOf("embedtest") !== -1;
+  if (!embedded && !debug) return;
+
+  function findNav() {
+    var navs = document.querySelectorAll("nav");
+    for (var i = 0; i < navs.length; i++) {
+      var cs = getComputedStyle(navs[i]);
+      var r = navs[i].getBoundingClientRect();
+      if (cs.position === "fixed" && r.width > 300 && r.top >= 0 && r.top < 90) return navs[i];
+    }
+    return null;
+  }
+
+  function apply() {
+    var nav = findNav();
+    if (!nav) return false;
+    if (window.innerWidth <= 760) {
+      nav.style.setProperty("top", "64px", "important");
+    } else {
+      nav.style.removeProperty("top");
+    }
+    return true;
+  }
+
+  var tries = 0;
+  var timer = setInterval(function () {
+    tries += 1;
+    if (apply() || tries > 300) clearInterval(timer);
+  }, 200);
+  window.addEventListener("resize", apply);
+})();
+</script>
+
 <script data-obras-sync="">
 (function () {
   "use strict";
