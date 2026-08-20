@@ -1,0 +1,892 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SARK · Kit de transmisión</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Barlow+Condensed:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   SARK — KIT DE TRANSMISIÓN EN VIVO
+   Una sola plantilla, todas las piezas por partes.
+   Cada pieza se carga en OBS como "Fuente de navegador"
+   apuntando a este mismo archivo con ?p=<pieza>.
+   Funciona en horizontal (1920x1080) y vertical (1080x1920):
+   todo está medido en vmin, así que el lado corto manda y las
+   proporciones se mantienen idénticas en ambas orientaciones.
+   ============================================================ */
+
+/* ---------- 1. TOKENS ---------- */
+:root{
+  /* Neón de marca */
+  --cy:#5FF6E4;
+  --cy-rgb:95 246 228;
+  --cy-2:#00E5D0;
+  --cy-soft:#A9FFF3;
+  --ice:#E8FFFB;
+
+  /* Fondo profundo */
+  --navy:#0B2231;
+  --navy-2:#071626;
+  --ink:#030B12;
+
+  /* Acentos secundarios (del arte low-poly) */
+  --steel:#7FA0C0;
+  --violet:#5B3FA8;
+  --gold:#C9A227;
+
+  /* Tipografías */
+  --f-d:'Chakra Petch','Rajdhani','Segoe UI',system-ui,sans-serif;
+  --f-t:'Barlow Condensed','Chakra Petch','Segoe UI',system-ui,sans-serif;
+
+  /* Trazo y resplandor */
+  --line:0.26vmin;
+  --glow-s:0 0 .35vmin var(--cy), 0 0 1.1vmin rgb(var(--cy-rgb) / .70);
+  --glow-m:0 0 .35vmin #fff, 0 0 1.3vmin var(--cy), 0 0 4vmin rgb(var(--cy-rgb) / .38);
+  --glow-l:0 0 .5vmin #fff, 0 0 1.8vmin var(--cy), 0 0 5.5vmin rgb(var(--cy-rgb) / .50), 0 0 12vmin rgb(var(--cy-rgb) / .22);
+  --tx-s:0 0 .7vmin rgb(var(--cy-rgb) / .85);
+  --tx-l:0 0 .9vmin rgb(var(--cy-rgb) / .95), 0 0 3.4vmin rgb(var(--cy-rgb) / .45);
+
+  /* Vidrio */
+  --glass:rgba(3,11,18,.52);
+  --glass-2:rgba(3,11,18,.72);
+
+  /* Zona segura (se ajusta en vertical) */
+  --safe-b:0vmin;
+}
+
+/* ---------- 2. BASE ---------- */
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%;overflow:hidden;background:transparent}
+body{
+  font-family:var(--f-t);
+  color:var(--ice);
+  -webkit-font-smoothing:antialiased;
+  cursor:none;
+}
+html.panel,body.panel{height:auto;min-height:100%;overflow:visible;cursor:auto;background:var(--ink)}
+.part{display:none;position:fixed;inset:0}
+.part.on{display:block}
+img{max-width:100%}
+
+/* Fondo de marca (solo en las escenas completas) */
+#bg{position:fixed;inset:0;display:none;z-index:0}
+body.has-bg #bg{display:block}
+#bg .grad{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(120% 90% at 18% 10%, #10394C 0%, rgba(16,57,76,0) 62%),
+    radial-gradient(90% 80% at 88% 88%, rgba(91,63,168,.30) 0%, rgba(91,63,168,0) 60%),
+    linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 55%, var(--ink) 100%);
+}
+#bg .shards{position:absolute;inset:0;opacity:.22;mix-blend-mode:screen}
+#bg .shards svg{width:100%;height:100%;display:block}
+#bg .spl{position:absolute;inset:0;opacity:.5}
+#bg .spl svg{width:100%;height:100%;display:block}
+#bg .scrim{
+  position:absolute;inset:0;
+  background:radial-gradient(58% 44% at 50% 46%, rgba(3,11,18,.72) 0%, rgba(3,11,18,.34) 55%, rgba(3,11,18,0) 78%);
+}
+#bg .beams{
+  position:absolute;inset:0;opacity:.22;
+  background:repeating-linear-gradient(102deg,
+    rgba(169,255,243,.20) 0 .18vmin,
+    rgba(169,255,243,0) .18vmin 9vmin);
+  -webkit-mask-image:radial-gradient(70% 90% at 12% 0%, #000 0%, transparent 70%);
+          mask-image:radial-gradient(70% 90% at 12% 0%, #000 0%, transparent 70%);
+}
+/* Ruido / textura de grano — se apaga con ?fx=0 */
+#fx{position:fixed;inset:0;z-index:60;pointer-events:none;display:none}
+body.has-fx #fx{display:block}
+#fx .noise{
+  position:absolute;inset:0;opacity:.055;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  background-size:34vmin 34vmin;
+}
+#fx .scan{
+  position:absolute;inset:0;opacity:.16;
+  background:repeating-linear-gradient(180deg, rgba(0,0,0,.55) 0 .12vmin, rgba(0,0,0,0) .12vmin .36vmin);
+}
+
+/* ---------- 3. COMPONENTES ---------- */
+
+/* 3.1 Marco de neón */
+.frame{
+  position:absolute;inset:3.4vmin;
+  border:var(--line) solid var(--cy);
+  box-shadow:var(--glow-l), inset 0 0 3vmin rgb(var(--cy-rgb) / .16);
+  border-radius:.2vmin;
+  animation:breathe 5.2s ease-in-out infinite;
+}
+.frame.tight{inset:1.6vmin}
+@keyframes breathe{
+  0%,100%{box-shadow:var(--glow-l), inset 0 0 3vmin rgb(var(--cy-rgb) / .16)}
+  50%{box-shadow:0 0 .5vmin #fff, 0 0 2.4vmin var(--cy), 0 0 7vmin rgb(var(--cy-rgb) / .42), 0 0 15vmin rgb(var(--cy-rgb) / .18), inset 0 0 4.5vmin rgb(var(--cy-rgb) / .22)}
+}
+/* Esquinas: ganchos más brillantes, corte a 45° */
+.frame i{position:absolute;width:5.4vmin;height:5.4vmin;border:calc(var(--line)*1.5) solid var(--cy-soft);
+  filter:drop-shadow(0 0 .45vmin var(--cy)) drop-shadow(0 0 1.6vmin rgb(var(--cy-rgb) / .55));opacity:.92}
+.frame i.tl{top:calc(var(--line)*-1);left:calc(var(--line)*-1);border-right:0;border-bottom:0}
+.frame i.tr{top:calc(var(--line)*-1);right:calc(var(--line)*-1);border-left:0;border-bottom:0}
+.frame i.bl{bottom:calc(var(--line)*-1);left:calc(var(--line)*-1);border-right:0;border-top:0}
+.frame i.br{bottom:calc(var(--line)*-1);right:calc(var(--line)*-1);border-left:0;border-top:0}
+
+/* 3.2 Pestaña del logotipo (va montada sobre el borde superior) */
+.tab{
+  position:absolute;top:0;left:50%;
+  transform:translate(-50%,-52%);
+  padding:.9vmin 3.2vmin;
+  background:var(--glass-2);
+  border:var(--line) solid var(--cy);
+  box-shadow:var(--glow-m);
+  display:flex;align-items:center;
+  -webkit-clip-path:polygon(1.4vmin 0,calc(100% - 1.4vmin) 0,100% 1.4vmin,100% 100%,0 100%,0 1.4vmin);
+          clip-path:polygon(1.4vmin 0,calc(100% - 1.4vmin) 0,100% 1.4vmin,100% 100%,0 100%,0 1.4vmin);
+}
+.tab.left{left:8vmin;transform:translate(0,-52%)}
+.wordmark{height:3.1vmin;width:auto;display:block;filter:drop-shadow(0 0 .8vmin rgb(var(--cy-rgb) / .9)) drop-shadow(0 0 3vmin rgb(var(--cy-rgb) / .45))}
+.wordmark{color:var(--cy)}
+img.wordmark{filter:drop-shadow(0 0 .9vmin rgb(var(--cy-rgb) / .85))}
+
+/* 3.3 Etiquetas / textos */
+.kicker{
+  font-family:var(--f-d);font-weight:600;
+  font-size:1.35vmin;letter-spacing:.42em;text-transform:uppercase;
+  color:var(--cy);text-shadow:var(--tx-s);
+}
+.h-big{
+  font-family:var(--f-d);font-weight:700;
+  font-size:7.6vmin;line-height:.98;letter-spacing:.02em;text-transform:uppercase;
+  color:var(--ice);text-shadow:var(--tx-l);margin:0;
+}
+.h-mid{
+  font-family:var(--f-d);font-weight:600;
+  font-size:3.1vmin;line-height:1.05;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--ice);text-shadow:var(--tx-s);margin:0;
+}
+.body{
+  font-size:2vmin;line-height:1.4;letter-spacing:.04em;
+  color:rgba(232,255,251,.72);margin:0;
+}
+.rule{height:var(--line);background:linear-gradient(90deg,var(--cy),rgb(var(--cy-rgb) / 0));box-shadow:var(--glow-s)}
+
+/* 3.4 Píldora EN VIVO */
+.live{
+  display:inline-flex;align-items:center;gap:1vmin;
+  padding:.75vmin 1.7vmin;
+  background:var(--glass-2);
+  border:var(--line) solid rgb(var(--cy-rgb) / .75);
+  box-shadow:var(--glow-s);
+  -webkit-clip-path:polygon(1vmin 0,100% 0,100% calc(100% - 1vmin),calc(100% - 1vmin) 100%,0 100%,0 1vmin);
+          clip-path:polygon(1vmin 0,100% 0,100% calc(100% - 1vmin),calc(100% - 1vmin) 100%,0 100%,0 1vmin);
+}
+.live .dot{width:1.05vmin;height:1.05vmin;border-radius:50%;background:var(--cy);box-shadow:var(--glow-m);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.72)}}
+.live span{font-family:var(--f-d);font-weight:600;font-size:1.3vmin;letter-spacing:.34em;text-transform:uppercase;color:var(--cy);text-shadow:var(--tx-s)}
+
+/* 3.5 Firma (handle + web) */
+.sign{display:flex;flex-direction:column;gap:.35vmin;align-items:flex-end;text-align:right}
+.sign .user{font-family:var(--f-d);font-weight:600;font-size:2.1vmin;letter-spacing:.14em;color:var(--ice);text-shadow:var(--tx-s)}
+.sign .web{font-size:1.35vmin;letter-spacing:.32em;text-transform:uppercase;color:rgb(var(--cy-rgb) / .85)}
+.sign.left{align-items:flex-start;text-align:left}
+
+/* 3.6 Iconos sociales */
+.social{display:flex;gap:1.2vmin;align-items:center}
+.social a,.social span{
+  width:3.6vmin;height:3.6vmin;border-radius:50%;
+  border:var(--line) solid rgb(var(--cy-rgb) / .55);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 1.4vmin rgb(var(--cy-rgb) / .22);
+  background:rgba(3,11,18,.35);
+}
+.social svg{width:1.9vmin;height:1.9vmin;fill:none;stroke:var(--cy);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.social svg .f{fill:var(--cy);stroke:none}
+</style>
+<style>
+/* ============================================================
+   4. LAS PARTES
+   ============================================================ */
+
+/* ---- 4.1 MARCO PRINCIPAL (overlay de juego / arte) ---- */
+#p-marco .hud{position:absolute;inset:3.4vmin;z-index:3;pointer-events:none}
+#p-marco .hud .top-l{position:absolute;top:2.6vmin;left:7vmin}
+#p-marco .hud .top-r{position:absolute;top:2.6vmin;right:7vmin;text-align:right;max-width:42%}
+#p-marco .hud .bot-l{position:absolute;bottom:2.6vmin;left:7vmin}
+#p-marco .hud .bot-r{position:absolute;bottom:2.6vmin;right:7vmin}
+#p-marco .titulo{font-family:var(--f-d);font-weight:600;font-size:2.4vmin;letter-spacing:.10em;text-transform:uppercase;color:var(--ice);text-shadow:var(--tx-s)}
+#p-marco .subtitulo{font-size:1.5vmin;letter-spacing:.26em;text-transform:uppercase;color:rgb(var(--cy-rgb) / .8);margin-top:.5vmin}
+body[data-live="0"] #p-marco .top-l,
+body[data-hud="0"] #p-marco .hud{display:none}
+
+/* ---- 4.2 CÁMARA ---- */
+#p-cam .frame{inset:3.6vmin}
+#p-cam .tab{padding:.8vmin 2.6vmin}
+#p-cam .wordmark{height:3.4vmin}
+#p-cam .cam-name{
+  position:absolute;left:50%;bottom:0;transform:translate(-50%,52%);
+  padding:.55vmin 2vmin;background:var(--glass-2);
+  border:var(--line) solid rgb(var(--cy-rgb) / .7);box-shadow:var(--glow-s);
+  font-family:var(--f-d);font-weight:600;font-size:1.5vmin;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--cy);text-shadow:var(--tx-s);white-space:nowrap;
+}
+#p-cam .cam-name:empty{display:none}
+
+/* ---- 4.3 TÍTULO INFERIOR (lower third) ---- */
+#p-titulo .lt{
+  position:absolute;left:0;bottom:12%;
+  display:flex;align-items:stretch;
+  animation:slideIn .55s cubic-bezier(.2,.9,.2,1) both;
+}
+#p-titulo .bar{width:.75vmin;background:var(--cy);box-shadow:var(--glow-m)}
+#p-titulo .box{
+  background:linear-gradient(90deg,var(--glass-2),rgba(3,11,18,.18));
+  border-top:var(--line) solid rgb(var(--cy-rgb) / .45);
+  border-bottom:var(--line) solid rgb(var(--cy-rgb) / .45);
+  padding:1.8vmin 6vmin 1.8vmin 2.6vmin;
+}
+#p-titulo .box .h-mid{font-size:3.4vmin}
+#p-titulo .box .kicker{display:block;margin-bottom:.9vmin}
+@keyframes slideIn{from{opacity:0;transform:translateX(-6vmin)}to{opacity:1;transform:none}}
+
+/* ---- 4.4 BARRA / TICKER ---- */
+#p-ticker .bar{
+  position:absolute;left:0;right:0;bottom:0;height:7.6vmin;
+  display:flex;align-items:center;gap:2.4vmin;
+  padding:0 2.4vmin;
+  background:linear-gradient(90deg,rgba(3,11,18,.86),rgba(3,11,18,.62));
+  border-top:var(--line) solid var(--cy);
+  box-shadow:0 -0.2vmin 3vmin rgb(var(--cy-rgb) / .28);
+}
+#p-ticker .tag{
+  display:flex;align-items:center;padding:.7vmin 1.6vmin;
+  border:var(--line) solid var(--cy);box-shadow:var(--glow-s);flex:0 0 auto;
+}
+#p-ticker .tag .wordmark{height:2.4vmin}
+#p-ticker .msg{
+  flex:1 1 auto;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  font-family:var(--f-d);font-weight:500;font-size:2vmin;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ice);text-shadow:var(--tx-s);
+  transition:opacity .4s ease, transform .4s ease;
+}
+#p-ticker .msg.out{opacity:0;transform:translateY(-1.2vmin)}
+#p-ticker .sign{flex:0 0 auto}
+
+/* ---- 4.5 CHAT ---- */
+#p-chat .box{
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(3,11,18,.62),rgba(3,11,18,.36));
+  border:var(--line) solid rgb(var(--cy-rgb) / .6);
+  box-shadow:var(--glow-m), inset 0 0 4vmin rgb(var(--cy-rgb) / .10);
+}
+#p-chat .head{
+  position:absolute;top:0;left:0;right:0;height:8.4vmin;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 2vmin;border-bottom:var(--line) solid rgb(var(--cy-rgb) / .45);
+}
+#p-chat .head .wordmark{height:3.4vmin}
+#p-chat .area{position:absolute;top:8.4vmin;left:0;right:0;bottom:0}
+#p-chat .hint{
+  position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
+  text-align:center;font-size:1.7vmin;letter-spacing:.22em;text-transform:uppercase;
+  color:rgb(var(--cy-rgb) / .35);padding:0 3vmin;line-height:1.8;
+}
+body[data-hint="0"] #p-chat .hint{display:none}
+
+/* ---- 4.6 ALERTA ---- */
+#p-alerta .card{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  display:flex;align-items:center;gap:2.6vmin;
+  padding:2.4vmin 4.4vmin;
+  background:var(--glass-2);
+  border:var(--line) solid var(--cy);
+  box-shadow:var(--glow-l);
+  -webkit-clip-path:polygon(2vmin 0,100% 0,100% calc(100% - 2vmin),calc(100% - 2vmin) 100%,0 100%,0 2vmin);
+          clip-path:polygon(2vmin 0,100% 0,100% calc(100% - 2vmin),calc(100% - 2vmin) 100%,0 100%,0 2vmin);
+  animation:alertIn .6s cubic-bezier(.16,1,.3,1) both, alertOut .5s ease-in forwards var(--dur,6s);
+}
+#p-alerta .ico{width:7vmin;height:7vmin;flex:0 0 auto;filter:drop-shadow(0 0 1.4vmin rgb(var(--cy-rgb) / .85))}
+#p-alerta .who{font-family:var(--f-d);font-weight:700;font-size:4.4vmin;line-height:1;letter-spacing:.03em;color:var(--ice);text-shadow:var(--tx-l)}
+#p-alerta .kicker{display:block;margin-bottom:1vmin}
+@keyframes alertIn{from{opacity:0;transform:translate(-50%,-50%) scale(.9)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+@keyframes alertOut{to{opacity:0;transform:translate(-50%,-50%) scale(.97)}}
+
+/* ---- 4.7 ESCENAS COMPLETAS: intro / pausa / fin ---- */
+.scene{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:0 10vmin}
+.scene .kicker{margin-bottom:2.4vmin}
+.scene .body{margin-top:2.6vmin;max-width:62vmin}
+.scene .clock{
+  font-family:var(--f-d);font-weight:700;
+  font-size:14vmin;line-height:1;letter-spacing:.04em;
+  color:var(--cy);text-shadow:var(--tx-l);
+  font-variant-numeric:tabular-nums;margin-top:3vmin;
+}
+.scene .rule{width:26vmin;margin:3.4vmin auto 0}
+.scene-foot{
+  position:absolute;left:6vmin;right:6vmin;bottom:calc(5vmin + var(--safe-b));
+  display:flex;align-items:flex-end;justify-content:space-between;gap:3vmin;z-index:3;
+}
+.scene-top{position:absolute;top:5vmin;left:0;right:0;display:flex;justify-content:center;z-index:3}
+.scene-top .wordmark{height:4.6vmin}
+
+/* ---- 4.8 FONDO SOLO ---- */
+#p-fondo{z-index:1}
+
+/* ============================================================
+   5. ORIENTACIÓN VERTICAL (1080x1920 · TikTok / Shorts / Reels)
+   ============================================================ */
+@media (orientation:portrait){
+  :root{--safe-b:9vmin}
+  .frame{inset:3vmin 3vmin calc(3vmin + var(--safe-b))}
+  #p-marco .hud{inset:3vmin 3vmin calc(3vmin + var(--safe-b))}
+  #p-marco .hud .top-r{max-width:52%}
+  #p-marco .titulo{font-size:2.8vmin}
+  .h-big{font-size:8.6vmin}
+  .scene{padding:0 7vmin;justify-content:center}
+  .scene .clock{font-size:17vmin}
+  .scene-foot{
+    left:5vmin;right:5vmin;
+    flex-direction:column;align-items:center;text-align:center;gap:2.4vmin;
+  }
+  .scene-foot .sign{align-items:center;text-align:center}
+  #p-titulo .lt{bottom:calc(14% + var(--safe-b))}
+  #p-ticker .bar{bottom:var(--safe-b)}
+  #p-ticker .sign{display:none}
+  #p-alerta .card{flex-direction:column;text-align:center;padding:3.4vmin;gap:1.8vmin}
+  #p-alerta .who{font-size:5.4vmin}
+}
+</style>
+<style>
+/* ============================================================
+   6. PANEL DE CONTROL (lo que ves al abrir el archivo sin ?p=)
+   ============================================================ */
+#panel{display:none;position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:56px 24px 96px;font-family:var(--f-t)}
+body.panel #panel{display:block}
+body.panel{background:
+  radial-gradient(90% 60% at 20% 0%, #0F3346 0%, rgba(15,51,70,0) 60%),
+  linear-gradient(170deg,#0B2231,#030B12 70%);
+  min-height:100%}
+#panel h1{font-family:var(--f-d);font-weight:700;font-size:34px;letter-spacing:.08em;text-transform:uppercase;margin:18px 0 6px;color:#E8FFFB;text-shadow:0 0 14px rgb(var(--cy-rgb) / .45)}
+#panel .lead{font-size:17px;line-height:1.6;color:rgba(232,255,251,.68);max-width:70ch;margin:0 0 12px}
+#panel h2{font-family:var(--f-d);font-weight:600;font-size:13px;letter-spacing:.36em;text-transform:uppercase;color:#5FF6E4;margin:52px 0 16px}
+#panel .head-mark{height:40px;filter:drop-shadow(0 0 10px rgb(var(--cy-rgb) / .7))}
+#panel .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+#panel .card{border:1px solid rgb(var(--cy-rgb) / .28);background:rgba(3,11,18,.55);padding:0 0 16px;position:relative}
+#panel .card .prev{position:relative;width:100%;height:196px;overflow:hidden;background:#04101a;border-bottom:1px solid rgb(var(--cy-rgb) / .20)}
+#panel .card .prev iframe{position:absolute;top:50%;left:50%;transform-origin:50% 50%;border:0;pointer-events:none}
+#panel .card .prev.checker{background:
+  linear-gradient(45deg,#0d1b26 25%,transparent 25%,transparent 75%,#0d1b26 75%),
+  linear-gradient(45deg,#0d1b26 25%,#08131c 25%,#08131c 75%,#0d1b26 75%);
+  background-size:22px 22px;background-position:0 0,11px 11px}
+#panel .card .in{padding:14px 16px 0}
+#panel .card b{display:block;font-family:var(--f-d);font-weight:600;font-size:16px;letter-spacing:.10em;text-transform:uppercase;color:#E8FFFB}
+#panel .card p{font-size:14px;line-height:1.5;color:rgba(232,255,251,.60);margin:6px 0 10px}
+#panel .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+#panel .tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#5FF6E4;border:1px solid rgb(var(--cy-rgb) / .35);padding:3px 8px}
+#panel code{display:block;font-family:ui-monospace,'SFMono-Regular',Menlo,monospace;font-size:12px;color:#A9FFF3;background:rgb(var(--cy-rgb) / .07);border:1px solid rgb(var(--cy-rgb) / .16);padding:8px 10px;word-break:break-all;line-height:1.5}
+#panel button{margin-top:8px;font-family:var(--f-d);font-weight:600;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#03090F;background:#5FF6E4;border:0;padding:9px 16px;cursor:pointer}
+#panel button:hover{background:#A9FFF3}
+#panel button.ghost{background:transparent;color:#5FF6E4;border:1px solid rgb(var(--cy-rgb) / .45);margin-left:8px}
+#panel ol,#panel ul{color:rgba(232,255,251,.72);font-size:15px;line-height:1.85;padding-left:20px;max-width:78ch}
+#panel li b{font-family:var(--f-d);color:#E8FFFB;display:inline;letter-spacing:.04em}
+#panel table{width:100%;border-collapse:collapse;font-size:14px}
+#panel th,#panel td{text-align:left;padding:9px 12px;border-bottom:1px solid rgb(var(--cy-rgb) / .14);vertical-align:top;color:rgba(232,255,251,.72)}
+#panel th{font-family:var(--f-d);font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#5FF6E4}
+#panel td:first-child{font-family:ui-monospace,monospace;color:#A9FFF3;white-space:nowrap}
+#panel .note{border-left:2px solid #5FF6E4;padding:10px 0 10px 16px;color:rgba(232,255,251,.66);font-size:15px;line-height:1.7;margin:18px 0}
+@media (max-width:640px){#panel{padding:32px 16px 72px}#panel h1{font-size:26px}}
+</style>
+</head>
+
+<body>
+
+<!-- ============ Definiciones SVG reutilizables ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- Logotipo SARK: construcción angular (cortes a 45°) -->
+    <symbol id="sark" viewBox="0 0 328 100">
+      <path fill="currentColor" fill-rule="evenodd" d="M12 0 H68 V20 H20 V38 H68 V88 L56 100 H0 V80 H48 V62 H0 V12 Z"/>
+      <path fill="currentColor" fill-rule="evenodd" d="M106 0 H130 L156 100 H134 L129 80 H107 L102 100 H80 Z M112 58 H124 L118 34 Z"/>
+      <path fill="currentColor" fill-rule="evenodd" d="M168 0 H220 L238 18 V44 L224 58 L238 100 H214 L202 62 H190 V100 H168 Z M190 20 H216 V42 H190 Z"/>
+      <path fill="currentColor" fill-rule="evenodd" d="M250 0 H272 V40 L302 0 H326 L294 44 L328 100 H302 L280 62 L272 74 V100 H250 Z"/>
+    </symbol>
+    <!-- Salpicaduras: turbulencia + desplazamiento -->
+    <filter id="splat" x="-40%" y="-40%" width="180%" height="180%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.055" numOctaves="3" seed="17" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="34" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- ============ Fondo de marca ============ -->
+<div id="bg">
+  <div class="grad"></div>
+  <div class="shards"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" id="shardHost"></svg></div>
+  <div class="spl"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+    <g filter="url(#splat)">
+      <circle cx="9" cy="18" r="4.5" fill="#5FF6E4" opacity=".30"/>
+      <circle cx="16" cy="82" r="5.5" fill="#5FF6E4" opacity=".20"/>
+      <circle cx="88" cy="24" r="6" fill="#5B3FA8" opacity=".34"/>
+      <circle cx="93" cy="66" r="4" fill="#C9A227" opacity=".22"/>
+      <circle cx="78" cy="91" r="3.4" fill="#5FF6E4" opacity=".16"/>
+    </g>
+  </svg></div>
+  <div class="scrim"></div>
+  <div class="beams"></div>
+</div>
+
+<!-- ============ P1 · MARCO PRINCIPAL ============ -->
+<section class="part" id="p-marco">
+  <div class="frame"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+    <div class="tab"><svg class="wordmark" viewBox="0 0 328 100"><use href="#sark"/></svg></div>
+  </div>
+  <div class="hud">
+    <div class="top-l"><div class="live"><i class="dot"></i><span>En vivo</span></div></div>
+    <div class="top-r">
+      <div class="titulo" data-bind="t"></div>
+      <div class="subtitulo" data-bind="sub"></div>
+    </div>
+    <div class="bot-l"><div class="sign left"><div class="user" data-bind="user"></div><div class="web" data-bind="web"></div></div></div>
+    <div class="bot-r"><div class="social" data-social></div></div>
+  </div>
+</section>
+
+<!-- ============ P2 · CÁMARA ============ -->
+<section class="part" id="p-cam">
+  <div class="frame">
+    <div class="tab"><svg class="wordmark" viewBox="0 0 328 100"><use href="#sark"/></svg></div>
+    <div class="cam-name" data-bind="t"></div>
+  </div>
+</section>
+
+<!-- ============ P3 · TÍTULO INFERIOR ============ -->
+<section class="part" id="p-titulo">
+  <div class="lt">
+    <div class="bar"></div>
+    <div class="box">
+      <span class="kicker" data-bind="sub"></span>
+      <h2 class="h-mid" data-bind="t"></h2>
+    </div>
+  </div>
+</section>
+
+<!-- ============ P4 · BARRA / TICKER ============ -->
+<section class="part" id="p-ticker">
+  <div class="bar">
+    <div class="tag"><svg class="wordmark" viewBox="0 0 328 100"><use href="#sark"/></svg></div>
+    <div class="msg" id="tickerMsg"></div>
+    <div class="sign"><div class="user" data-bind="user"></div><div class="web" data-bind="web"></div></div>
+  </div>
+</section>
+
+<!-- ============ P5 · CHAT ============ -->
+<section class="part" id="p-chat">
+  <div class="box">
+    <div class="head">
+      <svg class="wordmark" viewBox="0 0 328 100"><use href="#sark"/></svg>
+      <span class="kicker">Chat</span>
+    </div>
+    <div class="area"><div class="hint">Pon aquí encima tu fuente de chat</div></div>
+  </div>
+</section>
+
+<!-- ============ P6 · ALERTA ============ -->
+<section class="part" id="p-alerta">
+  <div class="card">
+    <svg class="ico" id="alertIco" viewBox="0 0 100 100"></svg>
+    <div>
+      <span class="kicker" id="alertKick"></span>
+      <div class="who" data-bind="t"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ P7 · INTRO (comenzamos en…) ============ -->
+<section class="part" id="p-intro">
+  <div class="scene-top"><svg class="wordmark" viewBox="0 0 328 100"><use href="#sark"/></svg></div>
+  <div class="scene">
+    <span class="kicker" data-bind="sub"></span>
+    <h1 class="h-big" data-bind="t"></h1>
+    <div class="clock" data-clock></div>
+    <div class="rule"></div>
+  </div>
+  <div class="scene-foot">
+    <div class="sign left"><div class="user" data-bind="user"></div><div class="web" data-bind="web"></div></div>
+    <div class="social" data-social></div>
+  </div>
+</section>
+
+<!-- ============ P8 · PAUSA ============ -->
+<section class="part" id="p-pausa">
+  <div class="scene-top"><svg class="wordmark" viewBox="0 0 328 100"><use href="#sark"/></svg></div>
+  <div class="scene">
+    <span class="kicker" data-bind="sub"></span>
+    <h1 class="h-big" data-bind="t"></h1>
+    <div class="clock" data-clock></div>
+    <div class="rule"></div>
+  </div>
+  <div class="scene-foot">
+    <div class="sign left"><div class="user" data-bind="user"></div><div class="web" data-bind="web"></div></div>
+    <div class="social" data-social></div>
+  </div>
+</section>
+
+<!-- ============ P9 · FIN ============ -->
+<section class="part" id="p-fin">
+  <div class="scene-top"><svg class="wordmark" viewBox="0 0 328 100"><use href="#sark"/></svg></div>
+  <div class="scene">
+    <span class="kicker" data-bind="sub"></span>
+    <h1 class="h-big" data-bind="t"></h1>
+    <p class="body" data-bind="msg1"></p>
+    <div class="rule"></div>
+  </div>
+  <div class="scene-foot">
+    <div class="sign left"><div class="user" data-bind="user"></div><div class="web" data-bind="web"></div></div>
+    <div class="social" data-social></div>
+  </div>
+</section>
+
+<!-- ============ P10 · SOLO FONDO ============ -->
+<section class="part" id="p-fondo"></section>
+
+<!-- ============ Textura global ============ -->
+<div id="fx"><div class="noise"></div><div class="scan"></div></div>
+
+<!-- ============ PANEL DE CONTROL ============ -->
+<div id="panel">
+  <svg class="head-mark" viewBox="0 0 328 100" style="color:#5FF6E4"><use href="#sark"/></svg>
+  <h1>Kit de transmisión</h1>
+  <p class="lead">Una sola plantilla con todas las piezas. Cada una se monta en OBS como <b>Fuente de navegador</b> apuntando a este mismo archivo, cambiando solo el parámetro <code style="display:inline;padding:2px 6px">?p=</code>. Todo está medido en <b>vmin</b>, así que la misma URL sirve para <b>1920×1080</b> y para <b>1080×1920</b> sin tocar nada.</p>
+
+  <h2>Piezas</h2>
+  <div class="grid" id="cards"></div>
+
+  <h2>Cómo montarlo en OBS Studio</h2>
+  <ol>
+    <li>Crea una escena por momento del directo: <b>INTRO</b>, <b>EN VIVO</b>, <b>PAUSA</b>, <b>FIN</b>.</li>
+    <li>En cada escena, <b>+ → Fuente de navegador</b> → marca <b>Archivo local</b> y elige este archivo.</li>
+    <li>Pega la URL de la pieza en el campo de dirección (el botón <b>Copiar URL</b> de cada tarjeta ya la deja lista con la ruta correcta).</li>
+    <li>Pon el <b>Ancho</b> y <b>Alto</b> que indica la tarjeta — casi todas van al tamaño completo del lienzo y ya se colocan solas en su sitio. Nunca escales la fuente a mano: cambia el ancho/alto y el diseño se re-dibuja nítido.</li>
+    <li>Marca <b>Apagar la fuente cuando no esté visible</b> y <b>Actualizar el navegador cuando la escena se active</b>. Así la intro reinicia la cuenta atrás y la alerta vuelve a animarse cada vez.</li>
+    <li>Para el canal vertical, duplica el perfil de OBS con lienzo <b>1080×1920</b> y usa exactamente las mismas URL: la plantilla se reordena sola.</li>
+  </ol>
+  <div class="note">Las piezas transparentes no llevan fondo: van encima del juego, la cámara o la captura de pantalla. Las escenas completas (intro, pausa, fin, fondo) sí traen el fondo de marca.</div>
+
+  <h2>Parámetros</h2>
+  <table>
+    <thead><tr><th>Parámetro</th><th>Qué hace</th><th>Ejemplo</th></tr></thead>
+    <tbody id="params"></tbody>
+  </table>
+
+  <h2>Tu logotipo real</h2>
+  <p class="lead">El wordmark viene dibujado en SVG dentro del archivo. Si prefieres tu PNG original, súbelo junto a este archivo y añade <code style="display:inline;padding:2px 6px">&amp;logo=sark-logo.png</code> a cualquier URL: reemplaza el wordmark en todas las piezas.</p>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ---------- Parámetros ---------- */
+  var Q = new URLSearchParams(location.search);
+  var q = function(k,d){ var v = Q.get(k); return (v===null || v==='') ? d : v; };
+  var part = (q('p','') || '').toLowerCase();
+
+  /* ---------- Catálogo de piezas ---------- */
+  var PARTS = [
+    { id:'marco', w:1920, h:1080, name:'Marco principal', transp:true,
+      desc:'El overlay de siempre: marco de neón, pestaña SARK, píldora EN VIVO, título de la sesión y tu firma. Va encima del juego o de la captura de pantalla.',
+      size:'1920×1080  ·  1080×1920', extra:'&t=ART%20%26%20GAMING&sub=Directo' },
+    { id:'cam', w:480, h:640, name:'Cámara', transp:true,
+      desc:'El marco con la pestaña SARK arriba para tu webcam. Ponlo justo encima de la fuente de cámara, del mismo tamaño.',
+      size:'el de tu cámara (ej. 480×640)', extra:'&t=SARK' },
+    { id:'titulo', w:1920, h:1080, name:'Título inferior', transp:true,
+      desc:'Placa para presentarte, anunciar el juego, la obra o al invitado. Entra con animación al activarse la escena.',
+      size:'1920×1080  ·  1080×1920', extra:'&t=Nicol%C3%A1s%20Sark&sub=Artista%20%C2%B7%20Muralista' },
+    { id:'ticker', w:1920, h:1080, name:'Barra de avisos', transp:true,
+      desc:'Barra inferior con mensajes que rotan solos, la marca a la izquierda y tu handle a la derecha.',
+      size:'1920×1080  ·  1080×1920', extra:'&msg=Nuevo%20mural%20en%20camino|Encargos%20abiertos|!redes%20para%20los%20links' },
+    { id:'chat', w:420, h:900, name:'Panel de chat', transp:true,
+      desc:'Contenedor de vidrio con cabecera para encajar tu chat (StreamElements, Nightbot, lo que uses) encima.',
+      size:'el de tu panel (ej. 420×900)', extra:'' },
+    { id:'alerta', w:1920, h:1080, name:'Alerta', transp:true,
+      desc:'Aviso de seguidor, suscripción, apoyo o raid. Se anima al entrar y desaparece sola.',
+      size:'1920×1080  ·  1080×1920', extra:'&k=follow&t=NOMBRE&dur=6' },
+    { id:'intro', w:1920, h:1080, name:'Intro · comenzamos en', transp:false,
+      desc:'Pantalla de espera con cuenta regresiva. Fondo de marca con el estallido low-poly y las salpicaduras.',
+      size:'1920×1080  ·  1080×1920', extra:'&to=300' },
+    { id:'pausa', w:1920, h:1080, name:'Pausa · ya vuelvo', transp:false,
+      desc:'Para el descanso. Misma base que la intro, con cuenta atrás opcional.',
+      size:'1920×1080  ·  1080×1920', extra:'&to=600' },
+    { id:'fin', w:1920, h:1080, name:'Cierre · gracias por ver', transp:false,
+      desc:'Despedida con tus redes bien visibles.',
+      size:'1920×1080  ·  1080×1920', extra:'' },
+    { id:'fondo', w:1920, h:1080, name:'Solo fondo', transp:false,
+      desc:'El fondo de marca sin textos, para poner debajo de cualquier escena o como pantalla de arte.',
+      size:'1920×1080  ·  1080×1920', extra:'' }
+  ];
+
+  var PARAMS = [
+    ['p','Qué pieza se muestra','?p=marco'],
+    ['t','Texto principal / título','&t=ART %26 GAMING'],
+    ['sub','Texto secundario o antetítulo','&sub=Directo de arte'],
+    ['user','Tu handle','&user=@SARKPEW1'],
+    ['web','Tu sitio','&web=www.sarkpew1.com'],
+    ['msg','Mensajes del ticker, separados por |','&msg=Uno|Dos|Tres'],
+    ['to','Cuenta regresiva: segundos u hora local','&to=600 · &to=21:30'],
+    ['k','Tipo de alerta: follow · sub · apoyo · raid','&k=sub'],
+    ['dur','Segundos que dura la alerta en pantalla','&dur=8'],
+    ['logo','Reemplaza el wordmark por una imagen','&logo=sark-logo.png'],
+    ['c','Color de acento en hex, sin #','&c=FF9800'],
+    ['fx','Grano y scanlines: 1 en las escenas, 0 en los overlays','&fx=1'],
+    ['live','Píldora EN VIVO en el marco','&live=0'],
+    ['hud','Todos los textos del marco','&hud=0'],
+    ['hint','Texto guía dentro del panel de chat','&hint=0']
+  ];
+
+  /* ---------- Utilidades ---------- */
+  function hexToRgb(h){
+    h = String(h).replace('#','').trim();
+    if(h.length===3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+    if(!/^[0-9a-f]{6}$/i.test(h)) return null;
+    return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];
+  }
+  function mulberry32(a){
+    return function(){
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      var t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  /* ---------- Estallido low-poly (fondo) ---------- */
+  function buildShards(host){
+    if(!host) return;
+    var rnd = mulberry32(2604);
+    var tone = ['#C4D7E8','#9DB6CF','#7A97B5','#5C7C9C','#3E5E80','#2A4462'];
+    var out = '';
+    for(var i=0;i<30;i++){
+      var ang = (-52 + rnd()*104) * Math.PI/180;
+      var len = 16 + rnd()*44;
+      var wid = 1.4 + rnd()*6.5;
+      var ox = 56 + (rnd()-0.5)*14, oy = 56 + (rnd()-0.5)*18;
+      var tx = ox - Math.cos(ang)*len, ty = oy - Math.sin(ang)*len*0.72;
+      var px = Math.cos(ang + Math.PI/2), py = Math.sin(ang + Math.PI/2);
+      out += '<polygon points="'
+        + tx.toFixed(1)+','+ty.toFixed(1)+' '
+        + (ox+px*wid).toFixed(1)+','+(oy+py*wid).toFixed(1)+' '
+        + (ox-px*wid).toFixed(1)+','+(oy-py*wid).toFixed(1)
+        + '" fill="'+tone[i%tone.length]+'" opacity="'+(0.30+rnd()*0.55).toFixed(2)+'"/>';
+    }
+    host.innerHTML = out;
+  }
+
+  /* ---------- Iconos sociales ---------- */
+  var ICONS = {
+    facebook:'<path class="f" d="M13.4 21v-7h2.3l.4-2.8h-2.7V9.4c0-.8.2-1.3 1.4-1.3h1.4V5.6c-.3 0-1.1-.1-2.1-.1-2.1 0-3.6 1.3-3.6 3.7v2H8.2V14h2.3v7z"/>',
+    twitch:'<path d="M4 3h16v11l-4 4h-3l-2.4 2.4V18H4z"/><path d="M10.4 7.4v4.4M15 7.4v4.4"/>',
+    tiktok:'<path class="f" d="M14.7 3h2.6c.4 2.1 1.7 3.4 3.7 3.6v2.6c-1.4 0-2.7-.4-3.9-1.1v5.6a5.5 5.5 0 1 1-5.5-5.5c.3 0 .5 0 .8.1v2.7a2.8 2.8 0 1 0 2 2.7z"/>',
+    dribbble:'<circle cx="12" cy="12" r="9"/><path d="M5.2 8.4c4.3 1.1 9.6.8 13.4-1.6M3.6 14.6c4.5-3 10.5-3.4 15 .3M9 3.6c3.1 4 5.1 9 5.6 16"/>',
+    instagram:'<rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5"/><circle cx="12" cy="12" r="3.7"/><circle class="f" cx="16.9" cy="7.1" r="1"/>',
+    youtube:'<path d="M21.5 7.3a2.5 2.5 0 0 0-1.7-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.5A2.5 2.5 0 0 0 2.5 7.3 25 25 0 0 0 2 12a25 25 0 0 0 .5 4.7 2.5 2.5 0 0 0 1.7 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.5a2.5 2.5 0 0 0 1.7-1.8A25 25 0 0 0 22 12a25 25 0 0 0-.5-4.7z"/><path class="f" d="M10.2 15.1V8.9l5.2 3.1z"/>'
+  };
+  function buildSocial(el){
+    var order = ['facebook','twitch','tiktok','dribbble','instagram','youtube'];
+    el.innerHTML = order.map(function(k){
+      return '<span title="'+k+'"><svg viewBox="0 0 24 24">'+ICONS[k]+'</svg></span>';
+    }).join('');
+  }
+
+  /* ---------- Cuenta regresiva ---------- */
+  function startClock(nodes, spec){
+    if(!nodes.length) return;
+    var target;
+    if(/^\d{1,2}:\d{2}$/.test(spec)){
+      var hm = spec.split(':'), d = new Date();
+      d.setHours(+hm[0], +hm[1], 0, 0);
+      if(d.getTime() <= Date.now()) d.setDate(d.getDate()+1);
+      target = d.getTime();
+    } else {
+      var secs = parseInt(spec,10);
+      if(!isFinite(secs) || secs < 0) { nodes.forEach(function(n){n.style.display='none';}); return; }
+      target = Date.now() + secs*1000;
+    }
+    function tick(){
+      var left = Math.max(0, Math.round((target - Date.now())/1000));
+      var h = Math.floor(left/3600), m = Math.floor(left%3600/60), s = left%60;
+      var txt = left <= 0 ? 'YA' :
+        (h ? h+':'+String(m).padStart(2,'0') : String(m).padStart(2,'0')) + ':' + String(s).padStart(2,'0');
+      nodes.forEach(function(n){ n.textContent = txt; });
+    }
+    tick();
+    setInterval(tick, 1000);
+  }
+
+  /* ---------- Alertas ---------- */
+  var ALERTS = {
+    follow:{ label:'Nuevo seguidor', ico:'<polygon points="50,6 62,38 96,38 68,58 79,92 50,72 21,92 32,58 4,38 38,38"/>' },
+    sub:{ label:'Nueva suscripción', ico:'<polygon points="50,4 96,50 50,96 4,50"/><polygon points="50,26 74,50 50,74 26,50" fill="#03090F"/>' },
+    apoyo:{ label:'Gracias por el apoyo', ico:'<path d="M50 88 12 52a22 22 0 0 1 38-24 22 22 0 0 1 38 24z"/>' },
+    raid:{ label:'Raid entrante', ico:'<polygon points="8,50 46,12 46,34 92,34 92,66 46,66 46,88"/>' }
+  };
+
+  /* ============================================================
+     MODO PANEL
+     ============================================================ */
+  if(!part){
+    document.body.classList.add('panel');
+    document.documentElement.classList.add('panel');
+    var base = location.href.split('?')[0];
+    var cards = document.getElementById('cards');
+    cards.innerHTML = PARTS.map(function(p){
+      var url = base + '?p=' + p.id + (p.extra||'');
+      return ''
+        + '<article class="card">'
+        + '  <div class="prev'+(p.transp?' checker':'')+'">'
+        + '    <iframe src="'+url.replace(/&/g,'&amp;')+'" width="'+p.w+'" height="'+p.h+'"></iframe>'
+        + '  </div>'
+        + '  <div class="in">'
+        + '    <b>'+p.name+'</b>'
+        + '    <div class="tags"><span class="tag">?p='+p.id+'</span><span class="tag">'+(p.transp?'Transparente':'Fondo completo')+'</span><span class="tag">'+p.size+'</span></div>'
+        + '    <p>'+p.desc+'</p>'
+        + '    <code>'+url+'</code>'
+        + '    <button data-url="'+encodeURIComponent(url)+'">Copiar URL</button>'
+        + '    <button class="ghost" onclick="window.open(this.parentNode.querySelector(\'code\').textContent,\'_blank\')">Abrir</button>'
+        + '  </div>'
+        + '</article>';
+    }).join('');
+
+    document.getElementById('params').innerHTML = PARAMS.map(function(r){
+      return '<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td></tr>';
+    }).join('');
+
+    // Escalar las miniaturas al ancho real de la tarjeta
+    function fitPreviews(){
+      document.querySelectorAll('#panel .prev').forEach(function(box){
+        var f = box.querySelector('iframe'); if(!f) return;
+        var w = +f.getAttribute('width'), h = +f.getAttribute('height');
+        var k = Math.min(box.clientWidth / w, box.clientHeight / h);
+        f.style.transform = 'translate(-50%,-50%) scale(' + k + ')';
+      });
+    }
+    window.addEventListener('resize', fitPreviews);
+    window.addEventListener('load', fitPreviews);
+    fitPreviews();
+
+    cards.addEventListener('click', function(e){
+      var b = e.target.closest('button[data-url]'); if(!b) return;
+      var url = decodeURIComponent(b.dataset.url);
+      var done = function(){ var t = b.textContent; b.textContent='Copiada'; setTimeout(function(){ b.textContent = t; }, 1400); };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(url).then(done, function(){ fallback(url, done); });
+      } else fallback(url, done);
+    });
+    function fallback(text, done){
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); done(); }catch(err){ prompt('Copia la URL:', text); }
+      document.body.removeChild(ta);
+    }
+    return;
+  }
+
+  /* ============================================================
+     MODO PIEZA
+     ============================================================ */
+  var host = document.getElementById('p-' + part);
+  if(!host){ document.body.classList.add('panel'); document.body.innerHTML = '<div style="font:16px system-ui;color:#5FF6E4;padding:40px">Pieza desconocida: "'+part+'". Abre este archivo sin parámetros para ver el panel.</div>'; return; }
+  host.classList.add('on');
+  document.body.dataset.p = part;
+
+  // Color de acento personalizado
+  var rgb = hexToRgb(q('c',''));
+  if(rgb){
+    var r = document.documentElement.style;
+    r.setProperty('--cy', 'rgb('+rgb.join(',')+')');
+    r.setProperty('--cy-rgb', rgb.join(' '));
+    r.setProperty('--cy-soft', 'rgb('+rgb.map(function(v){return Math.min(255, Math.round(v+70));}).join(',')+')');
+  }
+
+  // Fondo y textura
+  var conFondo = ['intro','pausa','fin','fondo'].indexOf(part) >= 0;
+  if(conFondo){ document.body.classList.add('has-bg'); buildShards(document.getElementById('shardHost')); }
+  if(q('fx', conFondo ? '1' : '0') !== '0') document.body.classList.add('has-fx');
+  document.body.dataset.live = q('live','1');
+  document.body.dataset.hud  = q('hud','1');
+  document.body.dataset.hint = q('hint','1');
+
+  // Textos por defecto según la pieza
+  var D = {
+    marco : { t:'ART & GAMING', sub:'' },
+    cam   : { t:'' },
+    titulo: { t:'Nicolás Sark', sub:'Artista · Muralista' },
+    ticker: { t:'' },
+    alerta: { t:'NOMBRE' },
+    intro : { t:'Comenzamos en', sub:'SARK · en vivo' },
+    pausa : { t:'Ya vuelvo', sub:'SARK · en vivo' },
+    fin   : { t:'Gracias por ver', sub:'SARK · en vivo', msg1:'Nos vemos en la próxima transmisión.' },
+    fondo : {}
+  }[part] || {};
+
+  var val = {
+    t   : q('t',   D.t   || ''),
+    sub : q('sub', D.sub || ''),
+    user: q('user','@SARKPEW1'),
+    web : q('web', 'www.sarkpew1.com'),
+    msg1: q('msg', D.msg1 || '')
+  };
+  host.querySelectorAll('[data-bind]').forEach(function(n){
+    var v = val[n.dataset.bind];
+    if(v === undefined || v === '') { n.style.display = 'none'; return; }
+    n.textContent = v;
+  });
+
+  // Redes
+  host.querySelectorAll('[data-social]').forEach(buildSocial);
+
+  // Logotipo propio
+  var logo = q('logo','');
+  if(logo){
+    document.querySelectorAll('svg.wordmark').forEach(function(svg){
+      var img = new Image();
+      img.src = logo; img.className = 'wordmark'; img.alt = 'SARK';
+      svg.replaceWith(img);
+    });
+  }
+
+  // Cuenta regresiva
+  if(part === 'intro' || part === 'pausa'){
+    startClock(Array.prototype.slice.call(host.querySelectorAll('[data-clock]')), q('to', part === 'intro' ? '300' : '600'));
+  }
+
+  // Ticker
+  if(part === 'ticker'){
+    var msgs = q('msg','Bienvenid@ al directo|Encargos y murales abiertos|www.sarkpew1.com').split('|')
+                 .map(function(s){ return s.trim(); }).filter(Boolean);
+    var box = document.getElementById('tickerMsg'), i = 0;
+    box.textContent = msgs[0] || '';
+    if(msgs.length > 1) setInterval(function(){
+      box.classList.add('out');
+      setTimeout(function(){ i = (i+1) % msgs.length; box.textContent = msgs[i]; box.classList.remove('out'); }, 400);
+    }, 6500);
+  }
+
+  // Alerta
+  if(part === 'alerta'){
+    var kind = ALERTS[(q('k','follow')).toLowerCase()] || ALERTS.follow;
+    document.getElementById('alertKick').textContent = q('sub', kind.label);
+    document.getElementById('alertIco').innerHTML = kind.ico;
+    document.getElementById('alertIco').querySelectorAll('polygon,path').forEach(function(n){
+      if(!n.getAttribute('fill')) n.setAttribute('fill','currentColor');
+    });
+    document.getElementById('alertIco').style.color = 'var(--cy)';
+    var dur = parseFloat(q('dur','6'));
+    if(isFinite(dur) && dur > 0) host.querySelector('.card').style.setProperty('--dur', dur + 's');
+    else host.querySelector('.card').style.animation = 'alertIn .6s cubic-bezier(.16,1,.3,1) both';
+  }
+})();
+</script>
+</body>
+</html>
